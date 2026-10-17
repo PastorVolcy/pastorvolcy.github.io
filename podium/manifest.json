@@ -1,0 +1,17 @@
+{
+ "name": "Preacher's Podium",
+ "short_name": "Podium",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "any",
+ "background_color": "#16181e",
+ "theme_color": "#16181e",
+ "icons": [
+  {
+   "src": "icon-180.png",
+   "sizes": "180x180",
+   "type": "image/png"
+  }
+ ]
+}

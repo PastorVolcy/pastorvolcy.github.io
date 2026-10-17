@@ -1,1 +1,1 @@
-{"version": "2.4", "notes": "Shows your saved Groq key (masked) with Test and Remove buttons."}
+{"version": "2.5", "notes": "Fixes 'Couldn't reach Groq', adds the more accurate Whisper Large v3 and optional AI polish."}

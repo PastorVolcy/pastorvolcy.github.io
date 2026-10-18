@@ -126,15 +126,27 @@
   #end{position:relative!important;left:auto!important;bottom:auto!important;margin:0!important;display:block!important;pointer-events:auto;opacity:.25;transition:opacity .4s}
   #end.on{opacity:1}
   #tap{bottom:calc(104px + env(safe-area-inset-bottom))!important;z-index:2}
+  .qc{display:flex;align-items:center;gap:18px;pointer-events:auto}
+  .qc label{display:flex;align-items:center;gap:8px;cursor:pointer}
+  .qc select{appearance:none;-webkit-appearance:none;background:rgba(4,20,30,.7);border:1px solid rgba(95,220,255,.35);color:#dffaff;font:inherit;letter-spacing:.14em;text-transform:uppercase;padding:7px 26px 7px 10px;border-radius:0;
+     background-image:linear-gradient(45deg,transparent 50%,#5fdcff 50%),linear-gradient(135deg,#5fdcff 50%,transparent 50%);background-position:calc(100% - 13px) 50%,calc(100% - 8px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+  .qc input[type=range]{width:110px;accent-color:#5fdcff;margin:0}
+  .seg{display:flex;border:1px solid rgba(95,220,255,.35)}
+  .seg button{background:rgba(4,20,30,.6);color:var(--dim);border:0;font:inherit;letter-spacing:.16em;text-transform:uppercase;padding:7px 11px;cursor:pointer}
+  .seg button+button{border-left:1px solid rgba(95,220,255,.2)}
+  .seg button.on{background:rgba(95,220,255,.18);color:#dffaff;text-shadow:0 0 8px rgba(95,220,255,.8)}
   @media (max-width:1100px){.col{width:250px}}
-  @media (max-width:900px){.col{display:none} #d-l,#d-r{display:none} #dock{justify-content:center} .logo .ls{display:none} #h-clock{font-size:17px}}
+  @media (max-width:900px){.col{display:none}
+    #dock{height:auto;flex-wrap:wrap;justify-content:center;gap:12px 16px;padding:14px 12px calc(14px + env(safe-area-inset-bottom));font-size:9.5px}
+    #dock .qc{gap:12px} #end{order:3} #d-l{order:1} #d-r{order:2} .qc input[type=range]{width:80px} .seg button{padding:7px 8px}
+    #caption,#tap{bottom:calc(150px + env(safe-area-inset-bottom))!important} .logo .ls{display:none} #h-clock{font-size:17px}}
 </style>
 </head>
 <body>
 <canvas id="orb"></canvas>
 <div class="scan"></div><div class="vig"></div>
 <header id="top">
-  <div class="logo"><div class="lt">F.R.I.D.A.Y.</div><div class="ls">Personal intelligence · v3.1</div></div>
+  <div class="logo"><div class="lt">F.R.I.D.A.Y.</div><div class="ls">Personal intelligence · v3.2</div></div>
   <div class="pill"><i></i><span id="status">Standby</span></div>
   <div class="clk"><div id="h-clock">--:--:--</div><div id="h-date">--</div></div>
 </header>
@@ -172,7 +184,15 @@
 <div id="notice"></div>
 <div id="caption"><div id="heard"></div><div id="said"></div></div>
 <div id="tap">Tap to initialize</div>
-<footer id="dock"><div id="d-l">Voice <b id="d-voice">--</b> · Pace <b id="d-pace">--</b></div><div id="end" title="End session"></div><div id="d-r">Encrypted · key on device</div></footer>
+<footer id="dock">
+  <div class="qc" id="d-l">
+    <label>Voice<select id="q-voice"><option value="diana">Diana</option><option value="autumn">Autumn</option><option value="hannah">Hannah</option><option value="daniel">Daniel</option><option value="troy">Troy</option><option value="austin">Austin</option></select></label>
+    <label>Pace <b id="d-pace">--</b><input id="q-pace" type="range" min="0.95" max="1.4" step="0.05"></label>
+  </div>
+  <div id="end" title="End session"></div>
+  <div class="qc" id="d-r"><span>Response</span><div class="seg" id="q-speed"><button data-v="fast">Fast</button><button data-v="balanced">Balanced</button><button data-v="patient">Patient</button></div></div>
+  <span id="d-voice" hidden></span>
+</footer>
 
 <div class="sheet" id="setup"><div class="card">
   <h1>FRIDAY</h1>
@@ -216,7 +236,7 @@ const store = {
   get(k, d){ try{ const v = localStorage.getItem("friday."+k); return v===null? d : JSON.parse(v);}catch(e){return d;} },
   set(k, v){ localStorage.setItem("friday."+k, JSON.stringify(v)); }
 };
-let cfg = store.get("cfg", {name:"", key:"", voice:"diana"}); if (!cfg.pace) cfg.pace = 1.15; if (!cfg.sens || (cfg.sens === 4 && !cfg.nz)) { cfg.sens = 3; cfg.nz = 1; }
+let cfg = store.get("cfg", {name:"", key:"", voice:"diana"}); if (!cfg.pace) cfg.pace = 1.15; if (!cfg.speed) cfg.speed = "balanced"; if (!cfg.sens || (cfg.sens === 4 && !cfg.nz)) { cfg.sens = 3; cfg.nz = 1; }
 let history = store.get("history", []);       // [{role, content}]
 let notes = store.get("notes", []);
 let reminders = store.get("reminders", []);   // [{id, at, text, done}]
@@ -282,7 +302,7 @@ const vad = {
     if (!this.rec){
       this.prefix.push(buf); if (this.prefix.length > Math.ceil(450/frameMs)) this.prefix.shift();
       if (rms > start && voicy) this.count++; else this.count = Math.max(0, this.count-1);
-      if (this.count*frameMs >= (fridayTalking ? 180 : 150)) this.begin();
+      if (this.count*frameMs >= (fridayTalking ? 180 : (cfg.speed==="fast" ? 110 : 140))) this.begin();
     } else {
       this.rec.push(buf);
       const end = Math.max(this.floor*2.0, 0.006*this.k);
@@ -291,7 +311,7 @@ const vad = {
         this.silence = 0; }
       else this.silence += frameMs;
       const len = this.rec.length*frameMs;
-      if (this.silence >= (this.voiced > 2500 ? 750 : 620) || len > 30000) this.finish();
+      const EW = {fast:[400,520], balanced:[520,650], patient:[750,950]}[cfg.speed||"balanced"]; if (this.silence >= (this.voiced > 2500 ? EW[1] : EW[0]) || len > 30000) this.finish();
       // false alarm (a cough, a door): resume Friday where she was
       if (this.pausedFor && len > 900 && this.voiced < 250){ this.rec = null; this.count = 0; player.resume(); this.pausedFor = null; ui.set("speaking"); }
     }
@@ -346,7 +366,7 @@ function toWav(frames, inRate){
 async function transcribe(frames){
   const fd = new FormData();
   fd.append("file", toWav(frames, ctx.sampleRate), "speech.wav");
-  fd.append("model", STT); fd.append("language", "en"); fd.append("prompt", "Conversation with Friday, an AI assistant. Pastor, church, sermon, Harrisburg."); fd.append("temperature", "0"); fd.append("response_format", "verbose_json");
+  fd.append("model", cfg.speed === "patient" ? "whisper-large-v3" : "whisper-large-v3-turbo"); fd.append("language", "en"); fd.append("prompt", "Conversation with Friday, an AI assistant. Pastor, church, sermon, Harrisburg."); fd.append("temperature", "0"); fd.append("response_format", "verbose_json");
   const r = await fetch(API + "/audio/transcriptions", {method:"POST", headers:{Authorization:"Bearer "+cfg.key}, body:fd});
   if (!r.ok) throw new Error("stt " + r.status + " " + (await r.text()));
   const j = await r.json();
@@ -650,7 +670,15 @@ async function loadWeather(){
   }catch(e){ $("wx-c").textContent = "Offline"; }
 }
 loadWeather(); setInterval(loadWeather, 15*60000);
-function hudTick(){ const d=new Date(); $("h-clock").textContent=d.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false}); $("h-date").textContent=d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"2-digit"}); $("h-voice").textContent=(cfg.voice||"--")+(ttsBroken?" ⚠":""); $("h-mem").textContent=history.length; $("h-notes").textContent=notes.length; $("h-link").textContent= ui.state==="asleep"?"Standby":"Groq LPU · online"; $("b-link").style.setProperty("--w", ui.state==="asleep"?"30%":(88+Math.random()*10)+"%"); $("d-voice").textContent=cfg.voice||"--"; $("d-pace").textContent=(cfg.pace||1.15).toFixed(2)+"×"; if (micStream){ const tr=micStream.getAudioTracks()[0]; if (tr) $("mic-name").textContent = tr.label || "Microphone"; } } setInterval(hudTick,1000); hudTick();
+function hudTick(){ const d=new Date(); $("h-clock").textContent=d.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false}); $("h-date").textContent=d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"2-digit"}); $("h-voice").textContent=(cfg.voice||"--")+(ttsBroken?" ⚠":""); $("h-mem").textContent=history.length; $("h-notes").textContent=notes.length; $("h-link").textContent= ui.state==="asleep"?"Standby":"Groq LPU · online"; $("b-link").style.setProperty("--w", ui.state==="asleep"?"30%":(88+Math.random()*10)+"%"); $("d-pace").textContent=(cfg.pace||1.15).toFixed(2)+"×"; if (micStream){ const tr=micStream.getAudioTracks()[0]; if (tr) $("mic-name").textContent = tr.label || "Microphone"; } } setInterval(hudTick,1000); hudTick();
+function syncQuick(){ $("q-voice").value = cfg.voice || "diana"; $("q-pace").value = cfg.pace || 1.15; document.querySelectorAll("#q-speed button").forEach(b=>b.classList.toggle("on", b.dataset.v === (cfg.speed||"balanced"))); hudTick(); }
+const stopTap = e => e.stopPropagation(); ["pointerdown","pointerup","click","touchstart"].forEach(ev => document.querySelectorAll(".qc").forEach(q => q.addEventListener(ev, stopTap)));
+$("q-voice").onchange = () => { cfg.voice = $("q-voice").value; store.set("cfg", cfg); ttsCache.clear(); ttsBroken = false; syncQuick();
+  if (ui.state !== "asleep") { brain.turn++; player.stopAll(); brain.say("Voice changed. This is how I sound now.", true); } };
+$("q-pace").oninput = () => { cfg.pace = +$("q-pace").value; hudTick(); };
+$("q-pace").onchange = () => { store.set("cfg", cfg); if (ui.state !== "asleep" && !player.playing) brain.say("Pace set.", true); };
+document.querySelectorAll("#q-speed button").forEach(b => b.onclick = () => { cfg.speed = b.dataset.v; store.set("cfg", cfg); syncQuick(); });
+syncQuick();
 
 // tap to wake, end circle to sleep, long-press for settings
 let pressT = null, longPressed = false;
@@ -663,7 +691,7 @@ function openSetup(){
   $("f-extra").style.display = cfg.key ? "flex" : "none"; if (cfg.key) initAudio().then(listMics).catch(()=>{});
   $("setup").classList.add("on");
 }
-$("f-save").onclick = () => { const micChanged = cfg.mic !== $("f-mic").value; cfg = {name:$("f-name").value.trim(), key:$("f-key").value.trim(), voice:$("f-voice").value, pace:+$("f-pace").value, sens:+$("f-sens").value, mic:$("f-mic").value, nz:1}; meterOn = false; if (micChanged && micStream){ micStream.getTracks().forEach(t=>t.stop()); micStream = null; initAudio().catch(()=>{}); } store.set("cfg", cfg); ttsCache.clear(); ttsBroken = false; $("setup").classList.remove("on"); if (ui.state==="asleep") wake(); };
+$("f-save").onclick = () => { const micChanged = cfg.mic !== $("f-mic").value; cfg = {name:$("f-name").value.trim(), key:$("f-key").value.trim(), voice:$("f-voice").value, pace:+$("f-pace").value, sens:+$("f-sens").value, mic:$("f-mic").value, nz:1, speed:cfg.speed||"balanced"}; syncQuick(); meterOn = false; if (micChanged && micStream){ micStream.getTracks().forEach(t=>t.stop()); micStream = null; initAudio().catch(()=>{}); } store.set("cfg", cfg); ttsCache.clear(); ttsBroken = false; $("setup").classList.remove("on"); if (ui.state==="asleep") wake(); };
 $("f-pace").oninput = () => $("f-pace-v").textContent = (+$("f-pace").value).toFixed(2)+"×";
 $("f-close").onclick = () => { meterOn = false; $("setup").classList.remove("on"); };
 let meterOn = false;

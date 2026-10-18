@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FRIDAY">
+<meta name="theme-color" content="#05070c">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>FRIDAY</title>
+<style>
+  :root{--fg:#dfe9ff;--dim:#7d8bab;--acc:#6fd3ff}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+  html,body{-webkit-touch-callout:none;margin:0;height:100%;background:#05070c;color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;overflow:hidden}
+  #orb{position:fixed;inset:0;width:100%;height:100%;display:block}
+  #caption{position:fixed;left:0;right:0;bottom:calc(150px + env(safe-area-inset-bottom));text-align:center;padding:0 28px;pointer-events:none}
+  #heard{font-size:15px;color:var(--dim);min-height:20px;transition:opacity .8s}
+  #said{font-size:19px;line-height:1.35;margin-top:8px;min-height:26px;transition:opacity .8s;max-width:640px;margin-left:auto;margin-right:auto}
+  #status{position:fixed;top:calc(18px + env(safe-area-inset-top));left:0;right:0;text-align:center;font-size:12px;letter-spacing:.32em;color:var(--dim);text-transform:uppercase;pointer-events:none}
+  #end{position:fixed;left:50%;bottom:calc(46px + env(safe-area-inset-bottom));width:64px;height:64px;margin-left:-32px;border-radius:50%;border:1.5px solid rgba(255,255,255,.22);background:rgba(255,255,255,.03);display:none}
+  #end::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:4px;background:rgba(255,120,120,.85)}
+  #end.on{display:block}
+  #tap{position:fixed;left:0;right:0;bottom:calc(70px + env(safe-area-inset-bottom));text-align:center;color:var(--dim);font-size:14px;letter-spacing:.06em;pointer-events:none}
+  .sheet{position:fixed;inset:0;background:rgba(3,5,10,.86);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);display:none;align-items:center;justify-content:center;z-index:10;user-select:text;-webkit-user-select:text}
+  .sheet.on{display:flex}
+  .card{width:min(420px,92vw);padding:28px 24px;border-radius:22px;background:rgba(20,26,40,.75);border:1px solid rgba(255,255,255,.08)}
+  .card h1{font-size:22px;letter-spacing:.3em;margin:0 0 6px;font-weight:600}
+  .card p{color:var(--dim);font-size:14px;line-height:1.45;margin:0 0 18px}
+  label{display:block;font-size:12px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin:14px 0 6px}
+  input,select{width:100%;padding:12px 14px;font-size:16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.35);color:var(--fg);outline:none;user-select:text;-webkit-user-select:text}
+  .row{display:flex;gap:10px;margin-top:22px}
+  button{flex:1;padding:13px;font-size:16px;border-radius:12px;border:0;background:var(--acc);color:#04121c;font-weight:600}
+  button.ghost{background:rgba(255,255,255,.08);color:var(--fg)}
+  .small{font-size:12px;color:var(--dim);margin-top:14px;line-height:1.4}
+  .small a{color:var(--acc)}
+  #notice{position:fixed;top:calc(44px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);max-width:92vw;padding:10px 14px;border-radius:12px;background:rgba(40,30,10,.85);color:#ffd98a;font-size:13px;display:none;z-index:5;user-select:text;-webkit-user-select:text}
+  #notice a{color:#fff}
+</style>
+</head>
+<body>
+<canvas id="orb"></canvas>
+<div id="status">Friday</div>
+<div id="notice"></div>
+<div id="caption"><div id="heard"></div><div id="said"></div></div>
+<div id="tap">Tap anywhere to talk</div>
+<div id="end" title="End"></div>
+
+<div class="sheet" id="setup"><div class="card">
+  <h1>FRIDAY</h1>
+  <p>Your voice, a real conversation. Talk naturally and cut in any time.</p>
+  <label>What should I call you?</label>
+  <input id="f-name" placeholder="Pastor" autocomplete="off">
+  <label>Groq API key</label>
+  <input id="f-key" type="password" placeholder="gsk_..." autocomplete="off">
+  <label>Voice</label>
+  <select id="f-voice">
+    <option value="diana">Diana (warm, female)</option>
+    <option value="autumn">Autumn (bright, female)</option>
+    <option value="hannah">Hannah (soft, female)</option>
+    <option value="daniel">Daniel (calm, male)</option>
+    <option value="troy">Troy (easy, male)</option>
+    <option value="austin">Austin (upbeat, male)</option>
+  </select>
+  <div class="row"><button class="ghost" id="f-preview">Preview</button><button id="f-save">Save</button></div>
+  <div class="row" id="f-extra" style="display:none"><button class="ghost" id="f-forget">Clear memory</button><button class="ghost" id="f-close">Close</button></div>
+  <div class="small">Your key stays on this device. Long-press the orb anytime to come back here.</div>
+</div></div>
+
+<script>
+"use strict";
+const API = "https://api.groq.com/openai/v1";
+const LLM = "openai/gpt-oss-120b";
+const STT = "whisper-large-v3-turbo";
+const TTS = "canopylabs/orpheus-v1-english";
+const $ = id => document.getElementById(id);
+
+// ---------- settings & memory ----------
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem("friday."+k); return v===null? d : JSON.parse(v);}catch(e){return d;} },
+  set(k, v){ localStorage.setItem("friday."+k, JSON.stringify(v)); }
+};
+let cfg = store.get("cfg", {name:"", key:"", voice:"diana"});
+let history = store.get("history", []);       // [{role, content}]
+let notes = store.get("notes", []);
+let reminders = store.get("reminders", []);   // [{id, at, text, done}]
+function saveHistory(){ history = history.slice(-40); store.set("history", history); }
+
+// ---------- UI ----------
+const ui = {
+  state:"asleep",
+  set(s){ this.state = s; $("status").textContent = ({asleep:"Friday", idle:"Listening", listening:"Listening", thinking:"Thinking", speaking:"Friday"})[s] || s;
+          $("end").classList.toggle("on", s!=="asleep"); $("tap").style.display = s==="asleep" ? "block":"none"; },
+  heard(t){ const h=$("heard"); h.textContent=t; h.style.opacity=1; clearTimeout(this.ht); this.ht=setTimeout(()=>h.style.opacity=0,5000); },
+  said(t){ const s=$("said"); s.textContent=t; s.style.opacity=1; clearTimeout(this.st); this.st=setTimeout(()=>s.style.opacity=0,6000); },
+  notice(html, ms){ const n=$("notice"); n.innerHTML=html; n.style.display="block"; clearTimeout(this.nt); if(ms) this.nt=setTimeout(()=>n.style.display="none",ms); }
+};
+
+// ---------- audio core ----------
+let ctx, micStream, micLevel = 0, outAnalyser, outGain, procNode;
+const FRAME = 2048;
+let frameMs = 46;
+
+async function initAudio(){
+  if (!ctx){
+    ctx = new (window.AudioContext||window.webkitAudioContext)();
+    outGain = ctx.createGain(); outAnalyser = ctx.createAnalyser(); outAnalyser.fftSize = 512;
+    outGain.connect(outAnalyser); outAnalyser.connect(ctx.destination);
+  }
+  if (ctx.state !== "running") await ctx.resume();
+  if (!micStream || micStream.getAudioTracks().every(t=>t.readyState==="ended")){
+    // One stream for the whole session: never torn down, so the browser has no reason to ask again.
+    micStream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true, noiseSuppression:true, autoGainControl:true, channelCount:1}});
+    const src = ctx.createMediaStreamSource(micStream);
+    procNode = ctx.createScriptProcessor(FRAME, 1, 1);
+    const mute = ctx.createGain(); mute.gain.value = 0;
+    src.connect(procNode); procNode.connect(mute); mute.connect(ctx.destination);
+    frameMs = FRAME / ctx.sampleRate * 1000;
+    procNode.onaudioprocess = e => vad.frame(new Float32Array(e.inputBuffer.getChannelData(0)));
+  }
+}
+
+// ---------- voice activity detection + barge-in ----------
+const vad = {
+  floor: 0.004, count: 0, rec: null, prefix: [], silence: 0, voiced: 0, pausedFor: null, backchanneled: false,
+  frame(buf){
+    let s = 0; for (let i=0;i<buf.length;i++) s += buf[i]*buf[i];
+    const rms = Math.sqrt(s/buf.length); micLevel = rms;
+    if (ui.state === "asleep") return;
+    const fridayTalking = player.playing;
+    const start = fridayTalking ? Math.max(this.floor*6, 0.04) : Math.max(this.floor*3.2, 0.014);
+    if (!this.rec){
+      this.prefix.push(buf); if (this.prefix.length > Math.ceil(320/frameMs)) this.prefix.shift();
+      if (rms > start) this.count++; else { this.count = Math.max(0, this.count-1); this.floor = Math.min(0.03, Math.max(0.0015, this.floor*0.99 + rms*0.01)); }
+      if (this.count*frameMs >= (fridayTalking ? 180 : 140)) this.begin();
+    } else {
+      this.rec.push(buf);
+      const end = Math.max(this.floor*2.2, 0.009);
+      if (rms > end){ this.voiced += frameMs; 
+        if (this.silence > 220 && this.silence < 600 && this.voiced > 6500 && !this.backchanneled){ this.backchanneled = true; player.backchannel(); }
+        this.silence = 0; }
+      else this.silence += frameMs;
+      const len = this.rec.length*frameMs;
+      if (this.silence >= 620 || len > 30000) this.finish();
+      // false alarm (a cough, a door): resume Friday where she was
+      if (this.pausedFor && len > 900 && this.voiced < 250){ this.rec = null; this.count = 0; player.resume(); this.pausedFor = null; ui.set("speaking"); }
+    }
+  },
+  begin(){
+    this.count = 0; this.silence = 0; this.voiced = 0; this.backchanneled = false;
+    this.rec = this.prefix.slice(); this.prefix = [];
+    if (player.playing || brain.busy){ this.pausedFor = brain.turn; player.pause(); }   // cut within one frame
+    lastActivity = Date.now();
+    ui.set("listening");
+  },
+  async finish(){
+    const frames = this.rec; this.rec = null;
+    const wasPaused = this.pausedFor; this.pausedFor = null;
+    if (this.voiced < 280){ if (wasPaused) { player.resume(); ui.set("speaking"); } else ui.set("idle"); return; }
+    // real interruption: drop what Friday was going to say
+    if (wasPaused){ brain.interrupt(); }
+    ui.set("thinking");
+    const myTurn = ++brain.turn;
+    let text = "";
+    try { text = await transcribe(frames); } catch(e){ console.warn(e); }
+    if (myTurn !== brain.turn) return;
+    if (!isRealSpeech(text)){ if (wasPaused) { /* nothing worth answering */ } ui.set("idle"); return; }
+    ui.heard(text);
+    brain.respond(text, myTurn);
+  }
+};
+
+const HALLUCINATIONS = /^(thank you\.?|thanks\.?|thanks for watching!?|you\.?|bye\.?|\.|okay\.?|uh\.?|um\.?|hmm\.?|mm\.?|so\.?|\W*)$/i;
+function isRealSpeech(t){ t = (t||"").trim(); return t.length > 1 && !HALLUCINATIONS.test(t); }
+
+function toWav(frames, inRate){
+  const outRate = 16000, ratio = inRate/outRate;
+  let total = 0; frames.forEach(f=> total += f.length);
+  const all = new Float32Array(total); let o = 0; frames.forEach(f=>{ all.set(f,o); o+=f.length; });
+  const n = Math.floor(total/ratio), pcm = new Int16Array(n);
+  for (let i=0;i<n;i++){ const a = Math.floor(i*ratio), b = Math.min(total, Math.floor((i+1)*ratio)); let s=0; for(let j=a;j<b;j++) s+=all[j]; const v = s/Math.max(1,b-a); pcm[i] = Math.max(-1,Math.min(1,v))*0x7fff; }
+  const buf = new ArrayBuffer(44 + pcm.length*2), dv = new DataView(buf);
+  const w = (p,s)=>{ for(let i=0;i<s.length;i++) dv.setUint8(p+i, s.charCodeAt(i)); };
+  w(0,"RIFF"); dv.setUint32(4, 36+pcm.length*2, true); w(8,"WAVE"); w(12,"fmt "); dv.setUint32(16,16,true); dv.setUint16(20,1,true); dv.setUint16(22,1,true);
+  dv.setUint32(24,outRate,true); dv.setUint32(28,outRate*2,true); dv.setUint16(32,2,true); dv.setUint16(34,16,true); w(36,"data"); dv.setUint32(40,pcm.length*2,true);
+  new Int16Array(buf, 44).set(pcm);
+  return new Blob([buf], {type:"audio/wav"});
+}
+
+async function transcribe(frames){
+  const fd = new FormData();
+  fd.append("file", toWav(frames, ctx.sampleRate), "speech.wav");
+  fd.append("model", STT); fd.append("language", "en"); fd.append("temperature", "0"); fd.append("response_format", "json");
+  const r = await fetch(API + "/audio/transcriptions", {method:"POST", headers:{Authorization:"Bearer "+cfg.key}, body:fd});
+  if (!r.ok) throw new Error("stt " + r.status + " " + (await r.text()));
+  return (await r.json()).text.trim();
+}
+
+// ---------- speech output ----------
+let ttsBroken = false;
+const ttsCache = new Map();
+async function synth(text, signal){
+  if (ttsBroken) return null;
+  if (ttsCache.has(text+cfg.voice)) return ttsCache.get(text+cfg.voice);
+  const r = await fetch(API + "/audio/speech", {method:"POST", signal, headers:{Authorization:"Bearer "+cfg.key, "Content-Type":"application/json"},
+    body: JSON.stringify({model:TTS, voice:cfg.voice, input:text.slice(0,200), response_format:"wav"})});
+  if (!r.ok){
+    const body = await r.text();
+    if (body.includes("terms")){ ttsBroken = true;
+      ui.notice('Friday\'s natural voice needs one click: <a href="https://console.groq.com/playground?model=canopylabs%2Forpheus-v1-english" target="_blank">accept the Orpheus terms on Groq</a>, then reload.'); }
+    throw new Error("tts " + r.status + " " + body);
+  }
+  const audio = await ctx.decodeAudioData(await r.arrayBuffer());
+  if (text.length < 20) ttsCache.set(text+cfg.voice, audio);
+  return audio;
+}
+
+const player = {
+  queue: [], playing: false, cur: null, curStart: 0, curOffset: 0, paused: null, spokenText: "",
+  // items: {promise -> AudioBuffer|null, text}
+  enqueue(item){ this.queue.push(item); if (!this.playing && !this.paused) this.next(); },
+  async next(){
+    if (this.paused) return;
+    const item = this.queue.shift();
+    if (!item){ this.playing = false; this.cur = null; brain.doneSpeaking(); return; }
+    this.playing = true; ui.set("speaking");
+    let buf = null; try { buf = await item.promise; } catch(e){ console.warn(e); }
+    if (item.turn !== undefined && item.turn !== brain.turn && !item.anyTurn){ return this.next(); }
+    if (this.paused){ this.queue.unshift(item); return; }
+    ui.said(item.text);
+    if (!buf){ await speakFallback(item.text); this.spokenText += item.text + " "; return this.next(); }
+    this.play(buf, 0, item);
+  },
+  play(buf, offset, item){
+    const src = ctx.createBufferSource(); src.buffer = buf; src.connect(outGain);
+    this.cur = {src, buf, item}; this.curStart = ctx.currentTime - offset;
+    src.onended = () => { if (this.cur && this.cur.src === src){ this.spokenText += item.text + " "; this.cur = null; this.next(); } };
+    src.start(0, offset);
+  },
+  pause(){
+    if (this.cur){ const c = this.cur; this.cur = null; this.paused = {buf:c.buf, item:c.item, offset: ctx.currentTime - this.curStart}; try{ c.src.onended=null; c.src.stop(); }catch(e){} }
+    else this.paused = this.paused || {buf:null};
+    speechSynthesis && speechSynthesis.cancel();
+    this.playing = false;
+  },
+  resume(){
+    const p = this.paused; this.paused = null; if (!p) return;
+    if (p.buf){ this.playing = true; this.play(p.buf, Math.max(0, p.offset-0.25), p.item); }
+    else if (this.queue.length){ this.next(); } else { this.playing = false; brain.doneSpeaking(); }
+  },
+  stopAll(){ this.queue = []; this.paused = null; if (this.cur){ try{ this.cur.src.onended=null; this.cur.src.stop(); }catch(e){} } this.cur = null; this.playing = false; speechSynthesis && speechSynthesis.cancel(); },
+  // whatever Friday actually got out loud before being cut off
+  takeSpoken(){ let t = this.spokenText; if (this.paused && this.paused.item && this.paused.buf){ const frac = this.paused.offset / this.paused.buf.duration; const words = this.paused.item.text.split(" "); t += words.slice(0, Math.round(words.length*frac)).join(" "); } this.spokenText = ""; return t.trim(); },
+  async backchannel(){
+    try{ const b = await synth(["Mm-hm.","Right.","Mm-hm."][Math.floor(Math.random()*3)]); if(!b || player.playing) return;
+      const s = ctx.createBufferSource(), g = ctx.createGain(); g.gain.value = 0.55; s.buffer = b; s.connect(g); g.connect(outGain); s.start(); }catch(e){}
+  }
+};
+function speakFallback(text){
+  return new Promise(res => { if (!window.speechSynthesis){ res(); return; } const u = new SpeechSynthesisUtterance(text); u.rate = 1.05; u.onend = res; u.onerror = res; speechSynthesis.speak(u); setTimeout(res, 15000); });
+}
+
+// ---------- the brain ----------
+function systemPrompt(){
+  const now = new Date();
+  return `You are FRIDAY, ${cfg.name || "the user"}'s personal AI, in the spirit of Tony Stark's assistant: quick, warm, quietly witty, unflappable and loyal. You're talking out loud on a live voice call, not writing.
+
+How you talk:
+- 1 to 3 short sentences, like a real person on the phone. Never paragraphs, never lists, never markdown, emojis, URLs, or citation marks; everything you write is spoken aloud.
+- Contractions and natural phrasing ("yeah", "okay so", "hmm, let me think", "honestly"). A little dry humor when it fits. Vary how you start sentences.
+- Say numbers, times, and units the way people say them ("about sixty degrees", "quarter past six").
+- If something is ambiguous, ask one short question instead of guessing.
+- You remember the whole conversation. Refer back naturally and never re-ask what you already know.
+- If a message says you were cut off, don't repeat or finish the old thought. Answer the new thing.
+- If he just thinks out loud or says something small, react like a friend would, briefly. Not every turn needs a question back.
+- For anything current or factual you're not sure of (news, weather, scores, prices, hours, people, events), use browser_search, then just say the answer in a sentence. Never say "according to my search".
+- Use save_note, list_notes, set_reminder and list_reminders when he asks to remember, note, or be reminded of something. Confirm in a few words.
+- He is a pastor; be respectful of faith and comfortable talking scripture, sermons and ministry.
+
+Right now it is ${now.toLocaleString("en-US",{weekday:"long", month:"long", day:"numeric", year:"numeric", hour:"numeric", minute:"2-digit"})} (${Intl.DateTimeFormat().resolvedOptions().timeZone}). He's usually around Harrisburg, Pennsylvania.`;
+}
+
+const TOOLS = [
+  {type:"browser_search"},
+  {type:"function", function:{name:"save_note", description:"Save a note for the user.", parameters:{type:"object", properties:{text:{type:"string"}}, required:["text"]}}},
+  {type:"function", function:{name:"list_notes", description:"Read back the user's saved notes.", parameters:{type:"object", properties:{}}}},
+  {type:"function", function:{name:"set_reminder", description:"Set a reminder. Give either minutes_from_now or an ISO local datetime.", parameters:{type:"object", properties:{text:{type:"string"}, minutes_from_now:{type:"number"}, at_iso:{type:"string", description:"Local time, e.g. 2026-10-18T18:00"}}, required:["text"]}}},
+  {type:"function", function:{name:"list_reminders", description:"List upcoming reminders.", parameters:{type:"object", properties:{}}}}
+];
+
+function runTool(name, args){
+  if (name === "save_note"){ notes.push({text:args.text, at:new Date().toISOString()}); store.set("notes", notes); return {ok:true, count:notes.length}; }
+  if (name === "list_notes"){ return {notes: notes.slice(-15).map(n=>n.text)}; }
+  if (name === "set_reminder"){
+    let at = args.minutes_from_now ? Date.now() + args.minutes_from_now*60000 : Date.parse(args.at_iso || "");
+    if (!at || isNaN(at)) return {ok:false, error:"Need a time"};
+    const r = {id: Date.now(), at, text: args.text, done:false}; reminders.push(r); store.set("reminders", reminders);
+    if (window.Notification && Notification.permission === "default") Notification.requestPermission();
+    return {ok:true, when: new Date(at).toLocaleString()};
+  }
+  if (name === "list_reminders"){ return {reminders: reminders.filter(r=>!r.done && r.at > Date.now()).map(r=>({text:r.text, when:new Date(r.at).toLocaleString()}))}; }
+  return {error:"unknown tool"};
+}
+setInterval(()=>{
+  const due = reminders.filter(r=>!r.done && r.at <= Date.now());
+  due.forEach(r=>{ r.done = true;
+    if (window.Notification && Notification.permission === "granted") new Notification("Friday", {body:r.text, icon:"icon-192.png"});
+    if (ui.state !== "asleep" && !vad.rec) brain.say("Hey, reminder: " + r.text, true);
+  });
+  if (due.length) store.set("reminders", reminders);
+}, 15000);
+
+function clean(t){
+  return t.replace(/【[^】]*】/g,"").replace(/\[\d+\]/g,"").replace(/https?:\/\/\S+/g,"").replace(/[*_#`>|]/g,"")
+          .replace(/°\s?F/g," degrees").replace(/°\s?C/g," degrees Celsius").replace(/°/g," degrees")
+          .replace(/\u202f|\u00a0/g," ").replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu,"").replace(/\s+/g," ");
+}
+
+const brain = {
+  turn: 0, busy: false, ctrl: null, filler: null,
+  interrupt(){
+    const said = player.takeSpoken();
+    player.stopAll(); if (this.ctrl) this.ctrl.abort(); this.ctrl = null; clearTimeout(this.filler);
+    const last = history[history.length-1];
+    if (this.busy || said){
+      if (last && last.role === "assistant") last.content = (said || last.content.slice(0,60)) + " — [you were cut off here]";
+      else if (said) history.push({role:"assistant", content: said + " — [you were cut off here]"});
+    }
+    this.busy = false; saveHistory();
+  },
+  doneSpeaking(){ if (!this.busy && !vad.rec) ui.set("idle"); },
+  say(text, anyTurn){ const t = this.turn; player.enqueue({promise: synth(text), text, turn:t, anyTurn}); },
+  async respond(userText, turn){
+    this.busy = true; player.spokenText = "";
+    history.push({role:"user", content:userText}); saveHistory();
+    this.ctrl = new AbortController();
+    const signal = this.ctrl.signal;
+    let gotAudio = false;
+    this.filler = setTimeout(()=>{ if (turn===this.turn && !gotAudio){ const f = ["One sec.","Let me check.","Hmm, give me a second."][Math.floor(Math.random()*3)]; player.enqueue({promise:synth(f), text:f, turn}); } }, 1400);
+    const msgs = [{role:"system", content:systemPrompt()}, ...history.slice(-24)];
+    let full = "";
+    try {
+      for (let hop=0; hop<3; hop++){
+        const res = await this.stream(msgs, signal, sentence => { gotAudio = true; clearTimeout(this.filler); full += sentence + " "; player.enqueue({promise: synth(sentence, signal).catch(e=>{ if(!ttsBroken) console.warn(e); return null; }), text:sentence, turn}); });
+        if (turn !== this.turn) return;
+        if (!res.toolCalls.length) break;
+        msgs.push({role:"assistant", content: res.text || null, tool_calls: res.toolCalls});
+        for (const tc of res.toolCalls){ let a={}; try{ a = JSON.parse(tc.function.arguments||"{}"); }catch(e){}
+          msgs.push({role:"tool", tool_call_id: tc.id, content: JSON.stringify(runTool(tc.function.name, a))}); }
+      }
+    } catch(e){
+      if (e.name === "AbortError" || turn !== this.turn) return;
+      console.warn(e);
+      const m = String(e.message||"");
+      const line = m.includes("401") ? "Hmm, my Groq key isn't working. Long-press me to fix it." : m.includes("429") ? "I'm getting rate limited for a moment. Try me again in a few seconds." : "Sorry, I lost the connection for a second. Say that again?";
+      full = line; player.enqueue({promise:synth(line), text:line, turn});
+    }
+    clearTimeout(this.filler);
+    if (turn !== this.turn) return;
+    history.push({role:"assistant", content: full.trim() || "…"}); saveHistory();
+    this.busy = false; this.ctrl = null;
+    if (!player.playing && !player.queue.length) ui.set("idle");
+  },
+  async stream(messages, signal, onSentence){
+    const r = await fetch(API + "/chat/completions", {method:"POST", signal, headers:{Authorization:"Bearer "+cfg.key, "Content-Type":"application/json"},
+      body: JSON.stringify({model:LLM, messages, tools:TOOLS, reasoning_effort:"low", temperature:0.8, max_completion_tokens:700, stream:true})});
+    if (!r.ok) throw new Error("llm " + r.status + " " + (await r.text()).slice(0,200));
+    const reader = r.body.getReader(), dec = new TextDecoder();
+    let raw = "", pending = "", text = ""; const calls = {};
+    const flush = (force) => {
+      pending = clean(pending);
+      for (;;){
+        const m = pending.match(/^(.{8,}?[.!?…])(\s+|$)/) || (pending.length > 170 && pending.match(/^(.{60,170}?[,;:—])\s+/));
+        if (!m) break;
+        if (!force && m[2] === "" ) break;
+        const s = m[1].trim(); pending = pending.slice(m[0].length); if (s) onSentence(s);
+      }
+      if (force && pending.trim()){ let rest = pending.trim(); while (rest.length > 190){ const cut = rest.lastIndexOf(" ", 190); onSentence(rest.slice(0,cut)); rest = rest.slice(cut+1); } onSentence(rest); pending = ""; }
+    };
+    for (;;){
+      const {done, value} = await reader.read(); if (done) break;
+      raw += dec.decode(value, {stream:true});
+      let i; while ((i = raw.indexOf("\n")) >= 0){
+        const line = raw.slice(0,i).trim(); raw = raw.slice(i+1);
+        if (!line.startsWith("data:")) continue; const data = line.slice(5).trim(); if (data === "[DONE]") continue;
+        let j; try{ j = JSON.parse(data); }catch(e){ continue; }
+        const d = j.choices && j.choices[0] && j.choices[0].delta; if (!d) continue;
+        if (d.content){ text += d.content; pending += d.content; flush(false); }
+        if (d.tool_calls) d.tool_calls.forEach(tc => { const c = calls[tc.index||0] || (calls[tc.index||0] = {id:"", type:"function", function:{name:"", arguments:""}});
+          if (tc.id) c.id = tc.id; if (tc.function && tc.function.name) c.function.name += tc.function.name; if (tc.function && tc.function.arguments) c.function.arguments += tc.function.arguments; });
+      }
+    }
+    flush(true);
+    return {text, toolCalls: Object.values(calls).filter(c=>c.function.name)};
+  }
+};
+
+// ---------- session ----------
+let lastActivity = Date.now();
+setInterval(()=>{ if (ui.state !== "asleep" && Date.now()-lastActivity > 15*60000 && !player.playing) sleep(); }, 30000);
+
+function greeting(){
+  const h = new Date().getHours(), n = cfg.name ? ", " + cfg.name : "";
+  const opts = h < 12 ? [`Morning${n}. What are we getting into?`, `Good morning${n}. I'm here.`] : h < 18 ? [`Hey${n}. What's up?`, `Afternoon${n}. What do you need?`] : [`Evening${n}. What's on your mind?`, `Hey${n}. I'm listening.`];
+  return opts[Math.floor(Math.random()*opts.length)];
+}
+let greetedThisLoad = false;
+async function wake(){
+  if (!cfg.key){ openSetup(); return; }
+  try { await initAudio(); }
+  catch(e){ ui.notice("I need the microphone. Allow it for this site (on iPhone: Settings, Safari, Microphone, Allow) and tap again.", 9000); return; }
+  lastActivity = Date.now();
+  ui.set("idle");
+  if (!greetedThisLoad){ greetedThisLoad = true; brain.say(greeting()); }
+  ["Mm-hm.","Right.","One sec.","Let me check.","Hmm, give me a second."].forEach(t=>synth(t).catch(()=>{}));
+}
+function sleep(){ brain.turn++; brain.interrupt(); vad.rec = null; ui.set("asleep"); ui.said(""); }
+
+// tap to wake, end circle to sleep, long-press for settings
+let pressT = null, longPressed = false;
+document.addEventListener("pointerdown", e => { if (e.target.closest(".sheet") || e.target.id==="end") return; longPressed = false; pressT = setTimeout(()=>{ longPressed = true; openSetup(); }, 650); });
+document.addEventListener("pointerup", e => { clearTimeout(pressT); if (e.target.closest(".sheet") || e.target.id==="end" || longPressed) return; if (ui.state === "asleep") wake(); });
+$("end").addEventListener("click", e => { e.stopPropagation(); sleep(); });
+
+function openSetup(){
+  $("f-name").value = cfg.name || ""; $("f-key").value = cfg.key || ""; $("f-voice").value = cfg.voice || "diana";
+  $("f-extra").style.display = cfg.key ? "flex" : "none";
+  $("setup").classList.add("on");
+}
+$("f-save").onclick = () => { cfg = {name:$("f-name").value.trim(), key:$("f-key").value.trim(), voice:$("f-voice").value}; store.set("cfg", cfg); ttsCache.clear(); ttsBroken = false; $("setup").classList.remove("on"); if (ui.state==="asleep") wake(); };
+$("f-close").onclick = () => $("setup").classList.remove("on");
+$("f-forget").onclick = () => { history = []; saveHistory(); $("f-forget").textContent = "Cleared"; setTimeout(()=>$("f-forget").textContent="Clear memory",1500); };
+$("f-preview").onclick = async () => {
+  const old = cfg; cfg = {...cfg, key:$("f-key").value.trim(), voice:$("f-voice").value};
+  try { await initAudio(); ttsBroken = false; const b = await synth("Hey, it's Friday. This is how I'll sound."); if (b){ const s = ctx.createBufferSource(); s.buffer = b; s.connect(outGain); s.start(); } }
+  catch(e){ if (!ttsBroken) ui.notice("Couldn't reach Groq with that key.", 5000); }
+  cfg = old.key ? old : cfg;
+};
+
+// ---------- the orb ----------
+const cv = $("orb"), g2 = cv.getContext("2d");
+let W, H, dpr; function size(){ dpr = Math.min(2, devicePixelRatio||1); W = cv.width = innerWidth*dpr; H = cv.height = innerHeight*dpr; } size(); addEventListener("resize", size);
+const outData = new Uint8Array(256); let smooth = 0, t0 = performance.now();
+function draw(now){
+  const t = (now - t0)/1000;
+  let lvl = 0;
+  if (ui.state === "speaking" && outAnalyser){ outAnalyser.getByteTimeDomainData(outData); let s=0; for (let i=0;i<outData.length;i++){ const v=(outData[i]-128)/128; s+=v*v; } lvl = Math.min(1, Math.sqrt(s/outData.length)*4.5); }
+  else if (ui.state === "listening") lvl = Math.min(1, micLevel*14);
+  smooth += (lvl - smooth) * 0.25;
+  g2.clearRect(0,0,W,H);
+  const cx = W/2, cy = H*0.42, base = Math.min(W,H)*0.17;
+  const breathe = ui.state === "asleep" ? 0.03*Math.sin(t*1.1) : ui.state === "thinking" ? 0.05*Math.sin(t*3) : 0.02*Math.sin(t*1.6);
+  const r = base * (1 + breathe + smooth*0.45 + (ui.state==="listening"?0.06:0));
+  const hue = ui.state === "thinking" ? 265 : ui.state === "listening" ? 190 : ui.state === "asleep" ? 215 : 200;
+  const alpha = ui.state === "asleep" ? 0.45 : 1;
+  // halo
+  let gr = g2.createRadialGradient(cx,cy,r*0.2,cx,cy,r*2.6);
+  gr.addColorStop(0, `hsla(${hue},90%,60%,${0.35*alpha})`); gr.addColorStop(1, "hsla(220,90%,40%,0)");
+  g2.fillStyle = gr; g2.beginPath(); g2.arc(cx,cy,r*2.6,0,Math.PI*2); g2.fill();
+  // living blob
+  g2.beginPath();
+  const pts = 90;
+  for (let i=0;i<=pts;i++){
+    const a = i/pts*Math.PI*2;
+    const wob = 1 + 0.035*Math.sin(a*3 + t*1.3) + 0.025*Math.sin(a*5 - t*1.9) + smooth*0.12*Math.sin(a*7 + t*9);
+    const x = cx + Math.cos(a)*r*wob, y = cy + Math.sin(a)*r*wob;
+    i ? g2.lineTo(x,y) : g2.moveTo(x,y);
+  }
+  gr = g2.createRadialGradient(cx - r*0.3, cy - r*0.35, r*0.1, cx, cy, r*1.1);
+  gr.addColorStop(0, `hsla(${hue-10},100%,88%,${alpha})`); gr.addColorStop(0.45, `hsla(${hue},95%,58%,${0.95*alpha})`); gr.addColorStop(1, `hsla(${hue+25},90%,28%,${0.9*alpha})`);
+  g2.fillStyle = gr; g2.fill();
+  // thinking ring
+  if (ui.state === "thinking"){ g2.strokeStyle = "rgba(200,180,255,.55)"; g2.lineWidth = 2*dpr; g2.beginPath(); g2.arc(cx,cy,r*1.25, t*3, t*3+1.4); g2.stroke(); }
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+if (!cfg.key) openSetup();
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body>
+</html>

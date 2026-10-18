@@ -65,7 +65,7 @@
 <canvas id="orb"></canvas>
 <div class="scan"></div><div class="vig"></div>
 <div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div>
-<div class="hud" id="tl">F.R.I.D.A.Y. <b>v2.2</b><br><span id="h-clock">--:--</span><br><span id="h-date"></span></div>
+<div class="hud" id="tl">F.R.I.D.A.Y. <b>v2.3</b><br><span id="h-clock">--:--</span><br><span id="h-date"></span></div>
 <div class="hud" id="tr">Link <b id="h-link">Standby</b><br>Voice <b id="h-voice">--</b><br>Latency <b id="h-lat">--</b></div>
 <div class="hud" id="bl">Mem <b id="h-mem">0</b><br>Notes <b id="h-notes">0</b></div>
 <div class="hud" id="br">Harrisburg PA<br><b>40.27N 76.88W</b></div>
@@ -93,6 +93,12 @@
     <option value="troy">Troy (easy, male)</option>
     <option value="austin">Austin (upbeat, male)</option>
   </select>
+  <label>Microphone</label>
+  <select id="f-mic"><option value="">System default</option></select>
+  <label>Mic sensitivity <span id="f-sens-v" style="color:var(--c)"></span></label>
+  <input id="f-sens" type="range" min="1" max="5" step="1" style="padding:0;height:28px;border:0;background:transparent;accent-color:#5fdcff">
+  <div style="position:relative;height:8px;border:1px solid rgba(95,220,255,.25);margin-top:4px"><div id="f-meter" style="position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#5fdcff,#9ff0ff);transition:width .08s"></div><div id="f-thr" style="position:absolute;top:-3px;bottom:-3px;width:2px;background:#ffb547"></div></div>
+  <div class="small" style="margin-top:6px">Talk normally: the bar should cross the amber line.</div>
   <label>Speaking pace <span id="f-pace-v" style="color:var(--c)"></span></label>
   <input id="f-pace" type="range" min="0.95" max="1.4" step="0.05" style="padding:0;height:28px;border:0;background:transparent;accent-color:#5fdcff">
   <div class="row"><button class="ghost" id="f-preview">Preview</button><button id="f-save">Save</button></div>
@@ -104,7 +110,7 @@
 "use strict";
 const API = "https://api.groq.com/openai/v1";
 const LLM = "openai/gpt-oss-120b";
-const STT = "whisper-large-v3-turbo";
+const STT = "whisper-large-v3";
 const TTS = "canopylabs/orpheus-v1-english";
 const $ = id => document.getElementById(id);
 
@@ -113,7 +119,7 @@ const store = {
   get(k, d){ try{ const v = localStorage.getItem("friday."+k); return v===null? d : JSON.parse(v);}catch(e){return d;} },
   set(k, v){ localStorage.setItem("friday."+k, JSON.stringify(v)); }
 };
-let cfg = store.get("cfg", {name:"", key:"", voice:"diana"}); if (!cfg.pace) cfg.pace = 1.15;
+let cfg = store.get("cfg", {name:"", key:"", voice:"diana"}); if (!cfg.pace) cfg.pace = 1.15; if (!cfg.sens) cfg.sens = 4;
 let history = store.get("history", []);       // [{role, content}]
 let notes = store.get("notes", []);
 let reminders = store.get("reminders", []);   // [{id, at, text, done}]
@@ -143,8 +149,12 @@ async function initAudio(){
   if (ctx.state !== "running") await ctx.resume();
   if (!micStream || micStream.getAudioTracks().every(t=>t.readyState==="ended")){
     // One stream for the whole session: never torn down, so the browser has no reason to ask again.
-    micStream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true, noiseSuppression:true, autoGainControl:true, channelCount:1}});
-    const src = ctx.createMediaStreamSource(micStream);
+    const ac = {echoCancellation:true, noiseSuppression:true, autoGainControl:true, channelCount:1};
+    if (cfg.mic) ac.deviceId = {exact: cfg.mic};
+    try { micStream = await navigator.mediaDevices.getUserMedia({audio:ac}); }
+    catch(e){ if (cfg.mic){ delete ac.deviceId; micStream = await navigator.mediaDevices.getUserMedia({audio:ac}); } else throw e; }
+    const src0 = ctx.createMediaStreamSource(micStream);
+    const src = ctx.createGain(); src.gain.value = 1.8; src0.connect(src);   // gentle boost for quiet laptop mics
     procNode = ctx.createScriptProcessor(FRAME, 1, 1);
     const mute = ctx.createGain(); mute.gain.value = 0;
     src.connect(procNode); procNode.connect(mute); micAnalyser = ctx.createAnalyser(); micAnalyser.fftSize = 256; micAnalyser.smoothingTimeConstant = 0.7; src.connect(micAnalyser); mute.connect(ctx.destination);
@@ -161,20 +171,21 @@ const vad = {
     const rms = Math.sqrt(s/buf.length); micLevel = rms;
     if (ui.state === "asleep") return;
     const fridayTalking = player.playing;
-    const start = fridayTalking ? Math.max(this.floor*6, 0.04) : Math.max(this.floor*3.2, 0.014);
+    const k = [0, 1.6, 1.3, 1.0, 0.75, 0.55][cfg.sens||4]; this.k = k;
+    const start = fridayTalking ? Math.max(this.floor*5, 0.035*k) : Math.max(this.floor*2.6, 0.012*k);
     if (!this.rec){
-      this.prefix.push(buf); if (this.prefix.length > Math.ceil(320/frameMs)) this.prefix.shift();
+      this.prefix.push(buf); if (this.prefix.length > Math.ceil(450/frameMs)) this.prefix.shift();
       if (rms > start) this.count++; else { this.count = Math.max(0, this.count-1); this.floor = Math.min(0.03, Math.max(0.0015, this.floor*0.99 + rms*0.01)); }
-      if (this.count*frameMs >= (fridayTalking ? 180 : 140)) this.begin();
+      if (this.count*frameMs >= (fridayTalking ? 170 : 110)) this.begin();
     } else {
       this.rec.push(buf);
-      const end = Math.max(this.floor*2.2, 0.009);
+      const end = Math.max(this.floor*1.7, 0.006*this.k);
       if (rms > end){ this.voiced += frameMs; 
         if (this.silence > 220 && this.silence < 600 && this.voiced > 6500 && !this.backchanneled){ this.backchanneled = true; player.backchannel(); }
         this.silence = 0; }
       else this.silence += frameMs;
       const len = this.rec.length*frameMs;
-      if (this.silence >= (this.voiced > 2500 ? 560 : 470) || len > 30000) this.finish();
+      if (this.silence >= (this.voiced > 2500 ? 750 : 620) || len > 30000) this.finish();
       // false alarm (a cough, a door): resume Friday where she was
       if (this.pausedFor && len > 900 && this.voiced < 250){ this.rec = null; this.count = 0; player.resume(); this.pausedFor = null; ui.set("speaking"); }
     }
@@ -188,8 +199,8 @@ const vad = {
   },
   async finish(){
     const frames = this.rec; this.rec = null;
-    const wasPaused = this.pausedFor; this.pausedFor = null;
-    if (this.voiced < 280){ if (wasPaused) { player.resume(); ui.set("speaking"); } else ui.set("idle"); return; }
+    const wasPaused = this.pausedFor; this.pausedFor = null; const voicedMs = this.voiced;
+    if (this.voiced < 200){ if (wasPaused) { player.resume(); ui.set("speaking"); } else ui.set("idle"); return; }
     // real interruption: drop what Friday was going to say
     if (wasPaused){ brain.interrupt(); }
     ui.set("thinking");
@@ -197,19 +208,21 @@ const vad = {
     let text = "";
     try { text = await transcribe(frames); } catch(e){ console.warn(e); }
     if (myTurn !== brain.turn) return;
-    if (!isRealSpeech(text)){ if (wasPaused) { /* nothing worth answering */ } ui.set("idle"); return; }
+    if (!isRealSpeech(text, voicedMs)){ if (wasPaused) { /* nothing worth answering */ } ui.set("idle"); return; }
     ui.heard(text);
     brain.respond(text, myTurn);
   }
 };
 
-const HALLUCINATIONS = /^(thank you\.?|thanks\.?|thanks for watching!?|you\.?|bye\.?|\.|okay\.?|uh\.?|um\.?|hmm\.?|mm\.?|so\.?|\W*)$/i;
-function isRealSpeech(t){ t = (t||"").trim(); return t.length > 1 && !HALLUCINATIONS.test(t); }
+const NOISE = /^(\W*|you\.?|\.+|uh\.?|um\.?|hmm+\.?|mm+\.?|thanks for watching!?|subtitles by.*)$/i;
+const SHORTFAKE = /^(thank you\.?|thanks\.?|bye\.?|okay\.?|so\.?)$/i;
+function isRealSpeech(t, voicedMs){ t = (t||"").trim(); if (t.length < 2 || NOISE.test(t) || /conversation with friday, an ai assistant/i.test(t)) return false; if (SHORTFAKE.test(t) && voicedMs < 350) return false; return true; }
 
 function toWav(frames, inRate){
   const outRate = 16000, ratio = inRate/outRate;
   let total = 0; frames.forEach(f=> total += f.length);
   const all = new Float32Array(total); let o = 0; frames.forEach(f=>{ all.set(f,o); o+=f.length; });
+  let pk = 0; for (let i=0;i<total;i++){ const a = Math.abs(all[i]); if (a > pk) pk = a; } if (pk > 0.001 && pk < 0.9){ const gn = Math.min(8, 0.9/pk); for (let i=0;i<total;i++) all[i] *= gn; }
   const n = Math.floor(total/ratio), pcm = new Int16Array(n);
   for (let i=0;i<n;i++){ const a = Math.floor(i*ratio), b = Math.min(total, Math.floor((i+1)*ratio)); let s=0; for(let j=a;j<b;j++) s+=all[j]; const v = s/Math.max(1,b-a); pcm[i] = Math.max(-1,Math.min(1,v))*0x7fff; }
   const buf = new ArrayBuffer(44 + pcm.length*2), dv = new DataView(buf);
@@ -223,7 +236,7 @@ function toWav(frames, inRate){
 async function transcribe(frames){
   const fd = new FormData();
   fd.append("file", toWav(frames, ctx.sampleRate), "speech.wav");
-  fd.append("model", STT); fd.append("language", "en"); fd.append("temperature", "0"); fd.append("response_format", "json");
+  fd.append("model", STT); fd.append("language", "en"); fd.append("prompt", "Conversation with Friday, an AI assistant. Pastor, church, sermon, Harrisburg."); fd.append("temperature", "0"); fd.append("response_format", "json");
   const r = await fetch(API + "/audio/transcriptions", {method:"POST", headers:{Authorization:"Bearer "+cfg.key}, body:fd});
   if (!r.ok) throw new Error("stt " + r.status + " " + (await r.text()));
   return (await r.json()).text.trim();
@@ -501,13 +514,21 @@ document.addEventListener("pointerup", e => { clearTimeout(pressT); if (e.target
 $("end").addEventListener("click", e => { e.stopPropagation(); sleep(); });
 
 function openSetup(){
-  $("f-name").value = cfg.name || ""; $("f-key").value = cfg.key || ""; $("f-voice").value = cfg.voice || "diana"; $("f-pace").value = cfg.pace || 1.15; $("f-pace-v").textContent = (+$("f-pace").value).toFixed(2)+"×";
-  $("f-extra").style.display = cfg.key ? "flex" : "none";
+  $("f-name").value = cfg.name || ""; $("f-key").value = cfg.key || ""; $("f-voice").value = cfg.voice || "diana"; $("f-pace").value = cfg.pace || 1.15; $("f-sens").value = cfg.sens || 4; sensLabel(); listMics(); meterOn = true; meterLoop(); $("f-pace-v").textContent = (+$("f-pace").value).toFixed(2)+"×";
+  $("f-extra").style.display = cfg.key ? "flex" : "none"; if (cfg.key) initAudio().then(listMics).catch(()=>{});
   $("setup").classList.add("on");
 }
-$("f-save").onclick = () => { cfg = {name:$("f-name").value.trim(), key:$("f-key").value.trim(), voice:$("f-voice").value, pace:+$("f-pace").value}; store.set("cfg", cfg); ttsCache.clear(); ttsBroken = false; $("setup").classList.remove("on"); if (ui.state==="asleep") wake(); };
+$("f-save").onclick = () => { const micChanged = cfg.mic !== $("f-mic").value; cfg = {name:$("f-name").value.trim(), key:$("f-key").value.trim(), voice:$("f-voice").value, pace:+$("f-pace").value, sens:+$("f-sens").value, mic:$("f-mic").value}; meterOn = false; if (micChanged && micStream){ micStream.getTracks().forEach(t=>t.stop()); micStream = null; initAudio().catch(()=>{}); } store.set("cfg", cfg); ttsCache.clear(); ttsBroken = false; $("setup").classList.remove("on"); if (ui.state==="asleep") wake(); };
 $("f-pace").oninput = () => $("f-pace-v").textContent = (+$("f-pace").value).toFixed(2)+"×";
-$("f-close").onclick = () => $("setup").classList.remove("on");
+$("f-close").onclick = () => { meterOn = false; $("setup").classList.remove("on"); };
+let meterOn = false;
+function sensLabel(){ $("f-sens-v").textContent = ["","Low","Medium","Normal","High","Max"][+$("f-sens").value]; }
+$("f-sens").oninput = () => { cfg.sens = +$("f-sens").value; sensLabel(); };
+$("f-mic").onchange = async () => { cfg.mic = $("f-mic").value; if (micStream){ micStream.getTracks().forEach(t=>t.stop()); micStream = null; } try{ await initAudio(); }catch(e){} };
+async function listMics(){ try{ const d = await navigator.mediaDevices.enumerateDevices(); const sel = $("f-mic"); const cur = cfg.mic || "";
+  sel.innerHTML = '<option value="">System default</option>' + d.filter(x=>x.kind==="audioinput" && x.deviceId!=="default").map(x=>`<option value="${x.deviceId}">${(x.label||"Microphone").replace(/</g,"")}</option>`).join(""); sel.value = cur; }catch(e){} }
+function meterLoop(){ if (!meterOn) return; const k = [0,1.6,1.3,1.0,0.75,0.55][+$("f-sens").value]; const thr = Math.max(vad.floor*2.6, 0.012*k);
+  const pct = v => Math.min(100, Math.sqrt(v/0.15)*100); $("f-meter").style.width = pct(micLevel)+"%"; $("f-thr").style.left = pct(thr)+"%"; requestAnimationFrame(meterLoop); }
 $("f-forget").onclick = () => { history = []; saveHistory(); $("f-forget").textContent = "Cleared"; setTimeout(()=>$("f-forget").textContent="Clear memory",1500); };
 $("f-preview").onclick = async () => {
   const old = cfg; cfg = {...cfg, key:$("f-key").value.trim(), voice:$("f-voice").value, pace:+$("f-pace").value}; ttsCache.clear();

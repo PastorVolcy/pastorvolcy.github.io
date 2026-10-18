@@ -146,7 +146,7 @@
 <canvas id="orb"></canvas>
 <div class="scan"></div><div class="vig"></div>
 <header id="top">
-  <div class="logo"><div class="lt">F.R.I.D.A.Y.</div><div class="ls">Personal intelligence · v3.4</div></div>
+  <div class="logo"><div class="lt">F.R.I.D.A.Y.</div><div class="ls">Personal intelligence · v3.5</div></div>
   <div class="pill"><i></i><span id="status">Standby</span></div>
   <div class="clk"><div id="h-clock">--:--:--</div><div id="h-date">--</div></div>
 </header>
@@ -268,7 +268,6 @@ async function initAudio(){
     outGain = ctx.createGain(); outAnalyser = ctx.createAnalyser(); outAnalyser.fftSize = 256; outAnalyser.smoothingTimeConstant = 0.7;
     outGain.connect(outAnalyser); outAnalyser.connect(ctx.destination);
   }
-  try { if (navigator.audioSession) navigator.audioSession.type = "play-and-record"; } catch(e){}
   if (!ctx.onstatechange) ctx.onstatechange = () => { if (ctx.state !== "running" && ui.state !== "asleep") ctx.resume().catch(()=>{}); };
   if (ctx.state !== "running") await ctx.resume();
   if (!micStream || micStream.getAudioTracks().every(t=>t.readyState==="ended")){
@@ -427,12 +426,16 @@ async function transcribe(frames){
 let ttsBroken = false;
 const ttsCache = new Map();
 async function synth(text, signal){
-  if (ttsBroken) return null;
+  if (ttsBroken || Date.now() < ttsLimitedUntil) return null;
   if (ttsCache.has(text+cfg.voice)) return ttsCache.get(text+cfg.voice);
   const r = await fetch(API + "/audio/speech", {method:"POST", signal, headers:{Authorization:"Bearer "+cfg.key, "Content-Type":"application/json"},
     body: JSON.stringify({model:TTS, voice:cfg.voice, input:text.slice(0,200), response_format:"wav"})});
   if (!r.ok){
     const body = await r.text();
+    if (r.status === 429){ const m = body.match(/try again in (?:(\d+)h)?(?:(\d+)m)?(?:([\d.]+)s)?/); const wait = m ? ((+m[1]||0)*3600 + (+m[2]||0)*60 + (+m[3]||0)) : 600;
+      ttsLimitedUntil = Date.now() + Math.max(30, wait)*1000;
+      if (!ttsLimitWarned){ ttsLimitWarned = true; ui.notice(/per day|TPD/i.test(body) ? "Groq's free daily limit for Friday's natural voice is used up. Using a backup voice until it resets." : "Friday's natural voice is busy. Using a backup voice for a moment.", 7000); }
+      return null; }
     if (body.includes("terms")){ ttsBroken = true;
       ui.notice('Friday\'s natural voice needs one click: <a href="https://console.groq.com/playground?model=canopylabs%2Forpheus-v1-english" target="_blank">accept the Orpheus terms on Groq</a>, then reload.'); }
     throw new Error("tts " + r.status + " " + body);
@@ -530,7 +533,16 @@ const player = {
       const s = ctx.createBufferSource(), g = ctx.createGain(); g.gain.value = 0.55; s.buffer = b; s.connect(g); g.connect(outGain); s.start(); }catch(e){}
   }
 };
-function speakFallback(text){ return new Promise(res => setTimeout(res, Math.min(9000, 600 + text.length*55))); }
+// Backup voice: the device's best natural voice (Premium/Enhanced/Siri on Apple, Google/Natural on Chrome), used only when Groq's voice is unavailable
+function backupVoice(){ const vs = (window.speechSynthesis && speechSynthesis.getVoices()) || []; const en = vs.filter(v => /^en(-|_)?(US|GB|AU)?/i.test(v.lang));
+  const male = ["daniel","troy","austin"].includes(cfg.voice);
+  const score = v => (/premium/i.test(v.name)?60:0) + (/enhanced|siri|natural|neural/i.test(v.name)?40:0) + (/google us english/i.test(v.name)?30:0) + (/en-US/i.test(v.lang)?10:0) + (male ? (/evan|aaron|nathan|tom|alex|daniel|arthur|guy|male/i.test(v.name)?15:0) : (/ava|zoe|samantha|allison|susan|joelle|jenny|aria|female/i.test(v.name)?15:0)) - (/compact|eloquence|novelty|bells|boing|bubbles|cellos|whisper|zarvox|trinoids|bad news|good news|jester|organ|superstar|wobble|albert|fred|junior|kathy|ralph/i.test(v.name)?100:0);
+  return en.sort((a,b)=>score(b)-score(a))[0] || null; }
+if (window.speechSynthesis) speechSynthesis.onvoiceschanged = () => backupVoice();
+function speakFallback(text){ return new Promise(res => { if (!window.speechSynthesis){ return setTimeout(res, Math.min(9000, 600 + text.length*55)); }
+  const u = new SpeechSynthesisUtterance(text); const v = backupVoice(); if (v) u.voice = v; u.rate = Math.min(1.25, 0.95 + ((cfg.pace||1.15)-1)*0.8); u.pitch = 1;
+  const done = () => { clearTimeout(t); res(); }; const t = setTimeout(done, 1500 + text.length*90); u.onend = done; u.onerror = done; speechSynthesis.speak(u); }); }
+let ttsLimitedUntil = 0, ttsLimitWarned = false;
 
 // ---------- the brain ----------
 function systemPrompt(){

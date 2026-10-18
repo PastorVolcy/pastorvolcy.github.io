@@ -146,7 +146,7 @@
 <canvas id="orb"></canvas>
 <div class="scan"></div><div class="vig"></div>
 <header id="top">
-  <div class="logo"><div class="lt">F.R.I.D.A.Y.</div><div class="ls">Personal intelligence · v3.2</div></div>
+  <div class="logo"><div class="lt">F.R.I.D.A.Y.</div><div class="ls">Personal intelligence · v3.3</div></div>
   <div class="pill"><i></i><span id="status">Standby</span></div>
   <div class="clk"><div id="h-clock">--:--:--</div><div id="h-date">--</div></div>
 </header>
@@ -211,7 +211,7 @@
     <option value="austin">Austin (upbeat, male)</option>
   </select>
   <label>Microphone</label>
-  <select id="f-mic"><option value="">System default</option></select>
+  <select id="f-mic"><option value="">System default (follows your device)</option></select>
   <label>Mic sensitivity <span id="f-sens-v" style="color:var(--c)"></span></label>
   <input id="f-sens" type="range" min="1" max="5" step="1" style="padding:0;height:28px;border:0;background:transparent;accent-color:#5fdcff">
   <div style="position:relative;height:8px;border:1px solid rgba(95,220,255,.25);margin-top:4px"><div id="f-meter" style="position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#5fdcff,#9ff0ff);transition:width .08s"></div><div id="f-thr" style="position:absolute;top:-3px;bottom:-3px;width:2px;background:#ffb547"></div></div>
@@ -236,7 +236,7 @@ const store = {
   get(k, d){ try{ const v = localStorage.getItem("friday."+k); return v===null? d : JSON.parse(v);}catch(e){return d;} },
   set(k, v){ localStorage.setItem("friday."+k, JSON.stringify(v)); }
 };
-let cfg = store.get("cfg", {name:"", key:"", voice:"diana"}); if (!cfg.pace) cfg.pace = 1.15; if (!cfg.speed) cfg.speed = "balanced"; if (!cfg.sens || (cfg.sens === 4 && !cfg.nz)) { cfg.sens = 3; cfg.nz = 1; }
+let cfg = store.get("cfg", {name:"", key:"", voice:"diana"}); if (!cfg.pace) cfg.pace = 1.15; if (!cfg.speed) cfg.speed = "balanced"; if (!cfg.sysmic){ delete cfg.mic; cfg.sysmic = 1; } if (!cfg.sens || (cfg.sens === 4 && !cfg.nz)) { cfg.sens = 3; cfg.nz = 1; }
 let history = store.get("history", []);       // [{role, content}]
 let notes = store.get("notes", []);
 let reminders = store.get("reminders", []);   // [{id, at, text, done}]
@@ -253,7 +253,7 @@ const ui = {
 };
 
 // ---------- audio core ----------
-let vadAn, vadBins, micAnalyser, ctx, micStream, micLevel = 0, outAnalyser, outGain, procNode;
+let micNodes = null, vadAn, vadBins, micAnalyser, ctx, micStream, micLevel = 0, outAnalyser, outGain, procNode;
 const FRAME = 2048;
 let frameMs = 46;
 
@@ -263,6 +263,8 @@ async function initAudio(){
     outGain = ctx.createGain(); outAnalyser = ctx.createAnalyser(); outAnalyser.fftSize = 256; outAnalyser.smoothingTimeConstant = 0.7;
     outGain.connect(outAnalyser); outAnalyser.connect(ctx.destination);
   }
+  try { if (navigator.audioSession) navigator.audioSession.type = "play-and-record"; } catch(e){}
+  if (!ctx.onstatechange) ctx.onstatechange = () => { if (ctx.state !== "running" && ui.state !== "asleep") ctx.resume().catch(()=>{}); };
   if (ctx.state !== "running") await ctx.resume();
   if (!micStream || micStream.getAudioTracks().every(t=>t.readyState==="ended")){
     // One stream for the whole session: never torn down, so the browser has no reason to ask again.
@@ -270,6 +272,8 @@ async function initAudio(){
     if (cfg.mic) ac.deviceId = {exact: cfg.mic};
     try { micStream = await navigator.mediaDevices.getUserMedia({audio:ac}); }
     catch(e){ if (cfg.mic){ delete ac.deviceId; micStream = await navigator.mediaDevices.getUserMedia({audio:ac}); } else throw e; }
+    micStream.getAudioTracks().forEach(t => t.onended = () => restartMic());
+    if (micNodes) micNodes.forEach(n => { try{ n.disconnect(); }catch(e){} });
     const src0 = ctx.createMediaStreamSource(micStream);
     // voice band only: cut rumble (fans, HVAC, traffic) below 110 Hz and hiss above 5.5 kHz
     const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 110; hp.Q.value = 0.7;
@@ -282,8 +286,19 @@ async function initAudio(){
     src.connect(procNode); procNode.connect(mute); micAnalyser = ctx.createAnalyser(); micAnalyser.fftSize = 256; micAnalyser.smoothingTimeConstant = 0.7; src.connect(micAnalyser); mute.connect(ctx.destination);
     frameMs = FRAME / ctx.sampleRate * 1000;
     procNode.onaudioprocess = e => vad.frame(new Float32Array(e.inputBuffer.getChannelData(0)));
+    micNodes = [src0, hp, hp2, lp, src, procNode, mute, micAnalyser, vadAn];
   }
 }
+// Follow the system: when AirPods or another device connects or disconnects, re-open the mic on whatever the system now uses
+let restarting = false;
+async function restartMic(){ if (restarting) return; restarting = true;
+  try { if (micStream) micStream.getTracks().forEach(t => { t.onended = null; t.stop(); }); micStream = null; vad.rec = null; vad.hist = [];
+    await new Promise(r => setTimeout(r, 400)); await initAudio(); } catch(e){ console.warn(e); } restarting = false; }
+if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) navigator.mediaDevices.addEventListener("devicechange", () => {
+  if (typeof listMics === "function") listMics();
+  if (ctx) ctx.resume().catch(()=>{});
+  if (ctx && !cfg.mic) restartMic();
+});
 
 // ---------- voice activity detection + barge-in ----------
 const vad = {
@@ -452,12 +467,18 @@ const player = {
     this.play(buf, 0, item);
   },
   play(buf, offset, item){
+    if (ctx.state !== "running") ctx.resume().catch(()=>{});
+    clearTimeout(this.wd);
+    // watchdog: if the output device vanished mid-sentence, never hang silently
+    this.wd = setTimeout(() => { if (this.cur && this.cur.buf === buf){ const c = this.cur; if (ctx.state !== "running"){ ui.notice("Audio output dropped — reconnecting speakers…", 3000); ctx.resume().catch(()=>{}); } try{ c.src.onended = null; c.src.stop(); }catch(e){} this.spokenText += item.text + " "; this.cur = null; this.next(); } }, (buf.duration - offset) * 1000 + 1500);
     const src = ctx.createBufferSource(); src.buffer = buf; src.connect(outGain);
     this.cur = {src, buf, item}; this.curStart = ctx.currentTime - offset;
     src.onended = () => { if (this.cur && this.cur.src === src){ this.spokenText += item.text + " "; this.cur = null; this.next(); } };
     src.start(0, offset);
+    if (ctx.state !== "running") setTimeout(() => { if (ctx.state !== "running" && this.cur && this.cur.src === src){ try{ src.onended = null; src.stop(); }catch(e){} htmlFallback(buf, offset); } }, 600);
   },
   pause(){
+    clearTimeout(this.wd);
     if (this.cur){ const c = this.cur; this.cur = null; this.paused = {buf:c.buf, item:c.item, offset: ctx.currentTime - this.curStart}; try{ c.src.onended=null; c.src.stop(); }catch(e){} }
     else this.paused = this.paused || {buf:null};
     speechSynthesis && speechSynthesis.cancel();
@@ -468,7 +489,7 @@ const player = {
     if (p.buf){ this.playing = true; this.play(p.buf, Math.max(0, p.offset-0.25), p.item); }
     else if (this.queue.length){ this.next(); } else { this.playing = false; brain.doneSpeaking(); }
   },
-  stopAll(){ this.queue = []; this.paused = null; if (this.cur){ try{ this.cur.src.onended=null; this.cur.src.stop(); }catch(e){} } this.cur = null; this.playing = false; speechSynthesis && speechSynthesis.cancel(); },
+  stopAll(){ clearTimeout(this.wd); this.queue = []; this.paused = null; if (this.cur){ try{ this.cur.src.onended=null; this.cur.src.stop(); }catch(e){} } this.cur = null; this.playing = false; speechSynthesis && speechSynthesis.cancel(); },
   // whatever Friday actually got out loud before being cut off
   takeSpoken(){ let t = this.spokenText; if (this.paused && this.paused.item && this.paused.buf){ const frac = this.paused.offset / this.paused.buf.duration; const words = this.paused.item.text.split(" "); t += words.slice(0, Math.round(words.length*frac)).join(" "); } this.spokenText = ""; return t.trim(); },
   async backchannel(){
@@ -691,13 +712,18 @@ function openSetup(){
   $("f-extra").style.display = cfg.key ? "flex" : "none"; if (cfg.key) initAudio().then(listMics).catch(()=>{});
   $("setup").classList.add("on");
 }
-$("f-save").onclick = () => { const micChanged = cfg.mic !== $("f-mic").value; cfg = {name:$("f-name").value.trim(), key:$("f-key").value.trim(), voice:$("f-voice").value, pace:+$("f-pace").value, sens:+$("f-sens").value, mic:$("f-mic").value, nz:1, speed:cfg.speed||"balanced"}; syncQuick(); meterOn = false; if (micChanged && micStream){ micStream.getTracks().forEach(t=>t.stop()); micStream = null; initAudio().catch(()=>{}); } store.set("cfg", cfg); ttsCache.clear(); ttsBroken = false; $("setup").classList.remove("on"); if (ui.state==="asleep") wake(); };
+$("f-save").onclick = () => { const micChanged = cfg.mic !== $("f-mic").value; cfg = {name:$("f-name").value.trim(), key:$("f-key").value.trim(), voice:$("f-voice").value, pace:+$("f-pace").value, sens:+$("f-sens").value, mic:$("f-mic").value, nz:1, sysmic:1, speed:cfg.speed||"balanced"}; syncQuick(); meterOn = false; if (micChanged && micStream){ micStream.getTracks().forEach(t=>t.stop()); micStream = null; initAudio().catch(()=>{}); } store.set("cfg", cfg); ttsCache.clear(); ttsBroken = false; $("setup").classList.remove("on"); if (ui.state==="asleep") wake(); };
 $("f-pace").oninput = () => $("f-pace-v").textContent = (+$("f-pace").value).toFixed(2)+"×";
 $("f-close").onclick = () => { meterOn = false; $("setup").classList.remove("on"); };
 let meterOn = false;
 function sensLabel(){ $("f-sens-v").textContent = ["","Low","Medium","Normal","High","Max"][+$("f-sens").value]; }
 $("f-sens").oninput = () => { cfg.sens = +$("f-sens").value; sensLabel(); };
 $("f-mic").onchange = async () => { cfg.mic = $("f-mic").value; if (micStream){ micStream.getTracks().forEach(t=>t.stop()); micStream = null; } try{ await initAudio(); }catch(e){} };
+// if Web Audio can't reach the speakers, play the same clip through a normal audio element (always follows system output)
+function htmlFallback(buf, offset){ try{ const d = buf.getChannelData(0), n = d.length, ab = new ArrayBuffer(44+n*2), dv = new DataView(ab);
+  const w=(p,t)=>{for(let i=0;i<t.length;i++) dv.setUint8(p+i,t.charCodeAt(i));}; w(0,"RIFF"); dv.setUint32(4,36+n*2,true); w(8,"WAVE"); w(12,"fmt "); dv.setUint32(16,16,true); dv.setUint16(20,1,true); dv.setUint16(22,1,true); dv.setUint32(24,buf.sampleRate,true); dv.setUint32(28,buf.sampleRate*2,true); dv.setUint16(32,2,true); dv.setUint16(34,16,true); w(36,"data"); dv.setUint32(40,n*2,true);
+  for (let i=0;i<n;i++) dv.setInt16(44+i*2, Math.max(-1,Math.min(1,d[i]))*0x7fff, true);
+  const a = new Audio(URL.createObjectURL(new Blob([ab],{type:"audio/wav"}))); a.currentTime = offset||0; a.play().catch(()=>{}); }catch(e){} }
 async function listMics(){ try{ const d = await navigator.mediaDevices.enumerateDevices(); const sel = $("f-mic"); const cur = cfg.mic || "";
   sel.innerHTML = '<option value="">System default</option>' + d.filter(x=>x.kind==="audioinput" && x.deviceId!=="default").map(x=>`<option value="${x.deviceId}">${(x.label||"Microphone").replace(/</g,"")}</option>`).join(""); sel.value = cur; }catch(e){} }
 function meterLoop(){ if (!meterOn) return; const k = [0,1.6,1.3,1.0,0.75,0.55][+$("f-sens").value]; const thr = Math.max(vad.floor*3.2*k, 0.012*k);

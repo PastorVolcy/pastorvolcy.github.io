@@ -11,41 +11,63 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-180.png">
 <title>FRIDAY</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-  :root{--fg:#dfe9ff;--dim:#7d8bab;--acc:#6fd3ff}
+  :root{--c:#5fdcff;--c2:#9ff0ff;--dim:rgba(150,215,240,.55);--amber:#ffb547;--bg:#02060b}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
-  html,body{-webkit-touch-callout:none;margin:0;height:100%;background:#05070c;color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;overflow:hidden}
+  html,body{-webkit-touch-callout:none;margin:0;height:100%;background:radial-gradient(ellipse at 50% 42%,#071a26 0%,#03080f 55%,#010306 100%);color:var(--c2);font-family:Rajdhani,"Share Tech Mono",-apple-system,sans-serif;overflow:hidden}
   #orb{position:fixed;inset:0;width:100%;height:100%;display:block}
-  #caption{position:fixed;left:0;right:0;bottom:calc(150px + env(safe-area-inset-bottom));text-align:center;padding:0 28px;pointer-events:none}
-  #heard{font-size:15px;color:var(--dim);min-height:20px;transition:opacity .8s}
-  #said{font-size:19px;line-height:1.35;margin-top:8px;min-height:26px;transition:opacity .8s;max-width:640px;margin-left:auto;margin-right:auto}
-  #status{position:fixed;top:calc(18px + env(safe-area-inset-top));left:0;right:0;text-align:center;font-size:12px;letter-spacing:.32em;color:var(--dim);text-transform:uppercase;pointer-events:none}
-  #end{position:fixed;left:50%;bottom:calc(46px + env(safe-area-inset-bottom));width:64px;height:64px;margin-left:-32px;border-radius:50%;border:1.5px solid rgba(255,255,255,.22);background:rgba(255,255,255,.03);display:none}
-  #end::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:4px;background:rgba(255,120,120,.85)}
+  .scan{position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(120,220,255,.025) 0 1px,transparent 1px 3px);mix-blend-mode:screen}
+  .vig{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.65) 100%)}
+  .hud{position:fixed;font-family:"Share Tech Mono",monospace;font-size:11px;letter-spacing:.18em;color:var(--dim);text-transform:uppercase;pointer-events:none;line-height:1.7}
+  #tl{top:calc(20px + env(safe-area-inset-top));left:22px}
+  #tr{top:calc(20px + env(safe-area-inset-top));right:22px;text-align:right}
+  #bl{bottom:calc(22px + env(safe-area-inset-bottom));left:22px}
+  #br{bottom:calc(22px + env(safe-area-inset-bottom));right:22px;text-align:right}
+  .hud b{color:var(--c);font-weight:400}
+  .corner{position:fixed;width:26px;height:26px;border-color:rgba(95,220,255,.35);border-style:solid;pointer-events:none}
+  .c1{top:calc(10px + env(safe-area-inset-top));left:10px;border-width:1px 0 0 1px}.c2{top:calc(10px + env(safe-area-inset-top));right:10px;border-width:1px 1px 0 0}
+  .c3{bottom:calc(10px + env(safe-area-inset-bottom));left:10px;border-width:0 0 1px 1px}.c4{bottom:calc(10px + env(safe-area-inset-bottom));right:10px;border-width:0 1px 1px 0}
+  #title{position:fixed;left:0;right:0;top:calc(19% - 10px);text-align:center;pointer-events:none;font-weight:300;font-size:13px;letter-spacing:.9em;padding-left:.9em;color:var(--c);text-shadow:0 0 12px rgba(95,220,255,.6)}
+  #status{position:fixed;left:0;right:0;top:calc(19% + 12px);text-align:center;font-family:"Share Tech Mono",monospace;font-size:10px;letter-spacing:.4em;padding-left:.4em;color:var(--dim);text-transform:uppercase;pointer-events:none}
+  #caption{position:fixed;left:0;right:0;bottom:calc(128px + env(safe-area-inset-bottom));text-align:center;padding:0 34px;pointer-events:none}
+  #heard{font-family:"Share Tech Mono",monospace;font-size:12px;letter-spacing:.08em;color:var(--dim);min-height:18px;transition:opacity .9s}
+  #heard:not(:empty)::before{content:"› ";color:var(--amber)}
+  #said{font-size:22px;font-weight:400;line-height:1.3;margin:10px auto 0;min-height:30px;transition:opacity .9s;max-width:680px;color:#e6fbff;text-shadow:0 0 18px rgba(95,220,255,.35)}
+  #end{position:fixed;left:50%;bottom:calc(52px + env(safe-area-inset-bottom));width:54px;height:54px;margin-left:-27px;border-radius:50%;border:1px solid rgba(255,140,120,.45);box-shadow:0 0 18px rgba(255,90,70,.15) inset;background:transparent;display:none}
+  #end::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:2px;background:rgba(255,120,100,.9);box-shadow:0 0 10px rgba(255,90,70,.8)}
   #end.on{display:block}
-  #tap{position:fixed;left:0;right:0;bottom:calc(70px + env(safe-area-inset-bottom));text-align:center;color:var(--dim);font-size:14px;letter-spacing:.06em;pointer-events:none}
-  .sheet{position:fixed;inset:0;background:rgba(3,5,10,.86);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);display:none;align-items:center;justify-content:center;z-index:10;user-select:text;-webkit-user-select:text}
+  #tap{position:fixed;left:0;right:0;bottom:calc(66px + env(safe-area-inset-bottom));text-align:center;font-family:"Share Tech Mono",monospace;color:var(--dim);font-size:11px;letter-spacing:.42em;padding-left:.42em;text-transform:uppercase;pointer-events:none;animation:pulse 2.6s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.35}}
+  .sheet{position:fixed;inset:0;background:rgba(1,5,10,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:none;align-items:center;justify-content:center;z-index:10;user-select:text;-webkit-user-select:text}
   .sheet.on{display:flex}
-  .card{width:min(420px,92vw);padding:28px 24px;border-radius:22px;background:rgba(20,26,40,.75);border:1px solid rgba(255,255,255,.08)}
-  .card h1{font-size:22px;letter-spacing:.3em;margin:0 0 6px;font-weight:600}
-  .card p{color:var(--dim);font-size:14px;line-height:1.45;margin:0 0 18px}
-  label{display:block;font-size:12px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin:14px 0 6px}
-  input,select{width:100%;padding:12px 14px;font-size:16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.35);color:var(--fg);outline:none;user-select:text;-webkit-user-select:text}
+  .card{position:relative;width:min(430px,92vw);padding:30px 26px 24px;background:linear-gradient(180deg,rgba(10,34,48,.72),rgba(4,14,22,.8));border:1px solid rgba(95,220,255,.28);clip-path:polygon(18px 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%,0 18px);box-shadow:0 0 40px rgba(95,220,255,.08) inset}
+  .card h1{font-weight:300;font-size:24px;letter-spacing:.6em;margin:0 0 4px;color:var(--c);text-shadow:0 0 14px rgba(95,220,255,.5)}
+  .card p{font-family:"Share Tech Mono",monospace;color:var(--dim);font-size:11px;letter-spacing:.14em;text-transform:uppercase;line-height:1.6;margin:0 0 14px}
+  label{display:block;font-family:"Share Tech Mono",monospace;font-size:10px;color:var(--dim);letter-spacing:.24em;text-transform:uppercase;margin:16px 0 6px}
+  input,select{width:100%;padding:12px 14px;font-size:16px;font-family:Rajdhani,sans-serif;border:1px solid rgba(95,220,255,.25);border-radius:0;background:rgba(0,10,16,.6);color:#e6fbff;outline:none;user-select:text;-webkit-user-select:text;-webkit-appearance:none}
+  input:focus,select:focus{border-color:var(--c);box-shadow:0 0 12px rgba(95,220,255,.25)}
   .row{display:flex;gap:10px;margin-top:22px}
-  button{flex:1;padding:13px;font-size:16px;border-radius:12px;border:0;background:var(--acc);color:#04121c;font-weight:600}
-  button.ghost{background:rgba(255,255,255,.08);color:var(--fg)}
-  .small{font-size:12px;color:var(--dim);margin-top:14px;line-height:1.4}
-  .small a{color:var(--acc)}
-  #notice{position:fixed;top:calc(44px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);max-width:92vw;padding:10px 14px;border-radius:12px;background:rgba(40,30,10,.85);color:#ffd98a;font-size:13px;display:none;z-index:5;user-select:text;-webkit-user-select:text}
+  button{flex:1;padding:12px;font-family:"Share Tech Mono",monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;border:1px solid var(--c);border-radius:0;background:rgba(95,220,255,.14);color:#e6fbff}
+  button.ghost{border-color:rgba(95,220,255,.25);background:transparent;color:var(--dim)}
+  .small{font-family:"Share Tech Mono",monospace;font-size:10px;letter-spacing:.1em;color:var(--dim);margin-top:16px;line-height:1.6}
+  #notice{position:fixed;top:calc(60px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:min(520px,90vw);padding:12px 16px;border:1px solid rgba(255,181,71,.5);background:rgba(30,18,4,.85);color:var(--amber);font-family:"Share Tech Mono",monospace;font-size:12px;letter-spacing:.06em;line-height:1.5;display:none;z-index:5;user-select:text;-webkit-user-select:text}
   #notice a{color:#fff}
 </style>
 </head>
 <body>
 <canvas id="orb"></canvas>
-<div id="status">Friday</div>
+<div class="scan"></div><div class="vig"></div>
+<div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div>
+<div class="hud" id="tl">F.R.I.D.A.Y. <b>v2.1</b><br><span id="h-clock">--:--</span><br><span id="h-date"></span></div>
+<div class="hud" id="tr">Link <b id="h-link">Standby</b><br>Voice <b id="h-voice">--</b><br>Latency <b id="h-lat">--</b></div>
+<div class="hud" id="bl">Mem <b id="h-mem">0</b><br>Notes <b id="h-notes">0</b></div>
+<div class="hud" id="br">Harrisburg PA<br><b>40.27N 76.88W</b></div>
+<div id="title">FRIDAY</div>
+<div id="status">Standby</div>
 <div id="notice"></div>
 <div id="caption"><div id="heard"></div><div id="said"></div></div>
-<div id="tap">Tap anywhere to talk</div>
+<div id="tap">Tap to initialize</div>
 <div id="end" title="End"></div>
 
 <div class="sheet" id="setup"><div class="card">
@@ -91,7 +113,7 @@ function saveHistory(){ history = history.slice(-40); store.set("history", histo
 // ---------- UI ----------
 const ui = {
   state:"asleep",
-  set(s){ this.state = s; $("status").textContent = ({asleep:"Friday", idle:"Listening", listening:"Listening", thinking:"Thinking", speaking:"Friday"})[s] || s;
+  set(s){ this.state = s; $("status").textContent = ({asleep:"Standby", idle:"Online · listening", listening:"Receiving", thinking:"Processing", speaking:"Speaking"})[s] || s; if (s==="speaking" && this.t0){ $("h-lat").textContent = Math.round(performance.now()-this.t0)+" ms"; this.t0=0; } if (s==="thinking") this.t0 = performance.now();
           $("end").classList.toggle("on", s!=="asleep"); $("tap").style.display = s==="asleep" ? "block":"none"; },
   heard(t){ const h=$("heard"); h.textContent=t; h.style.opacity=1; clearTimeout(this.ht); this.ht=setTimeout(()=>h.style.opacity=0,5000); },
   said(t){ const s=$("said"); s.textContent=t; s.style.opacity=1; clearTimeout(this.st); this.st=setTimeout(()=>s.style.opacity=0,6000); },
@@ -99,14 +121,14 @@ const ui = {
 };
 
 // ---------- audio core ----------
-let ctx, micStream, micLevel = 0, outAnalyser, outGain, procNode;
+let micAnalyser, ctx, micStream, micLevel = 0, outAnalyser, outGain, procNode;
 const FRAME = 2048;
 let frameMs = 46;
 
 async function initAudio(){
   if (!ctx){
     ctx = new (window.AudioContext||window.webkitAudioContext)();
-    outGain = ctx.createGain(); outAnalyser = ctx.createAnalyser(); outAnalyser.fftSize = 512;
+    outGain = ctx.createGain(); outAnalyser = ctx.createAnalyser(); outAnalyser.fftSize = 256; outAnalyser.smoothingTimeConstant = 0.7;
     outGain.connect(outAnalyser); outAnalyser.connect(ctx.destination);
   }
   if (ctx.state !== "running") await ctx.resume();
@@ -116,7 +138,7 @@ async function initAudio(){
     const src = ctx.createMediaStreamSource(micStream);
     procNode = ctx.createScriptProcessor(FRAME, 1, 1);
     const mute = ctx.createGain(); mute.gain.value = 0;
-    src.connect(procNode); procNode.connect(mute); mute.connect(ctx.destination);
+    src.connect(procNode); procNode.connect(mute); micAnalyser = ctx.createAnalyser(); micAnalyser.fftSize = 256; micAnalyser.smoothingTimeConstant = 0.7; src.connect(micAnalyser); mute.connect(ctx.destination);
     frameMs = FRAME / ctx.sampleRate * 1000;
     procNode.onaudioprocess = e => vad.frame(new Float32Array(e.inputBuffer.getChannelData(0)));
   }
@@ -258,9 +280,7 @@ const player = {
       const s = ctx.createBufferSource(), g = ctx.createGain(); g.gain.value = 0.55; s.buffer = b; s.connect(g); g.connect(outGain); s.start(); }catch(e){}
   }
 };
-function speakFallback(text){
-  return new Promise(res => { if (!window.speechSynthesis){ res(); return; } const u = new SpeechSynthesisUtterance(text); u.rate = 1.05; u.onend = res; u.onerror = res; speechSynthesis.speak(u); setTimeout(res, 15000); });
-}
+function speakFallback(text){ return new Promise(res => setTimeout(res, Math.min(9000, 600 + text.length*55))); }
 
 // ---------- the brain ----------
 function systemPrompt(){
@@ -417,6 +437,7 @@ async function wake(){
   ["Mm-hm.","Right.","One sec.","Let me check.","Hmm, give me a second."].forEach(t=>synth(t).catch(()=>{}));
 }
 function sleep(){ brain.turn++; brain.interrupt(); vad.rec = null; ui.set("asleep"); ui.said(""); }
+function hudTick(){ const d=new Date(); $("h-clock").textContent=d.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false}); $("h-date").textContent=d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"2-digit"}); $("h-voice").textContent=(cfg.voice||"--")+(ttsBroken?" ⚠":""); $("h-mem").textContent=history.length; $("h-notes").textContent=notes.length; $("h-link").textContent= ui.state==="asleep"?"Standby":"Online"; } setInterval(hudTick,1000); hudTick();
 
 // tap to wake, end circle to sleep, long-press for settings
 let pressT = null, longPressed = false;
@@ -439,40 +460,68 @@ $("f-preview").onclick = async () => {
   cfg = old.key ? old : cfg;
 };
 
-// ---------- the orb ----------
-const cv = $("orb"), g2 = cv.getContext("2d");
+// ---------- the HUD reactor ----------
+const cv = $("orb"), g = cv.getContext("2d");
 let W, H, dpr; function size(){ dpr = Math.min(2, devicePixelRatio||1); W = cv.width = innerWidth*dpr; H = cv.height = innerHeight*dpr; } size(); addEventListener("resize", size);
-const outData = new Uint8Array(256); let smooth = 0, t0 = performance.now();
+const fbin = new Uint8Array(128), tbin = new Uint8Array(256);
+let smooth = 0, spin = 0, power = 0, t0 = performance.now(), lastT = t0;
+const parts = Array.from({length:70}, () => ({a:Math.random()*6.283, r:1.6+Math.random()*1.6, s:(Math.random()-.5)*0.15, z:Math.random()}));
+function arc(cx,cy,r,a0,a1,w,col){ g.beginPath(); g.arc(cx,cy,r,a0,a1); g.lineWidth=w; g.strokeStyle=col; g.stroke(); }
 function draw(now){
-  const t = (now - t0)/1000;
-  let lvl = 0;
-  if (ui.state === "speaking" && outAnalyser){ outAnalyser.getByteTimeDomainData(outData); let s=0; for (let i=0;i<outData.length;i++){ const v=(outData[i]-128)/128; s+=v*v; } lvl = Math.min(1, Math.sqrt(s/outData.length)*4.5); }
-  else if (ui.state === "listening") lvl = Math.min(1, micLevel*14);
-  smooth += (lvl - smooth) * 0.25;
-  g2.clearRect(0,0,W,H);
-  const cx = W/2, cy = H*0.42, base = Math.min(W,H)*0.17;
-  const breathe = ui.state === "asleep" ? 0.03*Math.sin(t*1.1) : ui.state === "thinking" ? 0.05*Math.sin(t*3) : 0.02*Math.sin(t*1.6);
-  const r = base * (1 + breathe + smooth*0.45 + (ui.state==="listening"?0.06:0));
-  const hue = ui.state === "thinking" ? 265 : ui.state === "listening" ? 190 : ui.state === "asleep" ? 215 : 200;
-  const alpha = ui.state === "asleep" ? 0.45 : 1;
-  // halo
-  let gr = g2.createRadialGradient(cx,cy,r*0.2,cx,cy,r*2.6);
-  gr.addColorStop(0, `hsla(${hue},90%,60%,${0.35*alpha})`); gr.addColorStop(1, "hsla(220,90%,40%,0)");
-  g2.fillStyle = gr; g2.beginPath(); g2.arc(cx,cy,r*2.6,0,Math.PI*2); g2.fill();
-  // living blob
-  g2.beginPath();
-  const pts = 90;
-  for (let i=0;i<=pts;i++){
-    const a = i/pts*Math.PI*2;
-    const wob = 1 + 0.035*Math.sin(a*3 + t*1.3) + 0.025*Math.sin(a*5 - t*1.9) + smooth*0.12*Math.sin(a*7 + t*9);
-    const x = cx + Math.cos(a)*r*wob, y = cy + Math.sin(a)*r*wob;
-    i ? g2.lineTo(x,y) : g2.moveTo(x,y);
+  const dt = Math.min(0.05,(now-lastT)/1000); lastT = now; const t = (now - t0)/1000;
+  const st = ui.state, awake = st !== "asleep";
+  power += ((awake?1:0.28) - power) * dt * 2.2;
+  let lvl = 0, an = null;
+  if (st === "speaking" && outAnalyser) an = outAnalyser; else if ((st === "listening" || st === "idle") && micAnalyser) an = micAnalyser;
+  if (an){ an.getByteTimeDomainData(tbin); let s=0; for (let i=0;i<tbin.length;i++){ const v=(tbin[i]-128)/128; s+=v*v; } lvl = Math.min(1, Math.sqrt(s/tbin.length)*(an===micAnalyser?9:5)); an.getByteFrequencyData(fbin); } else fbin.fill(0);
+  smooth += (lvl - smooth) * 0.22;
+  const speed = st==="thinking" ? 2.6 : st==="speaking" ? 1.2 : st==="listening" ? 0.9 : 0.35;
+  spin += dt * speed;
+  const hueMain = st==="thinking" ? "180,150,255" : st==="listening" ? "255,190,90" : "95,220,255";
+  const C = a => `rgba(${hueMain},${a*power})`, CY = a => `rgba(95,220,255,${a*power})`;
+  g.clearRect(0,0,W,H);
+  const cx = W/2, cy = H*0.44, R = Math.min(W,H)*0.25;
+  g.save(); g.globalCompositeOperation = "lighter";
+  // glow core
+  let gr = g.createRadialGradient(cx,cy,0,cx,cy,R*1.25);
+  gr.addColorStop(0, C(0.55 + smooth*0.4)); gr.addColorStop(0.18, C(0.22 + smooth*0.25)); gr.addColorStop(0.6, C(0.04)); gr.addColorStop(1,"rgba(0,0,0,0)");
+  g.fillStyle = gr; g.beginPath(); g.arc(cx,cy,R*1.25,0,6.283); g.fill();
+  // inner core disc + triangle-ish facets
+  const core = R*0.2*(1 + smooth*0.35 + 0.03*Math.sin(t*2));
+  gr = g.createRadialGradient(cx,cy,0,cx,cy,core); gr.addColorStop(0,`rgba(255,255,255,${0.95*power})`); gr.addColorStop(0.5,C(0.85)); gr.addColorStop(1,C(0.0));
+  g.fillStyle = gr; g.beginPath(); g.arc(cx,cy,core,0,6.283); g.fill();
+  arc(cx,cy,core*1.25,0,6.283,1.2*dpr,C(0.7));
+  for (let i=0;i<3;i++){ const a = -spin*1.5 + i*2.094; arc(cx,cy,core*1.6,a,a+1.6,2.5*dpr,C(0.55)); }
+  // frequency spectrum ring
+  const fr = R*0.42, n = 72;
+  for (let i=0;i<n;i++){
+    const a = i/n*6.283 - 1.5708 + spin*0.2; const v = fbin[Math.floor((i<n/2? i : n-i)/(n/2)*48)+2]/255;
+    const len = R*0.03 + v*R*0.28*(st==="speaking"?1:0.8) + (awake? 0.006*R*Math.sin(t*3+i):0);
+    g.beginPath(); g.moveTo(cx+Math.cos(a)*fr, cy+Math.sin(a)*fr); g.lineTo(cx+Math.cos(a)*(fr+len), cy+Math.sin(a)*(fr+len));
+    g.lineWidth = 2.2*dpr; g.strokeStyle = C(0.35 + v*0.6); g.stroke();
   }
-  gr = g2.createRadialGradient(cx - r*0.3, cy - r*0.35, r*0.1, cx, cy, r*1.1);
-  gr.addColorStop(0, `hsla(${hue-10},100%,88%,${alpha})`); gr.addColorStop(0.45, `hsla(${hue},95%,58%,${0.95*alpha})`); gr.addColorStop(1, `hsla(${hue+25},90%,28%,${0.9*alpha})`);
-  g2.fillStyle = gr; g2.fill();
-  // thinking ring
-  if (ui.state === "thinking"){ g2.strokeStyle = "rgba(200,180,255,.55)"; g2.lineWidth = 2*dpr; g2.beginPath(); g2.arc(cx,cy,r*1.25, t*3, t*3+1.4); g2.stroke(); }
+  // segmented ring
+  const r2 = R*0.78;
+  for (let i=0;i<24;i++){ const a = spin*0.5 + i*0.2618; arc(cx,cy,r2,a,a+0.19,4*dpr,CY(i%6===0?0.85:0.32)); }
+  // tick ring
+  const r3 = R*0.92;
+  for (let i=0;i<120;i++){ const a = -spin*0.15 + i*0.05236; const big = i%10===0; const l = big? R*0.05 : R*0.02;
+    g.beginPath(); g.moveTo(cx+Math.cos(a)*r3, cy+Math.sin(a)*r3); g.lineTo(cx+Math.cos(a)*(r3+l), cy+Math.sin(a)*(r3+l)); g.lineWidth=(big?1.6:1)*dpr; g.strokeStyle=CY(big?0.6:0.25); g.stroke(); }
+  // outer arcs
+  arc(cx,cy,R*1.05, spin*0.8, spin*0.8+2.2, 1.5*dpr, C(0.6));
+  arc(cx,cy,R*1.05, spin*0.8+3.14, spin*0.8+4.1, 1.5*dpr, C(0.45));
+  arc(cx,cy,R*1.12, -spin*0.6, -spin*0.6+0.7, 6*dpr, CY(0.18));
+  arc(cx,cy,R*1.12, -spin*0.6+3.4, -spin*0.6+3.7, 6*dpr, CY(0.18));
+  arc(cx,cy,R*1.2, 0, 6.283, 0.8*dpr, CY(0.14));
+  // thinking scanner
+  if (st==="thinking"){ const a = spin*2.4; gr = g.createConicGradient ? g.createConicGradient(a-0.6, cx, cy) : null;
+    if (gr){ gr.addColorStop(0,"rgba(0,0,0,0)"); gr.addColorStop(0.09,C(0.35)); gr.addColorStop(0.1,"rgba(0,0,0,0)"); g.fillStyle=gr; g.beginPath(); g.arc(cx,cy,R*1.2,0,6.283); g.fill(); } }
+  // dust particles
+  parts.forEach(p => { p.a += p.s*dt*(1+speed); const rr = R*p.r*(1+smooth*0.08); const x = cx+Math.cos(p.a)*rr, y = cy+Math.sin(p.a)*rr*0.98;
+    g.fillStyle = CY(0.15+0.35*p.z); g.fillRect(x, y, 1.6*dpr, 1.6*dpr); });
+  // crosshair hairlines
+  g.strokeStyle = CY(0.08); g.lineWidth = 1*dpr; g.beginPath(); g.moveTo(cx-R*1.6,cy); g.lineTo(cx-R*1.25,cy); g.moveTo(cx+R*1.25,cy); g.lineTo(cx+R*1.6,cy); g.stroke();
+  g.restore();
   requestAnimationFrame(draw);
 }
 requestAnimationFrame(draw);

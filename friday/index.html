@@ -28,8 +28,8 @@
   .corner{position:fixed;width:26px;height:26px;border-color:rgba(95,220,255,.35);border-style:solid;pointer-events:none}
   .c1{top:calc(10px + env(safe-area-inset-top));left:10px;border-width:1px 0 0 1px}.c2{top:calc(10px + env(safe-area-inset-top));right:10px;border-width:1px 1px 0 0}
   .c3{bottom:calc(10px + env(safe-area-inset-bottom));left:10px;border-width:0 0 1px 1px}.c4{bottom:calc(10px + env(safe-area-inset-bottom));right:10px;border-width:0 1px 1px 0}
-  #title{position:fixed;left:0;right:0;top:calc(19% - 10px);text-align:center;pointer-events:none;font-weight:300;font-size:13px;letter-spacing:.9em;padding-left:.9em;color:var(--c);text-shadow:0 0 12px rgba(95,220,255,.6)}
-  #status{position:fixed;left:0;right:0;top:calc(19% + 12px);text-align:center;font-family:"Share Tech Mono",monospace;font-size:10px;letter-spacing:.4em;padding-left:.4em;color:var(--dim);text-transform:uppercase;pointer-events:none}
+  #title{position:fixed;left:0;right:0;top:calc(22px + env(safe-area-inset-top));text-align:center;pointer-events:none;font-weight:300;font-size:13px;letter-spacing:.9em;padding-left:.9em;color:var(--c);text-shadow:0 0 12px rgba(95,220,255,.6)}
+  #status{position:fixed;left:0;right:0;top:calc(44px + env(safe-area-inset-top));text-align:center;font-family:"Share Tech Mono",monospace;font-size:10px;letter-spacing:.4em;padding-left:.4em;color:var(--dim);text-transform:uppercase;pointer-events:none}
   #caption{position:fixed;left:0;right:0;bottom:calc(128px + env(safe-area-inset-bottom));text-align:center;padding:0 34px;pointer-events:none}
   #heard{font-family:"Share Tech Mono",monospace;font-size:12px;letter-spacing:.08em;color:var(--dim);min-height:18px;transition:opacity .9s}
   #heard:not(:empty)::before{content:"› ";color:var(--amber)}
@@ -53,16 +53,23 @@
   .small{font-family:"Share Tech Mono",monospace;font-size:10px;letter-spacing:.1em;color:var(--dim);margin-top:16px;line-height:1.6}
   #notice{position:fixed;top:calc(60px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:min(520px,90vw);padding:12px 16px;border:1px solid rgba(255,181,71,.5);background:rgba(30,18,4,.85);color:var(--amber);font-family:"Share Tech Mono",monospace;font-size:12px;letter-spacing:.06em;line-height:1.5;display:none;z-index:5;user-select:text;-webkit-user-select:text}
   #notice a{color:#fff}
+  #log{position:fixed;right:22px;top:calc(110px + env(safe-area-inset-top));width:min(250px,26vw);font-family:"Share Tech Mono",monospace;font-size:10.5px;letter-spacing:.06em;line-height:1.55;color:var(--dim);pointer-events:none;mask-image:linear-gradient(180deg,transparent,#000 22%);-webkit-mask-image:linear-gradient(180deg,transparent,#000 22%)}
+  #log .u{color:rgba(255,190,110,.7)} #log .f{color:rgba(170,235,255,.8)} #log div{margin-top:7px}
+  #log::before,#boot::before{content:attr(data-h);display:block;color:var(--c);letter-spacing:.3em;font-size:9.5px;border-bottom:1px solid rgba(95,220,255,.25);padding-bottom:5px;margin-bottom:4px}
+  #boot{position:fixed;left:22px;top:calc(110px + env(safe-area-inset-top));width:min(250px,26vw);font-family:"Share Tech Mono",monospace;font-size:10.5px;letter-spacing:.08em;line-height:1.7;color:var(--dim);pointer-events:none;text-transform:uppercase}
+  #boot b{color:#7dffb0;font-weight:400}
+  @media (max-width:760px){#log,#boot{display:none}}
 </style>
 </head>
 <body>
 <canvas id="orb"></canvas>
 <div class="scan"></div><div class="vig"></div>
 <div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div>
-<div class="hud" id="tl">F.R.I.D.A.Y. <b>v2.1</b><br><span id="h-clock">--:--</span><br><span id="h-date"></span></div>
+<div class="hud" id="tl">F.R.I.D.A.Y. <b>v2.2</b><br><span id="h-clock">--:--</span><br><span id="h-date"></span></div>
 <div class="hud" id="tr">Link <b id="h-link">Standby</b><br>Voice <b id="h-voice">--</b><br>Latency <b id="h-lat">--</b></div>
 <div class="hud" id="bl">Mem <b id="h-mem">0</b><br>Notes <b id="h-notes">0</b></div>
 <div class="hud" id="br">Harrisburg PA<br><b>40.27N 76.88W</b></div>
+<div id="boot" data-h="SYSTEM"></div><div id="log" data-h="COMMS LOG"></div>
 <div id="title">FRIDAY</div>
 <div id="status">Standby</div>
 <div id="notice"></div>
@@ -86,6 +93,8 @@
     <option value="troy">Troy (easy, male)</option>
     <option value="austin">Austin (upbeat, male)</option>
   </select>
+  <label>Speaking pace <span id="f-pace-v" style="color:var(--c)"></span></label>
+  <input id="f-pace" type="range" min="0.95" max="1.4" step="0.05" style="padding:0;height:28px;border:0;background:transparent;accent-color:#5fdcff">
   <div class="row"><button class="ghost" id="f-preview">Preview</button><button id="f-save">Save</button></div>
   <div class="row" id="f-extra" style="display:none"><button class="ghost" id="f-forget">Clear memory</button><button class="ghost" id="f-close">Close</button></div>
   <div class="small">Your key stays on this device. Long-press the orb anytime to come back here.</div>
@@ -104,7 +113,7 @@ const store = {
   get(k, d){ try{ const v = localStorage.getItem("friday."+k); return v===null? d : JSON.parse(v);}catch(e){return d;} },
   set(k, v){ localStorage.setItem("friday."+k, JSON.stringify(v)); }
 };
-let cfg = store.get("cfg", {name:"", key:"", voice:"diana"});
+let cfg = store.get("cfg", {name:"", key:"", voice:"diana"}); if (!cfg.pace) cfg.pace = 1.15;
 let history = store.get("history", []);       // [{role, content}]
 let notes = store.get("notes", []);
 let reminders = store.get("reminders", []);   // [{id, at, text, done}]
@@ -165,7 +174,7 @@ const vad = {
         this.silence = 0; }
       else this.silence += frameMs;
       const len = this.rec.length*frameMs;
-      if (this.silence >= 620 || len > 30000) this.finish();
+      if (this.silence >= (this.voiced > 2500 ? 560 : 470) || len > 30000) this.finish();
       // false alarm (a cough, a door): resume Friday where she was
       if (this.pausedFor && len > 900 && this.voiced < 250){ this.rec = null; this.count = 0; player.resume(); this.pausedFor = null; ui.set("speaking"); }
     }
@@ -234,9 +243,50 @@ async function synth(text, signal){
       ui.notice('Friday\'s natural voice needs one click: <a href="https://console.groq.com/playground?model=canopylabs%2Forpheus-v1-english" target="_blank">accept the Orpheus terms on Groq</a>, then reload.'); }
     throw new Error("tts " + r.status + " " + body);
   }
-  const audio = await ctx.decodeAudioData(await r.arrayBuffer());
+  const ab = await r.arrayBuffer();
+  fixWavHeader(ab);
+  const audio = shape(await ctx.decodeAudioData(ab));
   if (text.length < 20) ttsCache.set(text+cfg.voice, audio);
   return audio;
+}
+// Orpheus streams WAVs with placeholder sizes; patch them so every browser decodes cleanly.
+function fixWavHeader(ab){
+  try{ const dv = new DataView(ab); if (dv.getUint32(0) !== 0x52494646) return;
+    dv.setUint32(4, ab.byteLength-8, true);
+    let p = 12; while (p + 8 <= ab.byteLength){ const id = dv.getUint32(p), sz = dv.getUint32(p+4, true);
+      if (id === 0x64617461){ dv.setUint32(p+4, ab.byteLength-p-8, true); return; } p += 8 + sz + (sz & 1); }
+  }catch(e){}
+}
+// Trim dead air and speed speech up without changing pitch (WSOLA time-stretch).
+function shape(buf){
+  const sr = buf.sampleRate; let x = buf.getChannelData(0);
+  let a = 0, b = x.length-1; const th = 0.012;
+  while (a < b && Math.abs(x[a]) < th) a++; while (b > a && Math.abs(x[b]) < th) b--;
+  a = Math.max(0, a - Math.round(sr*0.03)); b = Math.min(x.length, b + Math.round(sr*0.07));
+  x = x.subarray(a, b);
+  const rate = cfg.pace || 1.15;
+  const y = Math.abs(rate-1) < 0.02 ? x : wsola(x, rate, sr);
+  const out = ctx.createBuffer(1, y.length, sr); out.getChannelData(0).set(y); return out;
+}
+function wsola(x, rate, sr){
+  const N = sr >= 32000 ? 1536 : 1024, Hs = N/2, tol = Math.round(N*0.2), L = x.length;
+  const win = new Float32Array(N); for (let i=0;i<N;i++) win[i] = 0.5 - 0.5*Math.cos(2*Math.PI*i/(N-1));
+  const outLen = Math.floor(L/rate) + N; const y = new Float32Array(outLen), w = new Float32Array(outLen);
+  let prev = 0, k = 0;
+  for (;;k++){
+    const op = k*Hs, nom = Math.round(op*rate);
+    if (nom + N + tol >= L || op + N >= outLen) break;
+    let best = nom;
+    if (k > 0){
+      const tgt = prev + Hs; let bc = -Infinity;
+      for (let d=-tol; d<=tol; d+=3){ const pos = nom + d; if (pos < 0 || pos + N >= L) continue;
+        let c = 0; for (let i=0;i<Hs;i+=3) c += x[tgt+i]*x[pos+i]; if (c > bc){ bc = c; best = pos; } }
+    }
+    for (let i=0;i<N;i++){ y[op+i] += x[best+i]*win[i]; w[op+i] += win[i]; }
+    prev = best;
+  }
+  let end = 0; for (let i=0;i<outLen;i++){ if (w[i] > 1e-3){ y[i] /= w[i]; end = i; } }
+  return y.subarray(0, end+1);
 }
 
 const player = {
@@ -358,7 +408,7 @@ const brain = {
     this.ctrl = new AbortController();
     const signal = this.ctrl.signal;
     let gotAudio = false;
-    this.filler = setTimeout(()=>{ if (turn===this.turn && !gotAudio){ const f = ["One sec.","Let me check.","Hmm, give me a second."][Math.floor(Math.random()*3)]; player.enqueue({promise:synth(f), text:f, turn}); } }, 1400);
+    this.filler = setTimeout(()=>{ if (turn===this.turn && !gotAudio){ const f = ["One sec.","Let me check.","Hmm, give me a second."][Math.floor(Math.random()*3)]; player.enqueue({promise:synth(f), text:f, turn}); } }, 1300);
     const msgs = [{role:"system", content:systemPrompt()}, ...history.slice(-24)];
     let full = "";
     try {
@@ -388,14 +438,14 @@ const brain = {
       body: JSON.stringify({model:LLM, messages, tools:TOOLS, reasoning_effort:"low", temperature:0.8, max_completion_tokens:700, stream:true})});
     if (!r.ok) throw new Error("llm " + r.status + " " + (await r.text()).slice(0,200));
     const reader = r.body.getReader(), dec = new TextDecoder();
-    let raw = "", pending = "", text = ""; const calls = {};
+    let raw = "", pending = "", text = "", emitted = 0; const calls = {};
     const flush = (force) => {
       pending = clean(pending);
       for (;;){
-        const m = pending.match(/^(.{8,}?[.!?…])(\s+|$)/) || (pending.length > 170 && pending.match(/^(.{60,170}?[,;:—])\s+/));
+        const m = pending.match(/^(.{8,}?[.!?…])(\s+|$)/) || (!emitted && pending.match(/^(.{18,80}?[,;:—])\s+/)) || (pending.length > 170 && pending.match(/^(.{60,170}?[,;:—])\s+/));
         if (!m) break;
         if (!force && m[2] === "" ) break;
-        const s = m[1].trim(); pending = pending.slice(m[0].length); if (s) onSentence(s);
+        const s = m[1].trim(); pending = pending.slice(m[0].length); if (s){ emitted++; onSentence(s); }
       }
       if (force && pending.trim()){ let rest = pending.trim(); while (rest.length > 190){ const cut = rest.lastIndexOf(" ", 190); onSentence(rest.slice(0,cut)); rest = rest.slice(cut+1); } onSentence(rest); pending = ""; }
     };
@@ -431,12 +481,17 @@ async function wake(){
   if (!cfg.key){ openSetup(); return; }
   try { await initAudio(); }
   catch(e){ ui.notice("I need the microphone. Allow it for this site (on iPhone: Settings, Safari, Microphone, Allow) and tap again.", 9000); return; }
-  lastActivity = Date.now();
+  lastActivity = Date.now(); bootFlash = 1; bootSeq();
   ui.set("idle");
   if (!greetedThisLoad){ greetedThisLoad = true; brain.say(greeting()); }
   ["Mm-hm.","Right.","One sec.","Let me check.","Hmm, give me a second."].forEach(t=>synth(t).catch(()=>{}));
 }
 function sleep(){ brain.turn++; brain.interrupt(); vad.rec = null; ui.set("asleep"); ui.said(""); }
+function renderLog(){ const L=$("log"); if(!L) return; L.innerHTML = history.filter(m=>m.role==="user"||m.role==="assistant").slice(-8).map(m=>`<div class="${m.role==="user"?"u":"f"}">${m.role==="user"?"YOU":"FRI"} › ${String(m.content).replace(/</g,"&lt;").replace(/ — \[you were cut off here\]/," ⟂").slice(0,140)}</div>`).join(""); }
+setInterval(renderLog, 1200); 
+async function bootSeq(){ const B=$("boot"); if(!B) return; B.innerHTML="";
+  const lines=[["Neural voice","Orpheus · "+cfg.voice],["Speech engine","Whisper v3 turbo"],["Reasoning core","GPT-OSS 120B"],["Groq LPU link","Online"],["Web uplink","Armed"],["Memory",history.length+" turns"],["Pace",(cfg.pace||1.15).toFixed(2)+"×"]];
+  for (const [k,v] of lines){ const d=document.createElement("div"); d.innerHTML=k+" ··· <b>"+v+"</b>"; d.style.opacity=0; B.appendChild(d); await new Promise(r=>setTimeout(r,110)); d.style.transition="opacity .3s"; d.style.opacity=1; } }
 function hudTick(){ const d=new Date(); $("h-clock").textContent=d.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false}); $("h-date").textContent=d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"2-digit"}); $("h-voice").textContent=(cfg.voice||"--")+(ttsBroken?" ⚠":""); $("h-mem").textContent=history.length; $("h-notes").textContent=notes.length; $("h-link").textContent= ui.state==="asleep"?"Standby":"Online"; } setInterval(hudTick,1000); hudTick();
 
 // tap to wake, end circle to sleep, long-press for settings
@@ -446,15 +501,16 @@ document.addEventListener("pointerup", e => { clearTimeout(pressT); if (e.target
 $("end").addEventListener("click", e => { e.stopPropagation(); sleep(); });
 
 function openSetup(){
-  $("f-name").value = cfg.name || ""; $("f-key").value = cfg.key || ""; $("f-voice").value = cfg.voice || "diana";
+  $("f-name").value = cfg.name || ""; $("f-key").value = cfg.key || ""; $("f-voice").value = cfg.voice || "diana"; $("f-pace").value = cfg.pace || 1.15; $("f-pace-v").textContent = (+$("f-pace").value).toFixed(2)+"×";
   $("f-extra").style.display = cfg.key ? "flex" : "none";
   $("setup").classList.add("on");
 }
-$("f-save").onclick = () => { cfg = {name:$("f-name").value.trim(), key:$("f-key").value.trim(), voice:$("f-voice").value}; store.set("cfg", cfg); ttsCache.clear(); ttsBroken = false; $("setup").classList.remove("on"); if (ui.state==="asleep") wake(); };
+$("f-save").onclick = () => { cfg = {name:$("f-name").value.trim(), key:$("f-key").value.trim(), voice:$("f-voice").value, pace:+$("f-pace").value}; store.set("cfg", cfg); ttsCache.clear(); ttsBroken = false; $("setup").classList.remove("on"); if (ui.state==="asleep") wake(); };
+$("f-pace").oninput = () => $("f-pace-v").textContent = (+$("f-pace").value).toFixed(2)+"×";
 $("f-close").onclick = () => $("setup").classList.remove("on");
 $("f-forget").onclick = () => { history = []; saveHistory(); $("f-forget").textContent = "Cleared"; setTimeout(()=>$("f-forget").textContent="Clear memory",1500); };
 $("f-preview").onclick = async () => {
-  const old = cfg; cfg = {...cfg, key:$("f-key").value.trim(), voice:$("f-voice").value};
+  const old = cfg; cfg = {...cfg, key:$("f-key").value.trim(), voice:$("f-voice").value, pace:+$("f-pace").value}; ttsCache.clear();
   try { await initAudio(); ttsBroken = false; const b = await synth("Hey, it's Friday. This is how I'll sound."); if (b){ const s = ctx.createBufferSource(); s.buffer = b; s.connect(outGain); s.start(); } }
   catch(e){ if (!ttsBroken) ui.notice("Couldn't reach Groq with that key.", 5000); }
   cfg = old.key ? old : cfg;
@@ -464,7 +520,7 @@ $("f-preview").onclick = async () => {
 const cv = $("orb"), g = cv.getContext("2d");
 let W, H, dpr; function size(){ dpr = Math.min(2, devicePixelRatio||1); W = cv.width = innerWidth*dpr; H = cv.height = innerHeight*dpr; } size(); addEventListener("resize", size);
 const fbin = new Uint8Array(128), tbin = new Uint8Array(256);
-let smooth = 0, spin = 0, power = 0, t0 = performance.now(), lastT = t0;
+let bootFlash = 0, hexC = null; let smooth = 0, spin = 0, power = 0, t0 = performance.now(), lastT = t0;
 const parts = Array.from({length:70}, () => ({a:Math.random()*6.283, r:1.6+Math.random()*1.6, s:(Math.random()-.5)*0.15, z:Math.random()}));
 function arc(cx,cy,r,a0,a1,w,col){ g.beginPath(); g.arc(cx,cy,r,a0,a1); g.lineWidth=w; g.strokeStyle=col; g.stroke(); }
 function draw(now){
@@ -480,8 +536,25 @@ function draw(now){
   const hueMain = st==="thinking" ? "180,150,255" : st==="listening" ? "255,190,90" : "95,220,255";
   const C = a => `rgba(${hueMain},${a*power})`, CY = a => `rgba(95,220,255,${a*power})`;
   g.clearRect(0,0,W,H);
-  const cx = W/2, cy = H*0.44, R = Math.min(W,H)*0.25;
+  const cx = W/2, cy = H*0.43, R = Math.min(W,H)*0.2;
+  // hex lattice backdrop (cached)
+  if (!hexC || hexC.width !== W){ hexC = document.createElement("canvas"); hexC.width = W; hexC.height = H; const h = hexC.getContext("2d"); const sz = 26*dpr, hh = sz*Math.sqrt(3);
+    h.strokeStyle = "rgba(95,220,255,0.05)"; h.lineWidth = 1;
+    for (let yy=-hh; yy<H+hh; yy+=hh) for (let xx=-sz*3, c=0; xx<W+sz*3; xx+=sz*1.5, c++){ const oy = yy + (c%2? hh/2:0); h.beginPath(); for (let k=0;k<6;k++){ const an=k*Math.PI/3; h.lineTo(xx+Math.cos(an)*sz*0.98, oy+Math.sin(an)*sz*0.98); } h.closePath(); h.stroke(); } }
+  g.save(); const mg = g.createRadialGradient(cx,cy,R*0.6,cx,cy,Math.max(W,H)*0.6); mg.addColorStop(0,"rgba(0,0,0,1)"); mg.addColorStop(1,"rgba(0,0,0,0)");
+  g.globalAlpha = 0.5 + 0.5*power; g.drawImage(hexC,0,0); g.globalCompositeOperation="destination-in"; g.fillStyle=mg; g.fillRect(0,0,W,H); g.restore();
+  bootFlash = Math.max(0, bootFlash - dt*0.9);
   g.save(); g.globalCompositeOperation = "lighter";
+  // boot shockwave
+  if (bootFlash > 0){ const br = R*(0.3 + (1-bootFlash)*2.4); arc(cx,cy,br,0,6.283,(2+6*bootFlash)*dpr,`rgba(160,240,255,${bootFlash*0.8})`); }
+  // gyroscope rings (3D tilt)
+  for (let i=0;i<3;i++){
+    const tilt = spin*(0.35+i*0.17) + i*1.1, rr = R*(1.32+i*0.07);
+    g.save(); g.translate(cx,cy); g.rotate(i*1.05 + spin*0.05*(i+1)); g.scale(1, Math.abs(Math.cos(tilt))*0.9+0.08);
+    g.beginPath(); g.arc(0,0,rr,0,6.283); g.lineWidth = 1*dpr; g.strokeStyle = `rgba(95,220,255,${(0.12+0.1*i)*power})`; g.stroke();
+    const ma = spin*(1.2+i*0.4); g.beginPath(); g.arc(0,0,rr,ma,ma+0.35); g.lineWidth = 3*dpr; g.strokeStyle = C(0.7); g.stroke();
+    g.fillStyle = `rgba(220,250,255,${0.9*power})`; g.beginPath(); g.arc(Math.cos(ma+0.35)*rr, Math.sin(ma+0.35)*rr, 2.6*dpr, 0, 6.283); g.fill();
+    g.restore(); }
   // glow core
   let gr = g.createRadialGradient(cx,cy,0,cx,cy,R*1.25);
   gr.addColorStop(0, C(0.55 + smooth*0.4)); gr.addColorStop(0.18, C(0.22 + smooth*0.25)); gr.addColorStop(0.6, C(0.04)); gr.addColorStop(1,"rgba(0,0,0,0)");
@@ -519,6 +592,11 @@ function draw(now){
   // dust particles
   parts.forEach(p => { p.a += p.s*dt*(1+speed); const rr = R*p.r*(1+smooth*0.08); const x = cx+Math.cos(p.a)*rr, y = cy+Math.sin(p.a)*rr*0.98;
     g.fillStyle = CY(0.15+0.35*p.z); g.fillRect(x, y, 1.6*dpr, 1.6*dpr); });
+  // oscilloscope
+  if (an){ const ow = Math.min(W*0.5, R*2.6), ox = cx-ow/2, oy = cy + R*1.62; g.beginPath();
+    for (let i=0;i<tbin.length;i++){ const x = ox + i/(tbin.length-1)*ow; const env = Math.sin(Math.PI*i/(tbin.length-1)); const y = oy + ((tbin[i]-128)/128)*R*0.35*env*(an===micAnalyser?2.2:1.2); i? g.lineTo(x,y) : g.moveTo(x,y); }
+    g.lineWidth = 1.4*dpr; g.strokeStyle = C(0.75); g.shadowBlur = 8*dpr; g.shadowColor = `rgba(${hueMain},.9)`; g.stroke(); g.shadowBlur = 0; }
+  else { const ow = Math.min(W*0.5, R*2.6); g.beginPath(); g.moveTo(cx-ow/2, cy+R*1.62); g.lineTo(cx+ow/2, cy+R*1.62); g.lineWidth=1*dpr; g.strokeStyle=CY(0.15); g.stroke(); }
   // crosshair hairlines
   g.strokeStyle = CY(0.08); g.lineWidth = 1*dpr; g.beginPath(); g.moveTo(cx-R*1.6,cy); g.lineTo(cx-R*1.25,cy); g.moveTo(cx+R*1.25,cy); g.lineTo(cx+R*1.6,cy); g.stroke();
   g.restore();

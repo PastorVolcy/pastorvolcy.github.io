@@ -146,7 +146,7 @@
 <canvas id="orb"></canvas>
 <div class="scan"></div><div class="vig"></div>
 <header id="top">
-  <div class="logo"><div class="lt">F.R.I.D.A.Y.</div><div class="ls">Personal intelligence · v3.3</div></div>
+  <div class="logo"><div class="lt">F.R.I.D.A.Y.</div><div class="ls">Personal intelligence · v3.4</div></div>
   <div class="pill"><i></i><span id="status">Standby</span></div>
   <div class="clk"><div id="h-clock">--:--:--</div><div id="h-date">--</div></div>
 </header>
@@ -190,7 +190,7 @@
     <label>Pace <b id="d-pace">--</b><input id="q-pace" type="range" min="0.95" max="1.4" step="0.05"></label>
   </div>
   <div id="end" title="End session"></div>
-  <div class="qc" id="d-r"><span>Response</span><div class="seg" id="q-speed"><button data-v="fast">Fast</button><button data-v="balanced">Balanced</button><button data-v="patient">Patient</button></div></div>
+  <div class="qc" id="d-r"><div class="seg" id="q-focus" style="margin-right:6px"><button data-v="on">Focus</button></div><span>Response</span><div class="seg" id="q-speed"><button data-v="fast">Fast</button><button data-v="balanced">Balanced</button><button data-v="patient">Patient</button></div></div>
   <span id="d-voice" hidden></span>
 </footer>
 
@@ -210,6 +210,11 @@
     <option value="troy">Troy (easy, male)</option>
     <option value="austin">Austin (upbeat, male)</option>
   </select>
+  <label>Voice focus</label>
+  <div style="font-size:13px;color:var(--dim);margin:-2px 0 8px">Train your voice so Friday ignores the TV and other people. She'll only answer your voice, close to the mic.</div>
+  <button id="f-train" type="button" class="ghost" style="width:100%">Train my voice</button>
+  <div id="f-train-s" style="font-size:13px;color:var(--c);margin:6px 0 4px;min-height:18px"></div>
+  <label style="display:flex;align-items:center;gap:10px;text-transform:none;letter-spacing:0;font-size:14px"><input id="f-name-req" type="checkbox" style="width:auto;accent-color:#5fdcff"> Only start when I say “Friday” (then keep talking freely)</label>
   <label>Microphone</label>
   <select id="f-mic"><option value="">System default (follows your device)</option></select>
   <label>Mic sensitivity <span id="f-sens-v" style="color:var(--c)"></span></label>
@@ -236,7 +241,7 @@ const store = {
   get(k, d){ try{ const v = localStorage.getItem("friday."+k); return v===null? d : JSON.parse(v);}catch(e){return d;} },
   set(k, v){ localStorage.setItem("friday."+k, JSON.stringify(v)); }
 };
-let cfg = store.get("cfg", {name:"", key:"", voice:"diana"}); if (!cfg.pace) cfg.pace = 1.15; if (!cfg.speed) cfg.speed = "balanced"; if (!cfg.sysmic){ delete cfg.mic; cfg.sysmic = 1; } if (!cfg.sens || (cfg.sens === 4 && !cfg.nz)) { cfg.sens = 3; cfg.nz = 1; }
+let cfg = store.get("cfg", {name:"", key:"", voice:"diana"}); if (!cfg.pace) cfg.pace = 1.15; if (!cfg.speed) cfg.speed = "balanced"; if (cfg.focus === undefined) cfg.focus = true; if (!cfg.sysmic){ delete cfg.mic; cfg.sysmic = 1; } if (!cfg.sens || (cfg.sens === 4 && !cfg.nz)) { cfg.sens = 3; cfg.nz = 1; }
 let history = store.get("history", []);       // [{role, content}]
 let notes = store.get("notes", []);
 let reminders = store.get("reminders", []);   // [{id, at, text, done}]
@@ -268,7 +273,7 @@ async function initAudio(){
   if (ctx.state !== "running") await ctx.resume();
   if (!micStream || micStream.getAudioTracks().every(t=>t.readyState==="ended")){
     // One stream for the whole session: never torn down, so the browser has no reason to ask again.
-    const ac = {echoCancellation:true, noiseSuppression:true, autoGainControl:true, voiceIsolation:true, channelCount:1};
+    const ac = {echoCancellation:true, noiseSuppression:true, autoGainControl:!(cfg.focus && cfg.vp), voiceIsolation:true, channelCount:1};
     if (cfg.mic) ac.deviceId = {exact: cfg.mic};
     try { micStream = await navigator.mediaDevices.getUserMedia({audio:ac}); }
     catch(e){ if (cfg.mic){ delete ac.deviceId; micStream = await navigator.mediaDevices.getUserMedia({audio:ac}); } else throw e; }
@@ -309,8 +314,10 @@ const vad = {
     // ambient noise floor = quiet end of the last ~4 s, tracked continuously so steady noise never counts as speech
     if (!this.rec){ this.hist.push(rms); if (this.hist.length > 90) this.hist.shift();
       const so = this.hist.slice().sort((a,b)=>a-b); this.floor = Math.max(0.0015, so[Math.floor(so.length*0.3)] || 0.004); }
+    if (vprint.train){ if (this.voiceBand() && rms > Math.max(this.floor*2.5, 0.006)) vprint.add(rms, this.bands, false); return; }
     if (ui.state === "asleep") return;
     const voicy = this.voiceBand();
+    if (voicy && rms > Math.max(this.floor*2.5, 0.006)) vprint.add(rms, this.bands, !!this.rec);
     const fridayTalking = player.playing;
     const k = [0, 1.6, 1.3, 1.0, 0.75, 0.55][cfg.sens||4]; this.k = k;
     const start = fridayTalking ? Math.max(this.floor*5.5, 0.035*k) : Math.max(this.floor*3.2*k, 0.012*k);
@@ -333,7 +340,9 @@ const vad = {
   },
   // speech lives in 150-4000 Hz; steady hum, clatter and hiss mostly don't
   voiceBand(){ if (!vadAn) return true; vadAn.getFloatFrequencyData(vadBins); const hz = ctx.sampleRate/vadAn.fftSize; let v=0, t=0;
-    for (let i=1;i<vadBins.length;i++){ const e = Math.pow(10, vadBins[i]/10); t += e; const f = i*hz; if (f>=150 && f<=4000) v += e; }
+    const bands = this.bands || (this.bands = new Float32Array(24)); bands.fill(0);
+    for (let i=1;i<vadBins.length;i++){ const e = Math.pow(10, vadBins[i]/10); t += e; const f = i*hz; if (f>=150 && f<=4000) v += e;
+      if (f>=100 && f<6000){ const b = Math.min(23, Math.floor(24*Math.log(f/100)/Math.log(60))); bands[b] += e; } }
     return t > 0 ? v/t > 0.45 : true; },
   begin(){
     this.count = 0; this.silence = 0; this.voiced = 0; this.backchanneled = false;
@@ -345,19 +354,43 @@ const vad = {
   async finish(){
     const frames = this.rec; this.rec = null;
     const wasPaused = this.pausedFor; this.pausedFor = null; const voicedMs = this.voiced;
-    if (this.voiced < 200){ if (wasPaused) { player.resume(); ui.set("speaking"); } else ui.set("idle"); return; }
-    // real interruption: drop what Friday was going to say
-    if (wasPaused){ brain.interrupt(); }
-    ui.set("thinking");
-    const myTurn = ++brain.turn;
+    const prof = vprint.take();
+    const resumeIfPaused = () => { if (wasPaused && player.paused){ player.resume(); ui.set("speaking"); } else if (!player.playing) ui.set("idle"); };
+    if (this.voiced < 200){ resumeIfPaused(); return; }
+    // voice focus: is this the trained voice, close to the mic?
+    const vm = vprint.match(prof); if (vm) showMatch(vm);
+    if (vm && !vm.ok){ resumeIfPaused(); return; }
+    if (!wasPaused) ui.set("thinking");
+    const seq = ++sttSeq, turnAtStart = brain.turn;
     let text = "";
     try { text = await transcribe(frames); } catch(e){ console.warn(e); }
-    if (myTurn !== brain.turn) return;
-    if (!isRealSpeech(text, voicedMs)){ if (wasPaused) { /* nothing worth answering */ } ui.set("idle"); return; }
+    if (seq !== sttSeq) return;
+    const followUp = Date.now() - lastExchange < 15000;
+    const named = /\b(hey |ok |okay )?fri[\s-]?day\b/i.test(text);
+    if (!isRealSpeech(text, voicedMs) || (cfg.nameReq && !followUp && !named)){ resumeIfPaused(); return; }
+    // real interruption: drop what Friday was going to say
+    if (wasPaused || brain.busy || player.playing){ brain.interrupt(); }
+    const myTurn = ++brain.turn;
+    ui.set("thinking"); lastExchange = Date.now();
     ui.heard(text);
     brain.respond(text, myTurn);
   }
 };
+let lastExchange = 0, sttSeq = 0;
+
+// ---------- voiceprint: loudness + spectral shape of the owner's voice ----------
+const vprint = {
+  cur: {n:0, lv:[], sp:new Float32Array(24)}, train: null,
+  add(rms, bands, recording){ const c = this.train || (recording ? this.cur : null); if (!c) return;
+    c.n++; c.lv.push(20*Math.log10(rms+1e-7)); for (let i=0;i<24;i++) c.sp[i] += Math.log10(bands[i]+1e-12); },
+  take(){ const c = this.cur; this.cur = {n:0, lv:[], sp:new Float32Array(24)}; return c; },
+  summarize(c){ if (c.n < 6) return null; const lv = c.lv.slice().sort((a,b)=>a-b); const sp = Array.from(c.sp, v=>v/c.n); const m = sp.reduce((a,b)=>a+b,0)/24; const v = sp.map(x=>x-m); const nrm = Math.hypot(...v)||1;
+    return {lvl: lv[Math.floor(lv.length*0.6)], sp: v.map(x=>x/nrm)}; },
+  match(c){ if (!cfg.focus || !cfg.vp) return null; const u = this.summarize(c); if (!u) return null;
+    const sim = u.sp.reduce((a,x,i)=>a + x*cfg.vp.sp[i], 0); const near = u.lvl - cfg.vp.lvl;
+    return {sim, near, ok: sim >= 0.72 && near >= -11}; }
+};
+function showMatch(m){ const el = $("mic-name"); if (!el) return; el.textContent = `${m.ok ? "✓ You" : "✕ Ignored"} · match ${Math.round(Math.max(0,m.sim)*100)}% · ${m.near >= -6 ? "near" : m.near >= -11 ? "mid" : "far"}`; el.style.color = m.ok ? "#7dffb0" : "#ffb547"; clearTimeout(showMatch.t); showMatch.t = setTimeout(()=>{ el.style.color = ""; el.textContent = "Microphone"; }, 4000); }
 
 const NOISE = /^(\W*|you\.?|\.+|uh\.?|um\.?|hmm+\.?|mm+\.?|thanks for watching!?|subtitles by.*)$/i;
 const SHORTFAKE = /^(thank you\.?|thanks\.?|bye\.?|okay\.?|so\.?)$/i;
@@ -567,7 +600,7 @@ const brain = {
     }
     this.busy = false; saveHistory();
   },
-  doneSpeaking(){ if (!this.busy && !vad.rec) ui.set("idle"); },
+  doneSpeaking(){ lastExchange = Date.now(); if (!this.busy && !vad.rec) ui.set("idle"); },
   say(text, anyTurn){ const t = this.turn; player.enqueue({promise: synth(text), text, turn:t, anyTurn}); },
   async respond(userText, turn){
     this.busy = true; player.spokenText = "";
@@ -692,12 +725,13 @@ async function loadWeather(){
 }
 loadWeather(); setInterval(loadWeather, 15*60000);
 function hudTick(){ const d=new Date(); $("h-clock").textContent=d.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false}); $("h-date").textContent=d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"2-digit"}); $("h-voice").textContent=(cfg.voice||"--")+(ttsBroken?" ⚠":""); $("h-mem").textContent=history.length; $("h-notes").textContent=notes.length; $("h-link").textContent= ui.state==="asleep"?"Standby":"Groq LPU · online"; $("b-link").style.setProperty("--w", ui.state==="asleep"?"30%":(88+Math.random()*10)+"%"); $("d-pace").textContent=(cfg.pace||1.15).toFixed(2)+"×"; if (micStream){ const tr=micStream.getAudioTracks()[0]; if (tr) $("mic-name").textContent = tr.label || "Microphone"; } } setInterval(hudTick,1000); hudTick();
-function syncQuick(){ $("q-voice").value = cfg.voice || "diana"; $("q-pace").value = cfg.pace || 1.15; document.querySelectorAll("#q-speed button").forEach(b=>b.classList.toggle("on", b.dataset.v === (cfg.speed||"balanced"))); hudTick(); }
+function syncQuick(){ $("q-focus").querySelector("button").classList.toggle("on", !!(cfg.focus && cfg.vp)); $("q-focus").querySelector("button").textContent = cfg.vp ? "Focus" : "Focus · train"; $("q-voice").value = cfg.voice || "diana"; $("q-pace").value = cfg.pace || 1.15; document.querySelectorAll("#q-speed button").forEach(b=>b.classList.toggle("on", b.dataset.v === (cfg.speed||"balanced"))); hudTick(); }
 const stopTap = e => e.stopPropagation(); ["pointerdown","pointerup","click","touchstart"].forEach(ev => document.querySelectorAll(".qc").forEach(q => q.addEventListener(ev, stopTap)));
 $("q-voice").onchange = () => { cfg.voice = $("q-voice").value; store.set("cfg", cfg); ttsCache.clear(); ttsBroken = false; syncQuick();
   if (ui.state !== "asleep") { brain.turn++; player.stopAll(); brain.say("Voice changed. This is how I sound now.", true); } };
 $("q-pace").oninput = () => { cfg.pace = +$("q-pace").value; hudTick(); };
 $("q-pace").onchange = () => { store.set("cfg", cfg); if (ui.state !== "asleep" && !player.playing) brain.say("Pace set.", true); };
+$("q-focus").querySelector("button").onclick = () => { if (!cfg.vp){ openSetup(); $("f-train-s").textContent = "Train your voice first, then Focus stays on."; return; } cfg.focus = !cfg.focus; store.set("cfg", cfg); syncQuick(); restartMic(); };
 document.querySelectorAll("#q-speed button").forEach(b => b.onclick = () => { cfg.speed = b.dataset.v; store.set("cfg", cfg); syncQuick(); });
 syncQuick();
 
@@ -708,11 +742,11 @@ document.addEventListener("pointerup", e => { clearTimeout(pressT); if (e.target
 $("end").addEventListener("click", e => { e.stopPropagation(); sleep(); });
 
 function openSetup(){
-  $("f-name").value = cfg.name || ""; $("f-key").value = cfg.key || ""; $("f-voice").value = cfg.voice || "diana"; $("f-pace").value = cfg.pace || 1.15; $("f-sens").value = cfg.sens || 4; sensLabel(); listMics(); meterOn = true; meterLoop(); $("f-pace-v").textContent = (+$("f-pace").value).toFixed(2)+"×";
+  $("f-name").value = cfg.name || ""; $("f-key").value = cfg.key || ""; $("f-voice").value = cfg.voice || "diana"; $("f-pace").value = cfg.pace || 1.15; $("f-sens").value = cfg.sens || 4; $("f-name-req").checked = !!cfg.nameReq; $("f-train-s").textContent = cfg.vp ? "Voice trained. Retrain any time." : ""; sensLabel(); listMics(); meterOn = true; meterLoop(); $("f-pace-v").textContent = (+$("f-pace").value).toFixed(2)+"×";
   $("f-extra").style.display = cfg.key ? "flex" : "none"; if (cfg.key) initAudio().then(listMics).catch(()=>{});
   $("setup").classList.add("on");
 }
-$("f-save").onclick = () => { const micChanged = cfg.mic !== $("f-mic").value; cfg = {name:$("f-name").value.trim(), key:$("f-key").value.trim(), voice:$("f-voice").value, pace:+$("f-pace").value, sens:+$("f-sens").value, mic:$("f-mic").value, nz:1, sysmic:1, speed:cfg.speed||"balanced"}; syncQuick(); meterOn = false; if (micChanged && micStream){ micStream.getTracks().forEach(t=>t.stop()); micStream = null; initAudio().catch(()=>{}); } store.set("cfg", cfg); ttsCache.clear(); ttsBroken = false; $("setup").classList.remove("on"); if (ui.state==="asleep") wake(); };
+$("f-save").onclick = () => { const micChanged = cfg.mic !== $("f-mic").value; cfg = {name:$("f-name").value.trim(), key:$("f-key").value.trim(), voice:$("f-voice").value, pace:+$("f-pace").value, sens:+$("f-sens").value, mic:$("f-mic").value, nz:1, sysmic:1, focus:cfg.focus, nameReq:$("f-name-req").checked, vp:cfg.vp, speed:cfg.speed||"balanced"}; syncQuick(); meterOn = false; if (micChanged && micStream){ micStream.getTracks().forEach(t=>t.stop()); micStream = null; initAudio().catch(()=>{}); } store.set("cfg", cfg); ttsCache.clear(); ttsBroken = false; $("setup").classList.remove("on"); if (ui.state==="asleep") wake(); };
 $("f-pace").oninput = () => $("f-pace-v").textContent = (+$("f-pace").value).toFixed(2)+"×";
 $("f-close").onclick = () => { meterOn = false; $("setup").classList.remove("on"); };
 let meterOn = false;
@@ -724,6 +758,16 @@ function htmlFallback(buf, offset){ try{ const d = buf.getChannelData(0), n = d.
   const w=(p,t)=>{for(let i=0;i<t.length;i++) dv.setUint8(p+i,t.charCodeAt(i));}; w(0,"RIFF"); dv.setUint32(4,36+n*2,true); w(8,"WAVE"); w(12,"fmt "); dv.setUint32(16,16,true); dv.setUint16(20,1,true); dv.setUint16(22,1,true); dv.setUint32(24,buf.sampleRate,true); dv.setUint32(28,buf.sampleRate*2,true); dv.setUint16(32,2,true); dv.setUint16(34,16,true); w(36,"data"); dv.setUint32(40,n*2,true);
   for (let i=0;i<n;i++) dv.setInt16(44+i*2, Math.max(-1,Math.min(1,d[i]))*0x7fff, true);
   const a = new Audio(URL.createObjectURL(new Blob([ab],{type:"audio/wav"}))); a.currentTime = offset||0; a.play().catch(()=>{}); }catch(e){} }
+$("f-train").onclick = async () => {
+  try { await initAudio(); } catch(e){ $("f-train-s").textContent = "Mic not available."; return; }
+  const st = $("f-train-s"); vprint.train = {n:0, lv:[], sp:new Float32Array(24)}; const saved = ui.state; ui.state = "asleep";
+  st.textContent = "Read aloud, in your normal voice: “Friday, this is my voice. Only answer me, not the TV or anyone else in the room.”";
+  let left = 8; $("f-train").textContent = "Listening… 8"; const iv = setInterval(()=>{ left--; $("f-train").textContent = left > 0 ? "Listening… "+left : "Train my voice"; }, 1000);
+  await new Promise(r=>setTimeout(r, 8000)); clearInterval(iv); ui.state = saved;
+  const p = vprint.summarize(vprint.train); vprint.train = null;
+  if (!p || p < 0){ st.textContent = "I didn't hear enough. Try again a little closer to the mic."; return; }
+  cfg.vp = p; cfg.focus = true; store.set("cfg", cfg); syncQuick(); st.textContent = "Got it. Friday now focuses on your voice."; restartMic();
+};
 async function listMics(){ try{ const d = await navigator.mediaDevices.enumerateDevices(); const sel = $("f-mic"); const cur = cfg.mic || "";
   sel.innerHTML = '<option value="">System default</option>' + d.filter(x=>x.kind==="audioinput" && x.deviceId!=="default").map(x=>`<option value="${x.deviceId}">${(x.label||"Microphone").replace(/</g,"")}</option>`).join(""); sel.value = cur; }catch(e){} }
 function meterLoop(){ if (!meterOn) return; const k = [0,1.6,1.3,1.0,0.75,0.55][+$("f-sens").value]; const thr = Math.max(vad.floor*3.2*k, 0.012*k);

@@ -26,7 +26,8 @@
     "data/2026-11/n01-see-you-sunday.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n01-see-you-sunday.jpg"
+   "thumb": "data/2026-11/thumbs/n01-see-you-sunday.jpg",
+   "music": "bright acoustic pop, welcoming"
   },
   {
    "id": "n02",
@@ -55,7 +56,9 @@
    "sermonDate": "2026-10-18",
    "timestampConfirmed": true,
    "clipNote": "Starts “So what’s the story?” → ends “Jesus is the story.” (~55s)",
-   "thumb": "data/2026-11/thumbs/n02-clip-jesus-is-the-story.jpg"
+   "thumb": "data/2026-11/thumbs/n02-clip-jesus-is-the-story.jpg",
+   "music": "uplifting cinematic strings, confident",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n03",
@@ -73,7 +76,8 @@
     "data/2026-11/n03-quote-jesus-is-the-story.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n03-quote-jesus-is-the-story.jpg"
+   "thumb": "data/2026-11/thumbs/n03-quote-jesus-is-the-story.jpg",
+   "music": "subtle cinematic piano, thoughtful"
   },
   {
    "id": "n04",
@@ -95,7 +99,8 @@
     "data/2026-11/n04-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n04-1.jpg"
+   "thumb": "data/2026-11/thumbs/n04-1.jpg",
+   "music": "mellow lo-fi keys, steady (for swiping)"
   },
   {
    "id": "n05",
@@ -113,7 +118,8 @@
     "data/2026-11/n05-verse-isaiah-40-31.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n05-verse-isaiah-40-31.jpg"
+   "thumb": "data/2026-11/thumbs/n05-verse-isaiah-40-31.jpg",
+   "music": "soft ambient piano, peaceful"
   },
   {
    "id": "n06",
@@ -131,7 +137,8 @@
     "data/2026-11/n06-welcome-home.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n06-welcome-home.jpg"
+   "thumb": "data/2026-11/thumbs/n06-welcome-home.jpg",
+   "music": "light upbeat acoustic, friendly"
   },
   {
    "id": "n07",
@@ -150,7 +157,8 @@
    ],
    "status": "pending",
    "confirm": "Confirm Nov 8 is the final week of UNSTOPPABLE (inferred: 5-week series launched Oct 11).",
-   "thumb": "data/2026-11/thumbs/n07-sunday-unstoppable.jpg"
+   "thumb": "data/2026-11/thumbs/n07-sunday-unstoppable.jpg",
+   "music": "bright acoustic pop, welcoming"
   },
   {
    "id": "n08",
@@ -179,7 +187,9 @@
    "sermonDate": "2026-10-11",
    "timestampConfirmed": true,
    "clipNote": "Starts “So don’t move forward on your own strength” → ends “that just becomes pressure.” (~64s)",
-   "thumb": "data/2026-11/thumbs/n08-clip-presence.jpg"
+   "thumb": "data/2026-11/thumbs/n08-clip-presence.jpg",
+   "music": "soft ambient piano, reflective",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n09",
@@ -197,7 +207,8 @@
     "data/2026-11/n09-verse-acts-2-42.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n09-verse-acts-2-42.jpg"
+   "thumb": "data/2026-11/thumbs/n09-verse-acts-2-42.jpg",
+   "music": "soft ambient piano, peaceful"
   },
   {
    "id": "n10",
@@ -219,7 +230,8 @@
     "data/2026-11/n10-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n10-1.jpg"
+   "thumb": "data/2026-11/thumbs/n10-1.jpg",
+   "music": "mellow lo-fi keys, steady (for swiping)"
   },
   {
    "id": "n11",
@@ -237,7 +249,8 @@
     "data/2026-11/n11-quote-worth-naming.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n11-quote-worth-naming.jpg"
+   "thumb": "data/2026-11/thumbs/n11-quote-worth-naming.jpg",
+   "music": "subtle cinematic piano, thoughtful"
   },
   {
    "id": "n12",
@@ -255,7 +268,8 @@
     "data/2026-11/n12-verse-matthew-11-28.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n12-verse-matthew-11-28.jpg"
+   "thumb": "data/2026-11/thumbs/n12-verse-matthew-11-28.jpg",
+   "music": "soft ambient piano, peaceful"
   },
   {
    "id": "n13",
@@ -273,7 +287,8 @@
     "data/2026-11/n13-see-you-sunday.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n13-see-you-sunday.jpg"
+   "thumb": "data/2026-11/thumbs/n13-see-you-sunday.jpg",
+   "music": "bright acoustic pop, welcoming"
   },
   {
    "id": "n14",
@@ -302,7 +317,9 @@
    "sermonDate": "2026-10-04",
    "timestampConfirmed": true,
    "clipNote": "Starts “Because if I want to pass on wisdom” → ends “when I don’t exemplify it.” (~68s, trim if needed)",
-   "thumb": "data/2026-11/thumbs/n14-clip-passing-on.jpg"
+   "thumb": "data/2026-11/thumbs/n14-clip-passing-on.jpg",
+   "music": "warm acoustic guitar, honest and reflective",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n15",
@@ -320,7 +337,8 @@
     "data/2026-11/n15-quote-what-we-live.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n15-quote-what-we-live.jpg"
+   "thumb": "data/2026-11/thumbs/n15-quote-what-we-live.jpg",
+   "music": "subtle cinematic piano, thoughtful"
   },
   {
    "id": "n16",
@@ -342,7 +360,8 @@
     "data/2026-11/n16-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n16-1.jpg"
+   "thumb": "data/2026-11/thumbs/n16-1.jpg",
+   "music": "mellow lo-fi keys, steady (for swiping)"
   },
   {
    "id": "n17",
@@ -360,7 +379,8 @@
     "data/2026-11/n17-verse-proverbs-3-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n17-verse-proverbs-3-5.jpg"
+   "thumb": "data/2026-11/thumbs/n17-verse-proverbs-3-5.jpg",
+   "music": "soft ambient piano, peaceful"
   },
   {
    "id": "n18",
@@ -378,7 +398,8 @@
     "data/2026-11/n18-verse-psalm-100-4.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n18-verse-psalm-100-4.jpg"
+   "thumb": "data/2026-11/thumbs/n18-verse-psalm-100-4.jpg",
+   "music": "warm acoustic guitar, grateful and gentle"
   },
   {
    "id": "n19",
@@ -396,7 +417,8 @@
     "data/2026-11/n19-sunday-give-thanks.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n19-sunday-give-thanks.jpg"
+   "thumb": "data/2026-11/thumbs/n19-sunday-give-thanks.jpg",
+   "music": "warm acoustic guitar, grateful and gentle"
   },
   {
    "id": "n20",
@@ -425,7 +447,9 @@
    "sermonDate": "2026-09-27",
    "timestampConfirmed": false,
    "clipNote": "Approximate: transcript only gives 30s blocks here. Starts near “We are all guilty… a scoffer is not someone who cannot learn”; ends near “pride makes that person unreachable.” Confirm in/out before posting.",
-   "thumb": "data/2026-11/thumbs/n20-clip-teachable.jpg"
+   "thumb": "data/2026-11/thumbs/n20-clip-teachable.jpg",
+   "music": "subtle cinematic pulse, thoughtful",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n21",
@@ -447,7 +471,8 @@
     "data/2026-11/n21-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n21-1.jpg"
+   "thumb": "data/2026-11/thumbs/n21-1.jpg",
+   "music": "bright acoustic pop, welcoming"
   },
   {
    "id": "n22",
@@ -465,7 +490,8 @@
     "data/2026-11/n22-happy-thanksgiving.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n22-happy-thanksgiving.jpg"
+   "thumb": "data/2026-11/thumbs/n22-happy-thanksgiving.jpg",
+   "music": "warm acoustic guitar, grateful and gentle"
   },
   {
    "id": "n23",
@@ -483,7 +509,8 @@
     "data/2026-11/n23-verse-1-thess-5-18.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n23-verse-1-thess-5-18.jpg"
+   "thumb": "data/2026-11/thumbs/n23-verse-1-thess-5-18.jpg",
+   "music": "soft ambient piano, peaceful"
   },
   {
    "id": "n24",
@@ -501,7 +528,8 @@
     "data/2026-11/n24-see-you-sunday.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n24-see-you-sunday.jpg"
+   "thumb": "data/2026-11/thumbs/n24-see-you-sunday.jpg",
+   "music": "bright acoustic pop, welcoming"
   },
   {
    "id": "n25",
@@ -519,7 +547,8 @@
     "data/2026-11/n25-sunday-team.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n25-sunday-team.jpg"
+   "thumb": "data/2026-11/thumbs/n25-sunday-team.jpg",
+   "music": "bright feel-good acoustic, warm"
   },
   {
    "id": "n26",
@@ -548,7 +577,9 @@
    "sermonDate": "2026-10-04",
    "timestampConfirmed": false,
    "clipNote": "Approximate: starts near “On the worst night, sitting around men that he had loved”; ends after “Every time I come, I come as the betrayer and he feeds me.” (~60s). Confirm in/out.",
-   "thumb": "data/2026-11/thumbs/n26-clip.jpg"
+   "thumb": "data/2026-11/thumbs/n26-clip.jpg",
+   "music": "gentle hymn-style piano, reverent (Communion)",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n27",
@@ -566,7 +597,8 @@
     "data/2026-11/n27-verse-lam-3-22.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n27-verse-lam-3-22.jpg"
+   "thumb": "data/2026-11/thumbs/n27-verse-lam-3-22.jpg",
+   "music": "soft ambient piano, peaceful"
   },
   {
    "id": "n28",
@@ -588,7 +620,8 @@
     "data/2026-11/n28-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n28-1.jpg"
+   "thumb": "data/2026-11/thumbs/n28-1.jpg",
+   "music": "mellow lo-fi keys, steady (for swiping)"
   },
   {
    "id": "n29",
@@ -606,7 +639,8 @@
     "data/2026-11/n29-verse-psalm-46-1.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n29-verse-psalm-46-1.jpg"
+   "thumb": "data/2026-11/thumbs/n29-verse-psalm-46-1.jpg",
+   "music": "soft ambient piano, peaceful"
   },
   {
    "id": "n30",
@@ -624,7 +658,8 @@
     "data/2026-11/n30-quote-been-with-jesus.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n30-quote-been-with-jesus.jpg"
+   "thumb": "data/2026-11/thumbs/n30-quote-been-with-jesus.jpg",
+   "music": "subtle cinematic piano, thoughtful"
   },
   {
    "id": "n31",
@@ -642,7 +677,8 @@
     "data/2026-11/n31-pray-for-you.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n31-pray-for-you.jpg"
+   "thumb": "data/2026-11/thumbs/n31-pray-for-you.jpg",
+   "music": "gentle ambient worship pad, prayerful"
   },
   {
    "id": "n32",
@@ -671,7 +707,9 @@
    "sermonDate": "2026-10-18",
    "timestampConfirmed": true,
    "clipNote": "Starts “Maybe prison for you… it’s so far off” → ends “Could you still say it?” (~55s)",
-   "thumb": "data/2026-11/thumbs/n32-clip.jpg"
+   "thumb": "data/2026-11/thumbs/n32-clip.jpg",
+   "music": "tense-to-hopeful cinematic strings, low build",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n33",
@@ -693,7 +731,8 @@
     "data/2026-11/n33-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n33-1.jpg"
+   "thumb": "data/2026-11/thumbs/n33-1.jpg",
+   "music": "mellow lo-fi keys, steady (for swiping)"
   },
   {
    "id": "n34",
@@ -711,7 +750,8 @@
     "data/2026-11/n34-quote-silence.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n34-quote-silence.jpg"
+   "thumb": "data/2026-11/thumbs/n34-quote-silence.jpg",
+   "music": "subtle cinematic piano, thoughtful"
   },
   {
    "id": "n35",
@@ -729,7 +769,8 @@
     "data/2026-11/n35-verse-acts-4-20.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n35-verse-acts-4-20.jpg"
+   "thumb": "data/2026-11/thumbs/n35-verse-acts-4-20.jpg",
+   "music": "soft ambient piano, peaceful"
   },
   {
    "id": "n36",
@@ -747,7 +788,8 @@
     "data/2026-11/n36-students.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n36-students.jpg"
+   "thumb": "data/2026-11/thumbs/n36-students.jpg",
+   "music": "bright feel-good acoustic, warm"
   },
   {
    "id": "n37",
@@ -769,7 +811,8 @@
     "data/2026-11/n37-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n37-1.jpg"
+   "thumb": "data/2026-11/thumbs/n37-1.jpg",
+   "music": "mellow lo-fi keys, steady (for swiping)"
   },
   {
    "id": "n38",
@@ -787,7 +830,8 @@
     "data/2026-11/n38-see-you-tomorrow.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n38-see-you-tomorrow.jpg"
+   "thumb": "data/2026-11/thumbs/n38-see-you-tomorrow.jpg",
+   "music": "bright acoustic pop, welcoming"
   },
   {
    "id": "n39",
@@ -816,7 +860,9 @@
    "sermonDate": "2026-10-18",
    "timestampConfirmed": false,
    "clipNote": "Approximate: starts near “you’re like, ‘Oh, I should have said Jesus’”; ends after “our fear start choosing our words for us.” (~57s). Confirm in/out.",
-   "thumb": "data/2026-11/thumbs/n39-clip.jpg"
+   "thumb": "data/2026-11/thumbs/n39-clip.jpg",
+   "music": "soft ambient pad, introspective",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n40",
@@ -834,7 +880,8 @@
     "data/2026-11/n40-verse-acts-28-31.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n40-verse-acts-28-31.jpg"
+   "thumb": "data/2026-11/thumbs/n40-verse-acts-28-31.jpg",
+   "music": "soft ambient piano, peaceful"
   },
   {
    "id": "n41",
@@ -863,7 +910,9 @@
    "sermonDate": "2026-10-11",
    "timestampConfirmed": true,
    "clipNote": "Starts “As he close out this book. Listen, he says unhindered” → ends “Rome did not have the gospel.” (~51s)",
-   "thumb": "data/2026-11/thumbs/n41-clip.jpg"
+   "thumb": "data/2026-11/thumbs/n41-clip.jpg",
+   "music": "uplifting cinematic drums and strings, triumphant",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n42",
@@ -881,7 +930,8 @@
     "data/2026-11/n42-verse-psalm-118-24.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n42-verse-psalm-118-24.jpg"
+   "thumb": "data/2026-11/thumbs/n42-verse-psalm-118-24.jpg",
+   "music": "soft ambient piano, peaceful"
   },
   {
    "id": "n43",
@@ -903,7 +953,8 @@
     "data/2026-11/n43-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n43-1.jpg"
+   "thumb": "data/2026-11/thumbs/n43-1.jpg",
+   "music": "mellow lo-fi keys, steady (for swiping)"
   },
   {
    "id": "n44",
@@ -921,7 +972,8 @@
     "data/2026-11/n44-prayer-week.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n44-prayer-week.jpg"
+   "thumb": "data/2026-11/thumbs/n44-prayer-week.jpg",
+   "music": "gentle ambient worship pad, prayerful"
   },
   {
    "id": "n45",
@@ -939,7 +991,8 @@
     "data/2026-11/n45-quote-criticism.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n45-quote-criticism.jpg"
+   "thumb": "data/2026-11/thumbs/n45-quote-criticism.jpg",
+   "music": "subtle cinematic piano, thoughtful"
   },
   {
    "id": "n46",
@@ -957,7 +1010,8 @@
     "data/2026-11/n46-pray-for-you.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n46-pray-for-you.jpg"
+   "thumb": "data/2026-11/thumbs/n46-pray-for-you.jpg",
+   "music": "gentle ambient worship pad, prayerful"
   },
   {
    "id": "n47",
@@ -986,7 +1040,9 @@
    "sermonDate": "2026-10-11",
    "timestampConfirmed": true,
    "clipNote": "Starts “Do not think that because I stand up here almost every Sunday” → ends “We do not manufacture what only God can give.” (~60s)",
-   "thumb": "data/2026-11/thumbs/n47-clip.jpg"
+   "thumb": "data/2026-11/thumbs/n47-clip.jpg",
+   "music": "soft ambient piano, honest and reflective",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n48",
@@ -1004,7 +1060,8 @@
     "data/2026-11/n48-verse-galatians-6-9.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n48-verse-galatians-6-9.jpg"
+   "thumb": "data/2026-11/thumbs/n48-verse-galatians-6-9.jpg",
+   "music": "soft ambient piano, peaceful"
   },
   {
    "id": "n49",
@@ -1022,7 +1079,8 @@
     "data/2026-11/n49-kids.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n49-kids.jpg"
+   "thumb": "data/2026-11/thumbs/n49-kids.jpg",
+   "music": "light upbeat acoustic, friendly"
   },
   {
    "id": "n50",
@@ -1044,7 +1102,8 @@
     "data/2026-11/n50-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n50-1.jpg"
+   "thumb": "data/2026-11/thumbs/n50-1.jpg",
+   "music": "mellow lo-fi keys, steady (for swiping)"
   },
   {
    "id": "n51",
@@ -1062,7 +1121,8 @@
     "data/2026-11/n51-quote-pick-one.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n51-quote-pick-one.jpg"
+   "thumb": "data/2026-11/thumbs/n51-quote-pick-one.jpg",
+   "music": "subtle cinematic piano, thoughtful"
   },
   {
    "id": "n52",
@@ -1084,7 +1144,8 @@
     "data/2026-11/n52-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n52-1.jpg"
+   "thumb": "data/2026-11/thumbs/n52-1.jpg",
+   "music": "bright feel-good acoustic, warm"
   },
   {
    "id": "n53",
@@ -1102,7 +1163,8 @@
     "data/2026-11/n53-see-you-tomorrow.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n53-see-you-tomorrow.jpg"
+   "thumb": "data/2026-11/thumbs/n53-see-you-tomorrow.jpg",
+   "music": "bright acoustic pop, welcoming"
   },
   {
    "id": "n54",
@@ -1131,7 +1193,9 @@
    "sermonDate": "2026-10-11",
    "timestampConfirmed": true,
    "clipNote": "Starts “Some of you know what it means to be praying for a time” → ends after the repeated “…until he does what only he can.” (~60s)",
-   "thumb": "data/2026-11/thumbs/n54-clip.jpg"
+   "thumb": "data/2026-11/thumbs/n54-clip.jpg",
+   "music": "slow ambient worship pad, patient and hopeful",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n55",
@@ -1149,7 +1213,8 @@
     "data/2026-11/n55-new-here.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n55-new-here.jpg"
+   "thumb": "data/2026-11/thumbs/n55-new-here.jpg",
+   "music": "light upbeat acoustic, friendly"
   },
   {
    "id": "n56",
@@ -1178,7 +1243,9 @@
    "sermonDate": "2026-10-18",
    "timestampConfirmed": true,
    "clipNote": "Starts “They didn’t say the right thing so that the rulers would be convinced” → ends “Jesus is the answer.” (~38s)",
-   "thumb": "data/2026-11/thumbs/n56-clip.jpg"
+   "thumb": "data/2026-11/thumbs/n56-clip.jpg",
+   "music": "driving gospel keys, bold",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n57",
@@ -1196,7 +1263,8 @@
     "data/2026-11/n57-verse-ephesians-6-4.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n57-verse-ephesians-6-4.jpg"
+   "thumb": "data/2026-11/thumbs/n57-verse-ephesians-6-4.jpg",
+   "music": "soft ambient piano, peaceful"
   },
   {
    "id": "n58",
@@ -1214,7 +1282,8 @@
     "data/2026-11/n58-quote-faithfulness.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n58-quote-faithfulness.jpg"
+   "thumb": "data/2026-11/thumbs/n58-quote-faithfulness.jpg",
+   "music": "subtle cinematic piano, thoughtful"
   },
   {
    "id": "n59",
@@ -1232,7 +1301,8 @@
     "data/2026-11/n59-verse-1-thess-5-11.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n59-verse-1-thess-5-11.jpg"
+   "thumb": "data/2026-11/thumbs/n59-verse-1-thess-5-11.jpg",
+   "music": "soft ambient piano, peaceful"
   },
   {
    "id": "n60",
@@ -1261,7 +1331,9 @@
    "sermonDate": "2026-09-27",
    "timestampConfirmed": false,
    "clipNote": "Approximate (transcript gives ~30s blocks): starts near “Faithful are the wounds of a friend”; ends after “Can a friend correct you?” (~58s). Confirm in/out.",
-   "thumb": "data/2026-11/thumbs/n60-clip.jpg"
+   "thumb": "data/2026-11/thumbs/n60-clip.jpg",
+   "music": "warm acoustic guitar, conversational",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n61",
@@ -1279,7 +1351,8 @@
     "data/2026-11/n61-pray-for-you.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n61-pray-for-you.jpg"
+   "thumb": "data/2026-11/thumbs/n61-pray-for-you.jpg",
+   "music": "gentle ambient worship pad, prayerful"
   },
   {
    "id": "n62",
@@ -1308,7 +1381,9 @@
    "sermonDate": "2026-10-04",
    "timestampConfirmed": true,
    "clipNote": "Starts “Because someone may forget a lesson that you taught them” → ends “they watch what you do when someone hurts you.” (~60s)",
-   "thumb": "data/2026-11/thumbs/n62-clip.jpg"
+   "thumb": "data/2026-11/thumbs/n62-clip.jpg",
+   "music": "gentle piano and strings, tender",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n63",
@@ -1330,7 +1405,8 @@
     "data/2026-11/n63-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n63-1.jpg"
+   "thumb": "data/2026-11/thumbs/n63-1.jpg",
+   "music": "mellow lo-fi keys, steady (for swiping)"
   },
   {
    "id": "n64",
@@ -1348,7 +1424,8 @@
     "data/2026-11/n64-kids-message.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n64-kids-message.jpg"
+   "thumb": "data/2026-11/thumbs/n64-kids-message.jpg",
+   "music": "bright feel-good acoustic, warm"
   },
   {
    "id": "n65",
@@ -1366,7 +1443,8 @@
     "data/2026-11/n65-quote-wise-life.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n65-quote-wise-life.jpg"
+   "thumb": "data/2026-11/thumbs/n65-quote-wise-life.jpg",
+   "music": "subtle cinematic piano, thoughtful"
   },
   {
    "id": "n66",
@@ -1384,7 +1462,8 @@
     "data/2026-11/n66-prayer-weekend.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n66-prayer-weekend.jpg"
+   "thumb": "data/2026-11/thumbs/n66-prayer-weekend.jpg",
+   "music": "gentle ambient worship pad, prayerful"
   },
   {
    "id": "n67",
@@ -1402,7 +1481,8 @@
     "data/2026-11/n67-verse-psalm-95-2.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n67-verse-psalm-95-2.jpg"
+   "thumb": "data/2026-11/thumbs/n67-verse-psalm-95-2.jpg",
+   "music": "soft ambient piano, peaceful"
   },
   {
    "id": "n68",
@@ -1420,7 +1500,8 @@
     "data/2026-11/n68-see-you-tomorrow.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n68-see-you-tomorrow.jpg"
+   "thumb": "data/2026-11/thumbs/n68-see-you-tomorrow.jpg",
+   "music": "bright acoustic pop, welcoming"
   },
   {
    "id": "n69",
@@ -1449,7 +1530,9 @@
    "sermonDate": "2026-10-04",
    "timestampConfirmed": false,
    "clipNote": "Starts “Because sometime the strongest thing that we can pass on”; end approximate, after “we know what to do when we do something wrong.” (~60s). Confirm out-point.",
-   "thumb": "data/2026-11/thumbs/n69-clip.jpg"
+   "thumb": "data/2026-11/thumbs/n69-clip.jpg",
+   "music": "soft acoustic piano, tender and hopeful",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n70",
@@ -1467,7 +1550,8 @@
     "data/2026-11/n70-quote-teachability.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n70-quote-teachability.jpg"
+   "thumb": "data/2026-11/thumbs/n70-quote-teachability.jpg",
+   "music": "subtle cinematic piano, thoughtful"
   },
   {
    "id": "n71",
@@ -1496,7 +1580,9 @@
    "sermonDate": "2026-10-11",
    "timestampConfirmed": true,
    "clipNote": "Starts “Here’s, God does not grow his church at the speed of our comfort” → ends “Is it Peter? No. Because God does not grow his church at the speed of our comfort.” (~57s)",
-   "thumb": "data/2026-11/thumbs/n71-clip.jpg"
+   "thumb": "data/2026-11/thumbs/n71-clip.jpg",
+   "music": "uplifting cinematic strings, building",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n72",
@@ -1514,7 +1600,8 @@
     "data/2026-11/n72-thanks-1.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n72-thanks-1.jpg"
+   "thumb": "data/2026-11/thumbs/n72-thanks-1.jpg",
+   "music": "warm acoustic guitar, grateful and gentle"
   },
   {
    "id": "n73",
@@ -1536,7 +1623,8 @@
     "data/2026-11/n73-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n73-1.jpg"
+   "thumb": "data/2026-11/thumbs/n73-1.jpg",
+   "music": "mellow lo-fi keys, steady (for swiping)"
   },
   {
    "id": "n74",
@@ -1554,7 +1642,8 @@
     "data/2026-11/n74-thanks-2.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n74-thanks-2.jpg"
+   "thumb": "data/2026-11/thumbs/n74-thanks-2.jpg",
+   "music": "warm acoustic guitar, grateful and gentle"
   },
   {
    "id": "n75",
@@ -1583,7 +1672,9 @@
    "sermonDate": "2026-09-27",
    "timestampConfirmed": false,
    "clipNote": "Approximate (transcript gives ~30s blocks): starts near “Because we are all familiar with shame”; ends near “you should go fix it while shame leaves you hiding.” (~60s). Confirm in/out.",
-   "thumb": "data/2026-11/thumbs/n75-clip.jpg"
+   "thumb": "data/2026-11/thumbs/n75-clip.jpg",
+   "music": "gentle ambient piano, compassionate",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n76",
@@ -1601,7 +1692,8 @@
     "data/2026-11/n76-thanks-3.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n76-thanks-3.jpg"
+   "thumb": "data/2026-11/thumbs/n76-thanks-3.jpg",
+   "music": "warm acoustic guitar, grateful and gentle"
   },
   {
    "id": "n77",
@@ -1619,7 +1711,8 @@
     "data/2026-11/n77-pray-thanksgiving.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n77-pray-thanksgiving.jpg"
+   "thumb": "data/2026-11/thumbs/n77-pray-thanksgiving.jpg",
+   "music": "warm acoustic guitar, grateful and gentle"
   },
   {
    "id": "n78",
@@ -1641,7 +1734,8 @@
     "data/2026-11/n78-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n78-1.jpg"
+   "thumb": "data/2026-11/thumbs/n78-1.jpg",
+   "music": "warm acoustic guitar, grateful and gentle"
   },
   {
    "id": "n79",
@@ -1670,7 +1764,9 @@
    "sermonDate": "2026-10-04",
    "timestampConfirmed": true,
    "clipNote": "Starts “Here’s a cautious warning that I want to give us” → ends “bring them up in the discipline and the instruction of the Lord.” (~56s)",
-   "thumb": "data/2026-11/thumbs/n79-clip.jpg"
+   "thumb": "data/2026-11/thumbs/n79-clip.jpg",
+   "music": "warm acoustic guitar, steady",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n80",
@@ -1688,7 +1784,8 @@
     "data/2026-11/n80-thanks-4.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n80-thanks-4.jpg"
+   "thumb": "data/2026-11/thumbs/n80-thanks-4.jpg",
+   "music": "warm acoustic guitar, grateful and gentle"
   },
   {
    "id": "n81",
@@ -1706,7 +1803,8 @@
     "data/2026-11/n81-thanksgiving-prayer.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n81-thanksgiving-prayer.jpg"
+   "thumb": "data/2026-11/thumbs/n81-thanksgiving-prayer.jpg",
+   "music": "gentle ambient worship pad, prayerful"
   },
   {
    "id": "n82",
@@ -1724,7 +1822,8 @@
     "data/2026-11/n82-thanks-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n82-thanks-5.jpg"
+   "thumb": "data/2026-11/thumbs/n82-thanks-5.jpg",
+   "music": "warm acoustic guitar, grateful and gentle"
   },
   {
    "id": "n83",
@@ -1746,7 +1845,8 @@
     "data/2026-11/n83-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n83-1.jpg"
+   "thumb": "data/2026-11/thumbs/n83-1.jpg",
+   "music": "mellow lo-fi keys, steady (for swiping)"
   },
   {
    "id": "n84",
@@ -1764,7 +1864,8 @@
     "data/2026-11/n84-verse-psalm-121-2.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n84-verse-psalm-121-2.jpg"
+   "thumb": "data/2026-11/thumbs/n84-verse-psalm-121-2.jpg",
+   "music": "soft ambient piano, peaceful"
   },
   {
    "id": "n85",
@@ -1782,7 +1883,8 @@
     "data/2026-11/n85-see-you-tomorrow.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n85-see-you-tomorrow.jpg"
+   "thumb": "data/2026-11/thumbs/n85-see-you-tomorrow.jpg",
+   "music": "bright acoustic pop, welcoming"
   },
   {
    "id": "n86",
@@ -1811,7 +1913,9 @@
    "sermonDate": "2026-09-27",
    "timestampConfirmed": false,
    "clipNote": "Approximate (transcript gives ~30s blocks): starts near “Now, that sounds good. But understand here’s what it did not say”; ends near “Being corrected is not comfortable, but it is still valuable.” (~60s). Confirm in/out.",
-   "thumb": "data/2026-11/thumbs/n86-clip.jpg"
+   "thumb": "data/2026-11/thumbs/n86-clip.jpg",
+   "music": "light lo-fi keys, thoughtful",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n87",
@@ -1829,7 +1933,8 @@
     "data/2026-11/n87-first-time.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n87-first-time.jpg"
+   "thumb": "data/2026-11/thumbs/n87-first-time.jpg",
+   "music": "light upbeat acoustic, friendly"
   },
   {
    "id": "n88",
@@ -1858,7 +1963,9 @@
    "sermonDate": "2026-10-18",
    "timestampConfirmed": false,
    "clipNote": "Starts near “The challenge that we have as a modern Christian”; end approximate, near “So what we do? We suffer in silence.” (~60s). Confirm out-point.",
-   "thumb": "data/2026-11/thumbs/n88-clip.jpg"
+   "thumb": "data/2026-11/thumbs/n88-clip.jpg",
+   "music": "soft ambient worship pad, tender",
+   "musicVolume": "low (10-15%) under the voice"
   },
   {
    "id": "n89",
@@ -1876,7 +1983,8 @@
     "data/2026-11/n89-verse-romans-8-28.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n89-verse-romans-8-28.jpg"
+   "thumb": "data/2026-11/thumbs/n89-verse-romans-8-28.jpg",
+   "music": "soft ambient piano, peaceful"
   },
   {
    "id": "n90",
@@ -1898,7 +2006,8 @@
     "data/2026-11/n90-5.jpg"
    ],
    "status": "pending",
-   "thumb": "data/2026-11/thumbs/n90-1.jpg"
+   "thumb": "data/2026-11/thumbs/n90-1.jpg",
+   "music": "mellow lo-fi keys, steady (for swiping)"
   },
   {
    "id": "n91",
@@ -1927,7 +2036,9 @@
    "sermonDate": "2026-09-27",
    "timestampConfirmed": false,
    "clipNote": "Approximate (transcript gives ~30s blocks): starts near “But he used a people that he could easily waive, dismiss”; ends near “our first goal is not understanding… self-protection.” (~60s). Confirm in/out.",
-   "thumb": "data/2026-11/thumbs/n91-clip.jpg"
+   "thumb": "data/2026-11/thumbs/n91-clip.jpg",
+   "music": "subtle cinematic piano, storytelling",
+   "musicVolume": "low (10-15%) under the voice"
   }
  ]
 }

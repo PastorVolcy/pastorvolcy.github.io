@@ -12,7 +12,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<link rel="stylesheet" href="app.css?v=5">
+<link rel="stylesheet" href="app.css?v=6">
 </head>
 <body>
 <div class="app" id="app">
@@ -59,6 +59,7 @@
         <h2 id="pTitle"></h2>
         <div class="tags" id="pTags"></div>
         <div class="clipinfo" id="pClip" hidden></div>
+        <div class="music" id="pMusic" hidden><span class="mtext" id="pMusicText"></span><button class="mchange" id="pMusicChange" type="button">Change music</button></div>
         <div class="caption">
           <p id="pCaption"></p>
           <p class="hashtags" id="pHashtags"></p>
@@ -66,7 +67,7 @@
         </div>
         <div class="flag" id="pFlag" hidden></div>
         <label class="notelabel" for="pNote">Note for Hark <span>(optional for approval, required for a change)</span></label>
-        <textarea id="pNote" rows="3" placeholder="e.g. Use a different photo, or change the wording to…"></textarea>
+        <textarea id="pNote" rows="3" placeholder="e.g. Use a different photo, change the wording to…, or music: something more upbeat"></textarea>
         <div class="decide">
           <button class="secondary" id="pChange">Needs change</button>
           <button class="primary" id="pApprove">Approve</button>
@@ -112,6 +113,6 @@
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="app.js?v=5"></script>
+<script src="app.js?v=6"></script>
 </body>
 </html>

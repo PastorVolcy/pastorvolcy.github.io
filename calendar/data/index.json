@@ -1,13 +1,23 @@
 {
   "app": "FAC Social Calendar",
   "church": "First Alliance Church",
-  "current": "2026-11",
+  "current": "2026-10",
   "months": [
+    {
+      "month": "2026-10",
+      "label": "October 2026",
+      "posts": 32,
+      "status": "ready",
+      "firstPost": "2026-10-21",
+      "lastPost": "2026-10-31"
+    },
     {
       "month": "2026-11",
       "label": "November 2026",
       "posts": 91,
-      "status": "ready"
+      "status": "ready",
+      "firstPost": "2026-11-01",
+      "lastPost": "2026-11-30"
     }
   ]
 }

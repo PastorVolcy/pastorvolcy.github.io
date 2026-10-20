@@ -51,7 +51,10 @@
       state.index = idx;
       var want = new URLSearchParams(location.search).get('m') || (location.hash || '').replace('#', '');
       var months = idx.months || [];
-      var pick = months.filter(function (m) { return m.month === want; })[0] || months.filter(function (m) { return m.month === idx.current; })[0] || months[months.length - 1];
+      var now = new Date(), today = now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2);
+      var live = months.slice().sort(function (a, b) { return a.month.localeCompare(b.month); })
+        .filter(function (m) { return m.lastPost && m.lastPost >= today; })[0]; // open the current month while it still has posts ahead
+      var pick = months.filter(function (m) { return m.month === want; })[0] || live || months.filter(function (m) { return m.month === idx.current; })[0] || months[months.length - 1];
       if (!pick) throw new Error('No months listed');
       return openMonth(pick.month);
     }).catch(function (e) {
@@ -175,6 +178,11 @@
         (p.timestampConfirmed === false ? '<span class="warn">Timestamp to confirm.</span> ' : '') +
         '<a href="' + esc(y.url) + '" target="_blank" rel="noopener">Open on YouTube \u2197</a>';
     } else clip.hidden = true;
+    var mus = $('pMusic');
+    if (p.music) {
+      mus.hidden = false;
+      $('pMusicText').textContent = '\u266A Music: ' + p.music + (p.type === 'clip' && p.musicVolume ? ' \u00b7 ' + p.musicVolume : '');
+    } else mus.hidden = true;
     var d = decision(p.id);
     $('pNote').value = d && d.n ? d.n : '';
     renderDecided(d);
@@ -349,6 +357,12 @@
   });
   $('btnPrimary').addEventListener('click', primary);
   $('pApprove').addEventListener('click', function () { decide('approved'); });
+  $('pMusicChange').addEventListener('click', function () {
+    var n = $('pNote'), v = n.value.replace(/\s+$/, '');
+    if (!/(^|\n)music:/i.test(v)) n.value = (v ? v + '\n' : '') + 'music: ';
+    n.focus(); try { n.setSelectionRange(n.value.length, n.value.length); } catch (e) { }
+    toast('Describe the music, then tap Needs change');
+  });
   $('pChange').addEventListener('click', function () { decide('change'); });
   $('pPrev').addEventListener('click', function () { if (state.current > 0) openPost(state.current - 1); });
   $('pNext').addEventListener('click', function () { if (state.current < state.month.posts.length - 1) openPost(state.current + 1); });

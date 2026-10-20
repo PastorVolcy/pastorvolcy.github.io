@@ -83,17 +83,32 @@
     renderGrid(); renderChips(); renderStatus();
   }
 
+  function weekStart(d) { var x = parseDate(d); x.setDate(x.getDate() - x.getDay()); return x; }
+  function weekLabel(ws) {
+    var we = new Date(ws); we.setDate(we.getDate() + 6);
+    var a = MON3[ws.getMonth()] + ' ' + ws.getDate();
+    var b = (we.getMonth() === ws.getMonth() ? '' : MON3[we.getMonth()] + ' ') + we.getDate();
+    return 'Week of ' + a + '\u2013' + b;
+  }
   function renderGrid() {
-    var g = $('grid'); var html = '';
-    state.month.posts.forEach(function (p, i) {
+    var g = $('grid'); var html = '', lastWeek = null, m = +state.key.split('-')[1] - 1;
+    var posts = state.month.posts;
+    posts.forEach(function (p, i) {
+      var ws = weekStart(p.date), wk = ws.getTime();
+      if (wk !== lastWeek) {
+        lastWeek = wk;
+        var n = 0, a = 0;
+        posts.forEach(function (q) { if (weekStart(q.date).getTime() === wk) { n++; var dq = decision(q.id); if (dq) a++; } });
+        html += '<h2 class="weekhead" role="presentation"><span>' + esc(weekLabel(ws)) + '</span><span class="wkmeta">' + n + ' posts' + (a ? ' \u00b7 ' + a + ' reviewed' : '') + '</span></h2>';
+      }
       var d = decision(p.id);
       var dim = state.filter && p.type !== state.filter ? ' dim' : '';
       var img = p.thumb || (p.images && p.images[0]) || (p.youtube && p.youtube.thumbnail) || '';
       html += '<button class="tile' + dim + '" role="listitem" data-i="' + i + '" aria-label="' + esc(TYPE_LABEL[p.type] + ', ' + fmtLong(p) + ': ' + p.title + (d ? (d.s === 'approved' ? ', approved' : ', needs change') : '')) + '">' +
-        '<img src="' + esc(img) + '" alt="" loading="' + (i < 9 ? 'eager' : 'lazy') + '" decoding="async">' +
+        '<img src="' + esc(img) + '" alt="" width="400" height="500" loading="' + (i < 9 ? 'eager' : 'lazy') + '" decoding="async">' +
         (p.type === 'clip' ? '<span class="play">' + ICON.play + '</span>' + ICON.video : '') +
         (p.type === 'carousel' ? ICON.stack : '') +
-        '<span class="date">' + fmtShort(p.date) + '</span>' +
+        '<span class="date">' + fmtShort(p.date) + ' \u00b7 ' + fmtTime(p.time).replace(':00', '').replace(' ', '') + '</span>' +
         (d ? '<span class="badge ' + (d.s === 'approved' ? 'ok">\u2713' : 'chg">!') + '</span>' : '') +
         '</button>';
     });
@@ -224,32 +239,46 @@
   }
 
   function subject() { return 'FAC Social Calendar approval - ' + monthLabel(state.key); }
+  /* One short line per post. Notes are flattened and capped so the mailto stays small. */
+  function lineFor(p) {
+    var d = decision(p.id), n = d && d.n ? d.n.replace(/\s+/g, ' ').trim().slice(0, 300) : '';
+    if (!d) return p.id + ' PENDING';
+    if (d.s === 'approved') return p.id + ' APPROVED' + (n ? ' (note: ' + n + ')' : '');
+    return p.id + ' CHANGE: ' + n;
+  }
+  var MAILTO_MAX = 1800; // iOS Mail truncates long mailto links; stay under this
+  function mailtoFor(b) { return 'mailto:' + APPROVAL_EMAIL + '?subject=' + encodeURIComponent(subject()) + '&body=' + encodeURIComponent(b); }
   function body() {
-    var lines = [subject(), ''];
-    state.month.posts.forEach(function (p) {
-      var d = decision(p.id);
-      var line = p.id + ' ';
-      if (!d) line += 'PENDING';
-      else if (d.s === 'approved') line += 'APPROVED' + (d.n ? ' (note: ' + d.n.replace(/\s+/g, ' ') + ')' : '');
-      else line += 'CHANGE: ' + d.n.replace(/\s+/g, ' ');
-      lines.push(line + '   [' + fmtShort(p.date) + ' \u00b7 ' + p.title + ']');
-    });
-    var k = counts();
-    lines.push('', k.approved + ' approved, ' + k.change + ' changes, ' + (k.total - k.decided) + ' pending.', 'Sent from ' + APP_URL + '?m=' + state.key);
-    return lines.join('\n');
+    var k = counts(), posts = state.month.posts;
+    var head = [subject(), ''];
+    var foot = ['', k.approved + ' approved, ' + k.change + ' changes, ' + (k.total - k.decided) + ' pending (' + k.total + ' posts).', 'Sent from ' + APP_URL + '?m=' + state.key];
+    var full = head.concat(posts.map(lineFor), foot).join('\n');
+    if (mailtoFor(full).length <= MAILTO_MAX) return full;
+    /* compact format */
+    var plain = function (p) { var d = decision(p.id); return d && d.s === 'approved' && !d.n; };
+    var others = posts.filter(function (p) { return !plain(p); });
+    var lines = others.length ? others.map(lineFor).concat(['All others APPROVED (' + (k.total - others.length) + ' of ' + k.total + ')'])
+                              : ['APPROVED ALL (' + k.total + ' posts, ' + posts[0].id + '-' + posts[posts.length - 1].id + ')'];
+    return head.concat(['Format: compact'], lines, foot).join('\n');
   }
   function openSend() {
-    var k = counts();
+    var k = counts(), b = body(), len = mailtoFor(b).length;
     $('sSummary').textContent = k.approved + ' approved \u00b7 ' + k.change + ' need changes' + (k.total - k.decided ? ' \u00b7 ' + (k.total - k.decided) + ' not reviewed' : '') + '. This goes to Hark at ' + APPROVAL_EMAIL + '.';
-    $('sPreview').textContent = 'To: ' + APPROVAL_EMAIL + '\nSubject: ' + subject() + '\n\n' + body();
+    $('sPreview').textContent = 'To: ' + APPROVAL_EMAIL + '\nSubject: ' + subject() + '\n\n' + b;
+    $('sLong').hidden = len <= MAILTO_MAX;
     show('sendSheet');
   }
   function send() {
-    var url = 'mailto:' + APPROVAL_EMAIL + '?subject=' + encodeURIComponent(subject()) + '&body=' + encodeURIComponent(body());
+    var url = mailtoFor(body());
     state.store.sentAt = Date.now(); saveStore(); renderStatus();
     hide('sendSheet');
     window.location.href = url;
     toast('Opening your email app\u2026');
+  }
+  function copyApproval() {
+    var txt = body();
+    if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { toast('Approval text copied'); }, function () { prompt('Copy this text', txt); });
+    else prompt('Copy this text', txt);
   }
 
   /* ---------- months / info / share ---------- */
@@ -325,6 +354,7 @@
     if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { toast('Caption copied'); }, function () { toast('Copy not available'); });
   });
   $('sSend').addEventListener('click', send);
+  $('sCopy').addEventListener('click', copyApproval);
   $('btnMonths').addEventListener('click', openMonths);
   $('monthList').addEventListener('click', function (e) { var b = e.target.closest('[data-m]'); if (!b) return; hide('monthSheet'); openMonth(b.dataset.m); });
   $('btnInfo').addEventListener('click', openInfo);

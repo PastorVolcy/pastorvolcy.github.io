@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FAC Social Calendar</title>
+<meta name="description" content="First Alliance Church monthly social calendar: review and approve each month's posts.">
+<meta name="theme-color" content="#f2f2f7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="FAC Calendar">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="app.css?v=3">
+</head>
+<body>
+<div class="app" id="app">
+  <header class="nav">
+    <button class="link back" id="btnMonths" aria-haspopup="dialog"><svg viewBox="0 0 12 20" aria-hidden="true"><path d="M10 2 2 10l8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Calendars</button>
+    <button class="link" id="btnShare">Share</button>
+  </header>
+
+  <main class="main">
+    <h1 id="monthTitle" class="title">&nbsp;</h1>
+    <p class="sub" id="monthSub">Loading&hellip;</p>
+    <div class="statusrow">
+      <span class="pill" id="statusPill">Loading</span>
+      <button class="info" id="btnInfo" aria-label="About this calendar"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 9v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="10" cy="6.2" r="1.1" fill="currentColor"/></svg><span id="fbNote">Info</span></button>
+    </div>
+
+    <div class="grid" id="grid" role="list"></div>
+
+    <div class="chips" id="chips" role="group" aria-label="Filter posts"></div>
+  </main>
+
+  <footer class="dock">
+    <button class="primary" id="btnPrimary">Approve all</button>
+    <p class="hint" id="hint">or tap any post to leave a note</p>
+  </footer>
+</div>
+
+<!-- Post detail -->
+<div class="sheet-wrap" id="postSheet" role="dialog" aria-modal="true" aria-labelledby="pTitle" hidden>
+  <div class="scrim" data-close></div>
+  <section class="sheet post">
+    <div class="sheet-head">
+      <button class="link" data-close>Done</button>
+      <span class="sheet-count" id="pCount"></span>
+      <div class="arrows">
+        <button class="iconbtn" id="pPrev" aria-label="Previous post"><svg viewBox="0 0 12 20"><path d="M10 2 2 10l8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="iconbtn" id="pNext" aria-label="Next post"><svg viewBox="0 0 12 20"><path d="M2 2l8 8-8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+    <div class="sheet-body" id="pBody">
+      <div class="media" id="pMedia"></div>
+      <div class="pmeta">
+        <div class="when" id="pWhen"></div>
+        <h2 id="pTitle"></h2>
+        <div class="tags" id="pTags"></div>
+        <div class="clipinfo" id="pClip" hidden></div>
+        <div class="caption">
+          <p id="pCaption"></p>
+          <p class="hashtags" id="pHashtags"></p>
+          <button class="small" id="pCopy">Copy caption</button>
+        </div>
+        <div class="flag" id="pFlag" hidden></div>
+        <label class="notelabel" for="pNote">Note for Hark <span>(optional for approval, required for a change)</span></label>
+        <textarea id="pNote" rows="3" placeholder="e.g. Use a different photo, or change the wording to…"></textarea>
+        <div class="decide">
+          <button class="secondary" id="pChange">Needs change</button>
+          <button class="primary" id="pApprove">Approve</button>
+        </div>
+        <p class="decided" id="pDecided"></p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Months -->
+<div class="sheet-wrap" id="monthSheet" role="dialog" aria-modal="true" aria-labelledby="mTitle" hidden>
+  <div class="scrim" data-close></div>
+  <section class="sheet small-sheet">
+    <div class="sheet-head"><span></span><h3 id="mTitle">Calendars</h3><button class="link" data-close>Done</button></div>
+    <ul class="months" id="monthList"></ul>
+  </section>
+</div>
+
+<!-- Info -->
+<div class="sheet-wrap" id="infoSheet" role="dialog" aria-modal="true" aria-labelledby="iTitle" hidden>
+  <div class="scrim" data-close></div>
+  <section class="sheet small-sheet">
+    <div class="sheet-head"><span></span><h3 id="iTitle">About this calendar</h3><button class="link" data-close>Done</button></div>
+    <div class="infobody" id="infoBody"></div>
+  </section>
+</div>
+
+<!-- Send review -->
+<div class="sheet-wrap" id="sendSheet" role="dialog" aria-modal="true" aria-labelledby="sTitle" hidden>
+  <div class="scrim" data-close></div>
+  <section class="sheet small-sheet">
+    <div class="sheet-head"><span></span><h3 id="sTitle">Send approval</h3><button class="link" data-close>Cancel</button></div>
+    <div class="infobody">
+      <p id="sSummary"></p>
+      <pre class="preview" id="sPreview"></pre>
+      <button class="primary" id="sSend">Open email to send</button>
+      <p class="hint">Opens your mail app with the approval filled in. Nothing posts until Hark reads it.</p>
+    </div>
+  </section>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="app.js?v=3"></script>
+</body>
+</html>

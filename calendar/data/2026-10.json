@@ -1,0 +1,719 @@
+{
+ "month": "2026-10",
+ "label": "October 2026",
+ "church": "First Alliance Church",
+ "status": "ready",
+ "preparedBy": "Hark",
+ "updated": "2026-10-20",
+ "notes": [
+  "Facebook: waiting on page access. Facebook posts go out once the page grants access; TikTok posts as scheduled.",
+  "All times are Eastern Time. Verses are quoted from the KJV. October starts Wed Oct 21.",
+  "Music: each post lists a background-music style. At posting time a matching track is picked from TikTok’s commercial sound library; for clips it sits low (10-15%) under the sermon audio. To change it, leave a note like “music: something more upbeat.”"
+ ],
+ "posts": [
+  {
+   "id": "o01",
+   "date": "2026-10-21",
+   "time": "08:00",
+   "type": "graphic",
+   "title": "Verse: Acts 4:31",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "The early church didn’t pray for the pressure to go away. They prayed for boldness, and God answered. What would you ask Him for today?",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Acts431 #BibleVerse #Unstoppable",
+   "images": [
+    "data/2026-10/o01-verse-acts-4-31.jpg"
+   ],
+   "status": "pending",
+   "music": "soft ambient piano with a gentle swell, hopeful",
+   "thumb": "data/2026-10/thumbs/o01-verse-acts-4-31.jpg"
+  },
+  {
+   "id": "o02",
+   "date": "2026-10-21",
+   "time": "12:00",
+   "type": "graphic",
+   "title": "Prayer prompt: who are you praying will know Jesus?",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Some of us have prayed for the same person for years. You don’t have to carry that alone. Comment a first name or an initial, and our church family will pray with you this week.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Prayer #PrayForYou #ChurchFamily",
+   "images": [
+    "data/2026-10/o02-pray-for-someone.jpg"
+   ],
+   "status": "pending",
+   "music": "gentle ambient worship pad, prayerful",
+   "thumb": "data/2026-10/thumbs/o02-pray-for-someone.jpg"
+  },
+  {
+   "id": "o03",
+   "date": "2026-10-21",
+   "time": "19:00",
+   "type": "clip",
+   "title": "Clip: “Jesus is still at work”",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Peter and John were locked up, and people were still saying yes to Jesus. That’s what we mean by UNSTOPPABLE: hard things happen to the messenger, but God keeps working through His message. — from “Bold Witness.”",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #BookOfActs #Acts4",
+   "images": [
+    "data/2026-10/o03-clip.jpg"
+   ],
+   "status": "pending",
+   "music": "uplifting cinematic strings, building",
+   "youtube": {
+    "id": "f9j0-RJvkM0",
+    "url": "https://www.youtube.com/watch?v=f9j0-RJvkM0&t=4404s",
+    "start": 4404,
+    "end": 4470,
+    "thumbnail": "https://i.ytimg.com/vi/f9j0-RJvkM0/maxresdefault.jpg"
+   },
+   "sermon": "UNSTOPPABLE, Week 2: Bold Witness (Acts 4)",
+   "sermonDate": "2026-10-18",
+   "timestampConfirmed": true,
+   "clipNote": "Starts “Jesus’s name is already been heard” → ends “he keeps working, he’s constantly working.” (~66s)",
+   "musicVolume": "low (10-15%) under the voice",
+   "thumb": "data/2026-10/thumbs/o03-clip.jpg"
+  },
+  {
+   "id": "o04",
+   "date": "2026-10-22",
+   "time": "08:00",
+   "type": "graphic",
+   "title": "Quote: “He depended on the Holy Spirit”",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Peter stood before the same council that condemned Jesus, with no degree and no notes. A Spirit-filled answer doesn’t remove the opposition, but it gives courage and the words to say what needs to be said.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #HolySpirit #SermonQuote",
+   "images": [
+    "data/2026-10/o04-quote-depended.jpg"
+   ],
+   "status": "pending",
+   "music": "subtle cinematic piano, confident",
+   "thumb": "data/2026-10/thumbs/o04-quote-depended.jpg"
+  },
+  {
+   "id": "o05",
+   "date": "2026-10-22",
+   "time": "12:00",
+   "type": "carousel",
+   "title": "Carousel: Who decides what you say?",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "The council gave Peter and John one rule: stop talking about Jesus. Swipe for what they noticed, what they answered, and the quiet trap most of us fall into.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #Acts4 #BoldWitness",
+   "images": [
+    "data/2026-10/o05-1.jpg",
+    "data/2026-10/o05-2.jpg",
+    "data/2026-10/o05-3.jpg",
+    "data/2026-10/o05-4.jpg",
+    "data/2026-10/o05-5.jpg"
+   ],
+   "status": "pending",
+   "music": "mellow lo-fi keys, steady (for swiping)",
+   "thumb": "data/2026-10/thumbs/o05-1.jpg"
+  },
+  {
+   "id": "o06",
+   "date": "2026-10-22",
+   "time": "19:00",
+   "type": "graphic",
+   "title": "Verse: Psalm 46:10",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "End the day here. He is God, and you don’t have to be. Be still tonight.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Psalm4610 #BeStill #BibleVerse",
+   "images": [
+    "data/2026-10/o06-verse-psalm-46-10.jpg"
+   ],
+   "status": "pending",
+   "music": "soft ambient piano, peaceful",
+   "thumb": "data/2026-10/thumbs/o06-verse-psalm-46-10.jpg"
+  },
+  {
+   "id": "o07",
+   "date": "2026-10-23",
+   "time": "08:00",
+   "type": "graphic",
+   "title": "Welcome: your first Sunday starts here",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Thinking about visiting First Alliance? Sundays are at 10:15 AM at 403 S. Progress Ave in Harrisburg. You can let us know you’re coming through Plan a Visit at firstalliancehbg.com. Come as you are.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #NewHere #PlanAVisit #HarrisburgChurch",
+   "images": [
+    "data/2026-10/o07-first-sunday.jpg"
+   ],
+   "status": "pending",
+   "music": "light upbeat acoustic, friendly",
+   "thumb": "data/2026-10/thumbs/o07-first-sunday.jpg"
+  },
+  {
+   "id": "o08",
+   "date": "2026-10-23",
+   "time": "12:00",
+   "type": "graphic",
+   "title": "Church family: many cultures, one family",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "On the first day of the church, everyone heard the good news in their own language. That still happens at First Alliance: different cultures, languages, and stories, one family of faith.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #ChurchFamily #OneFamily #Pentecost",
+   "images": [
+    "data/2026-10/o08-many-nations.jpg"
+   ],
+   "status": "pending",
+   "music": "bright feel-good acoustic with light world percussion, warm",
+   "thumb": "data/2026-10/thumbs/o08-many-nations.jpg"
+  },
+  {
+   "id": "o09",
+   "date": "2026-10-23",
+   "time": "19:00",
+   "type": "clip",
+   "title": "Clip: “Wait and pray”",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Some of us have been trying to manufacture our own “suddenly” moment. It’s not ours to work up. It’s hard? Wait and pray. It’s too long? Wait and pray. — from “The Birth of the Church.”",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #Acts2 #WaitOnTheLord",
+   "images": [
+    "data/2026-10/o09-clip.jpg"
+   ],
+   "status": "pending",
+   "music": "soft ambient piano, reflective",
+   "youtube": {
+    "id": "wj3GIQbHXeU",
+    "url": "https://www.youtube.com/watch?v=wj3GIQbHXeU&t=4581s",
+    "start": 4581,
+    "end": 4642,
+    "thumbnail": "https://i.ytimg.com/vi/wj3GIQbHXeU/maxresdefault.jpg"
+   },
+   "sermon": "UNSTOPPABLE, Week 1: The Birth of the Church (Acts 2)",
+   "sermonDate": "2026-10-11",
+   "timestampConfirmed": true,
+   "clipNote": "Starts “Now, this is for us at First Alliance Church” → ends “whatever it is, you wait and pray.” (~61s)",
+   "musicVolume": "low (10-15%) under the voice",
+   "thumb": "data/2026-10/thumbs/o09-clip.jpg"
+  },
+  {
+   "id": "o10",
+   "date": "2026-10-24",
+   "time": "12:00",
+   "type": "graphic",
+   "title": "Verse: Psalm 122:1",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Who could you say this to tomorrow? “Let’s go to church together.” Sometimes that’s all it takes.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Psalm1221 #BibleVerse #SeeYouSunday",
+   "images": [
+    "data/2026-10/o10-verse-psalm-122-1.jpg"
+   ],
+   "status": "pending",
+   "music": "soft ambient piano, peaceful",
+   "thumb": "data/2026-10/thumbs/o10-verse-psalm-122-1.jpg"
+  },
+  {
+   "id": "o11",
+   "date": "2026-10-24",
+   "time": "17:00",
+   "type": "graphic",
+   "title": "Saturday reminder: see you tomorrow",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "See you tomorrow at 10:15 AM! UNSTOPPABLE continues in the book of Acts. 403 S. Progress Ave, Harrisburg. Bring a friend.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #SeeYouSunday #Unstoppable",
+   "images": [
+    "data/2026-10/o11-see-you-tomorrow.jpg"
+   ],
+   "status": "pending",
+   "music": "bright acoustic pop, welcoming",
+   "confirm": "Inferred: Oct 25 is UNSTOPPABLE week 3 (series began Oct 11; November says it continues Nov 1).",
+   "thumb": "data/2026-10/thumbs/o11-see-you-tomorrow.jpg"
+  },
+  {
+   "id": "o12",
+   "date": "2026-10-25",
+   "time": "08:00",
+   "type": "graphic",
+   "title": "See you Sunday · UNSTOPPABLE",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Good morning! We gather at 10:15 AM as UNSTOPPABLE continues in the book of Acts. Come as you are, and bring someone with you.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #SeeYouSunday #Unstoppable #BookOfActs",
+   "images": [
+    "data/2026-10/o12-sunday-unstoppable.jpg"
+   ],
+   "status": "pending",
+   "music": "bright acoustic pop, welcoming",
+   "confirm": "Inferred: Oct 25 is UNSTOPPABLE week 3.",
+   "thumb": "data/2026-10/thumbs/o12-sunday-unstoppable.jpg"
+  },
+  {
+   "id": "o13",
+   "date": "2026-10-25",
+   "time": "12:00",
+   "type": "carousel",
+   "title": "Carousel: Jesus belongs in the answer",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "When someone asks how you made it through, Jesus belongs in the answer. Swipe through, then think of one person who has asked.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #BoldWitness #Testimony",
+   "images": [
+    "data/2026-10/o13-1.jpg",
+    "data/2026-10/o13-2.jpg",
+    "data/2026-10/o13-3.jpg",
+    "data/2026-10/o13-4.jpg",
+    "data/2026-10/o13-5.jpg"
+   ],
+   "status": "pending",
+   "music": "mellow lo-fi keys, hopeful (for swiping)",
+   "thumb": "data/2026-10/thumbs/o13-1.jpg"
+  },
+  {
+   "id": "o14",
+   "date": "2026-10-25",
+   "time": "19:00",
+   "type": "clip",
+   "title": "Clip: “So convinced”",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Peter and John were regular people like you and me. The difference? They were so convinced that Jesus was who He said He was, nothing could change that. — from “Bold Witness.”",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #Acts4 #Faith",
+   "images": [
+    "data/2026-10/o14-clip.jpg"
+   ],
+   "status": "pending",
+   "music": "warm acoustic worship pad, confident",
+   "youtube": {
+    "id": "f9j0-RJvkM0",
+    "url": "https://www.youtube.com/watch?v=f9j0-RJvkM0&t=3890s",
+    "start": 3890,
+    "end": 3954,
+    "thumbnail": "https://i.ytimg.com/vi/f9j0-RJvkM0/maxresdefault.jpg"
+   },
+   "sermon": "UNSTOPPABLE, Week 2: Bold Witness (Acts 4)",
+   "sermonDate": "2026-10-18",
+   "timestampConfirmed": true,
+   "clipNote": "Starts “Here’s the key difference” → ends “it wasn’t by their own sheer strength.” (~64s)",
+   "musicVolume": "low (10-15%) under the voice",
+   "thumb": "data/2026-10/thumbs/o14-clip.jpg"
+  },
+  {
+   "id": "o15",
+   "date": "2026-10-26",
+   "time": "08:00",
+   "type": "graphic",
+   "title": "Verse: Romans 15:13",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "A Monday prayer for you: joy, peace, and more hope than you started the week with. Not by trying harder, but by the power of the Holy Spirit.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Romans1513 #Hope #BibleVerse",
+   "images": [
+    "data/2026-10/o15-verse-romans-15-13.jpg"
+   ],
+   "status": "pending",
+   "music": "gentle uplifting piano, morning light",
+   "thumb": "data/2026-10/thumbs/o15-verse-romans-15-13.jpg"
+  },
+  {
+   "id": "o16",
+   "date": "2026-10-26",
+   "time": "12:00",
+   "type": "carousel",
+   "title": "Carousel: When God feels slow",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Ten days. No visible change. The whole church on earth was 120 people in one room, praying. Swipe for what they did while they waited.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #Acts2 #WaitOnTheLord",
+   "images": [
+    "data/2026-10/o16-1.jpg",
+    "data/2026-10/o16-2.jpg",
+    "data/2026-10/o16-3.jpg",
+    "data/2026-10/o16-4.jpg",
+    "data/2026-10/o16-5.jpg"
+   ],
+   "status": "pending",
+   "music": "slow ambient keys, patient (for swiping)",
+   "thumb": "data/2026-10/thumbs/o16-1.jpg"
+  },
+  {
+   "id": "o17",
+   "date": "2026-10-26",
+   "time": "19:00",
+   "type": "graphic",
+   "title": "Quote: “The most neglected tool”",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Pastor Ricardo said it plainly: “I am guilty of this.” So are most of us. What if prayer were the first thing we reached for this week instead of the last?",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Prayer #SermonQuote #Unstoppable",
+   "images": [
+    "data/2026-10/o17-quote-arsenal.jpg"
+   ],
+   "status": "pending",
+   "music": "subtle cinematic piano, thoughtful",
+   "thumb": "data/2026-10/thumbs/o17-quote-arsenal.jpg"
+  },
+  {
+   "id": "o18",
+   "date": "2026-10-27",
+   "time": "08:00",
+   "type": "graphic",
+   "title": "Family Fun Fest: Saturday, Oct 31, 6-8 PM",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Save the date! Family Fun Fest is Saturday, October 31, 6-8 PM at First Alliance Church, 403 S. Progress Ave. It’s free, with dinner, candy, games, and activities for the whole family. No RSVP needed. Bring your neighbors.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #FamilyFunFest #HarrisburgFamilies #ChurchFamily",
+   "images": [
+    "data/2026-10/o18-family-fun-fest.jpg"
+   ],
+   "status": "pending",
+   "music": "bright playful acoustic, family-friendly",
+   "confirm": "Event details from firstalliancehbg.com/events (checked Oct 20, 2026): the church lists it as “Family Fun Fest,” Sat Oct 31, 6-8 PM, free, dinner, candy, games and activities, no RSVP needed. Confirm the name (brief said “Family Fun Night”).",
+   "thumb": "data/2026-10/thumbs/o18-family-fun-fest.jpg"
+  },
+  {
+   "id": "o19",
+   "date": "2026-10-27",
+   "time": "12:00",
+   "type": "graphic",
+   "title": "Verse: Psalm 127:3",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Every child is a gift from God. Parents, grandparents, teachers, and every one of us who helps a kid feel seen: thank you.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Psalm1273 #Family #BibleVerse",
+   "images": [
+    "data/2026-10/o19-verse-psalm-127-3.jpg"
+   ],
+   "status": "pending",
+   "music": "warm acoustic guitar, tender",
+   "thumb": "data/2026-10/thumbs/o19-verse-psalm-127-3.jpg"
+  },
+  {
+   "id": "o20",
+   "date": "2026-10-27",
+   "time": "19:00",
+   "type": "clip",
+   "title": "Clip: “Someone is watching”",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "No kids? No grandkids? You are still shaping someone. They’re sitting two rows behind you, watching how you respond when things don’t go your way. — from “What Are You Passing On?”",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #WhatAreYouPassingOn #Mentoring #ChurchFamily",
+   "images": [
+    "data/2026-10/o20-clip.jpg"
+   ],
+   "status": "pending",
+   "music": "gentle acoustic guitar, warm and encouraging",
+   "youtube": {
+    "id": "jK1J05IovzQ",
+    "url": "https://www.youtube.com/watch?v=jK1J05IovzQ&t=3408s",
+    "start": 3408,
+    "end": 3471,
+    "thumbnail": "https://i.ytimg.com/vi/jK1J05IovzQ/maxresdefault.jpg"
+   },
+   "sermon": "What Are You Passing On? (Proverbs 22:6; Ephesians 6:4)",
+   "sermonDate": "2026-10-04",
+   "timestampConfirmed": true,
+   "clipNote": "Starts “And some of you are not raising anyone” → ends “so behave better.” (~63s)",
+   "musicVolume": "low (10-15%) under the voice",
+   "thumb": "data/2026-10/thumbs/o20-clip.jpg"
+  },
+  {
+   "id": "o21",
+   "date": "2026-10-28",
+   "time": "08:00",
+   "type": "graphic",
+   "title": "Quote: “I am the way”",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "It can sound narrow, but He gets to set the rule. There is salvation in no one else, and that is good news for sinners like you and me.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #John146 #SermonQuote",
+   "images": [
+    "data/2026-10/o21-quote-the-way.jpg"
+   ],
+   "status": "pending",
+   "music": "uplifting cinematic piano, confident",
+   "thumb": "data/2026-10/thumbs/o21-quote-the-way.jpg"
+  },
+  {
+   "id": "o22",
+   "date": "2026-10-28",
+   "time": "12:00",
+   "type": "graphic",
+   "title": "Prayer prompt: how can we pray for your family?",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Whatever your family looks like right now, you don’t have to carry it alone. Tell us how we can pray, in the comments or by private message.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Prayer #Family #PrayForYou",
+   "images": [
+    "data/2026-10/o22-pray-families.jpg"
+   ],
+   "status": "pending",
+   "music": "gentle ambient worship pad, prayerful",
+   "thumb": "data/2026-10/thumbs/o22-pray-families.jpg"
+  },
+  {
+   "id": "o23",
+   "date": "2026-10-28",
+   "time": "19:00",
+   "type": "carousel",
+   "title": "Carousel: What “unstoppable” means",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "UNSTOPPABLE isn’t a word about us. Swipe for what it means, and what it doesn’t.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #BookOfActs #Matthew1618",
+   "images": [
+    "data/2026-10/o23-1.jpg",
+    "data/2026-10/o23-2.jpg",
+    "data/2026-10/o23-3.jpg",
+    "data/2026-10/o23-4.jpg",
+    "data/2026-10/o23-5.jpg"
+   ],
+   "status": "pending",
+   "music": "uplifting cinematic drums, building (for swiping)",
+   "thumb": "data/2026-10/thumbs/o23-1.jpg"
+  },
+  {
+   "id": "o24",
+   "date": "2026-10-29",
+   "time": "08:00",
+   "type": "graphic",
+   "title": "Verse: Psalm 133:1",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "There’s nothing quite like a church family that actually likes being together. Grateful for ours.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Psalm1331 #ChurchFamily #BibleVerse",
+   "images": [
+    "data/2026-10/o24-verse-psalm-133-1.jpg"
+   ],
+   "status": "pending",
+   "music": "warm acoustic guitar, joyful",
+   "thumb": "data/2026-10/thumbs/o24-verse-psalm-133-1.jpg"
+  },
+  {
+   "id": "o25",
+   "date": "2026-10-29",
+   "time": "12:00",
+   "type": "graphic",
+   "title": "Church family: the door is open",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Walking into a new church can feel like a lot. You won’t walk in alone. Someone will be at the door on Sunday to say hello. 10:15 AM, 403 S. Progress Ave.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #NewHere #Welcome #HarrisburgChurch",
+   "images": [
+    "data/2026-10/o25-door-is-open.jpg"
+   ],
+   "status": "pending",
+   "music": "light upbeat acoustic, friendly",
+   "thumb": "data/2026-10/thumbs/o25-door-is-open.jpg"
+  },
+  {
+   "id": "o26",
+   "date": "2026-10-29",
+   "time": "19:00",
+   "type": "clip",
+   "title": "Clip: “Same Peter, new power”",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Not long ago, Peter denied Jesus three times to a servant girl. Now he stands in front of Jerusalem and preaches. Did he just get smarter? No. The Holy Spirit had come. — from “The Birth of the Church.”",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #Acts2 #HolySpirit",
+   "images": [
+    "data/2026-10/o26-clip.jpg"
+   ],
+   "status": "pending",
+   "music": "hopeful cinematic piano with a soft build",
+   "youtube": {
+    "id": "wj3GIQbHXeU",
+    "url": "https://www.youtube.com/watch?v=wj3GIQbHXeU&t=5379s",
+    "start": 5379,
+    "end": 5446,
+    "thumbnail": "https://i.ytimg.com/vi/wj3GIQbHXeU/maxresdefault.jpg"
+   },
+   "sermon": "UNSTOPPABLE, Week 1: The Birth of the Church (Acts 2)",
+   "sermonDate": "2026-10-11",
+   "timestampConfirmed": true,
+   "clipNote": "Starts “I want you to, before we get into his preaching, think about this” → ends “and he began to preach Jesus.” (~67s)",
+   "musicVolume": "low (10-15%) under the voice",
+   "thumb": "data/2026-10/thumbs/o26-clip.jpg"
+  },
+  {
+   "id": "o27",
+   "date": "2026-10-30",
+   "time": "08:00",
+   "type": "graphic",
+   "title": "Verse: Acts 4:13",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "No credentials, no training, and the room could tell they had been with Jesus. Time with Him still shows.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Acts413 #BoldWitness #BibleVerse",
+   "images": [
+    "data/2026-10/o27-verse-acts-4-13.jpg"
+   ],
+   "status": "pending",
+   "music": "soft ambient piano, steady",
+   "thumb": "data/2026-10/thumbs/o27-verse-acts-4-13.jpg"
+  },
+  {
+   "id": "o28",
+   "date": "2026-10-30",
+   "time": "12:00",
+   "type": "carousel",
+   "title": "Carousel: Family Fun Fest, what to know",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Tomorrow night! Family Fun Fest is Saturday, Oct 31, 6-8 PM at First Alliance Church. Free dinner, candy, games, and activities. No RSVP needed. Swipe for the details and tag a family you’d love to see there.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #FamilyFunFest #HarrisburgFamilies #ThingsToDoHarrisburg",
+   "images": [
+    "data/2026-10/o28-1.jpg",
+    "data/2026-10/o28-2.jpg",
+    "data/2026-10/o28-3.jpg",
+    "data/2026-10/o28-4.jpg"
+   ],
+   "status": "pending",
+   "music": "bright playful acoustic, family-friendly (for swiping)",
+   "confirm": "Event details from firstalliancehbg.com/events (checked Oct 20, 2026): the church lists it as “Family Fun Fest,” Sat Oct 31, 6-8 PM, free, dinner, candy, games and activities, no RSVP needed. Confirm the name (brief said “Family Fun Night”).",
+   "thumb": "data/2026-10/thumbs/o28-1.jpg"
+  },
+  {
+   "id": "o29",
+   "date": "2026-10-30",
+   "time": "19:00",
+   "type": "clip",
+   "title": "Clip: “Your good is not enough”",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "You can be good all you want. You can be nice all you want. We’re a nice church, but nice doesn’t save anybody. Only Jesus does. — from “Bold Witness.”",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #Gospel #Acts412",
+   "images": [
+    "data/2026-10/o29-clip.jpg"
+   ],
+   "status": "pending",
+   "music": "gentle gospel keys, earnest",
+   "youtube": {
+    "id": "f9j0-RJvkM0",
+    "url": "https://www.youtube.com/watch?v=f9j0-RJvkM0&t=4985s",
+    "start": 4985,
+    "end": 5060,
+    "thumbnail": "https://i.ytimg.com/vi/f9j0-RJvkM0/maxresdefault.jpg"
+   },
+   "sermon": "UNSTOPPABLE, Week 2: Bold Witness (Acts 4)",
+   "sermonDate": "2026-10-18",
+   "timestampConfirmed": false,
+   "clipNote": "Approximate (caption blocks ~20s): starts near “There is no other way. You can be good all you want”; ends near “Only God acted through his son Jesus Christ… sinners like you and like me.” (~75s). Confirm in/out and trim to ~60s.",
+   "musicVolume": "low (10-15%) under the voice",
+   "thumb": "data/2026-10/thumbs/o29-clip.jpg"
+  },
+  {
+   "id": "o30",
+   "date": "2026-10-31",
+   "time": "08:00",
+   "type": "graphic",
+   "title": "Family Fun Fest is tonight",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "It’s today! Family Fun Fest is tonight, 6-8 PM at First Alliance Church, 403 S. Progress Ave. Free dinner, candy, games, and activities for the whole family. No RSVP needed. See you there!",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #FamilyFunFest #HarrisburgFamilies #ChurchFamily",
+   "images": [
+    "data/2026-10/o30-fun-fest-tonight.jpg"
+   ],
+   "status": "pending",
+   "music": "bright playful acoustic, upbeat",
+   "confirm": "Event details from firstalliancehbg.com/events (checked Oct 20, 2026): the church lists it as “Family Fun Fest,” Sat Oct 31, 6-8 PM, free, dinner, candy, games and activities, no RSVP needed. Confirm the name (brief said “Family Fun Night”).",
+   "thumb": "data/2026-10/thumbs/o30-fun-fest-tonight.jpg"
+  },
+  {
+   "id": "o31",
+   "date": "2026-10-31",
+   "time": "12:00",
+   "type": "graphic",
+   "title": "Verse: Acts 2:39",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "The promise is for you, for your children, and for those who feel far off. That’s every family we’ll meet tonight.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Acts239 #Family #BibleVerse",
+   "images": [
+    "data/2026-10/o31-verse-acts-2-39.jpg"
+   ],
+   "status": "pending",
+   "music": "soft ambient piano, hopeful",
+   "thumb": "data/2026-10/thumbs/o31-verse-acts-2-39.jpg"
+  },
+  {
+   "id": "o32",
+   "date": "2026-10-31",
+   "time": "17:00",
+   "type": "graphic",
+   "title": "Saturday reminder: see you tomorrow",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Tomorrow is Communion Sunday! Join us at 10:15 AM at 403 S. Progress Ave as we gather around the Lord’s Table. Come as you are.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #SeeYouSunday #Communion #Unstoppable",
+   "images": [
+    "data/2026-10/o32-see-you-tomorrow.jpg"
+   ],
+   "status": "pending",
+   "music": "bright acoustic pop, welcoming",
+   "thumb": "data/2026-10/thumbs/o32-see-you-tomorrow.jpg"
+  }
+ ]
+}

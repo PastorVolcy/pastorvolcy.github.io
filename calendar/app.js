@@ -17,6 +17,7 @@
   };
   var TYPE_LABEL = { clip: 'Sermon clip', carousel: 'Carousel', graphic: 'Graphic' };
   var TYPE_PLURAL = { clip: ['sermon clip', 'sermon clips'], carousel: ['carousel', 'carousels'], graphic: ['graphic', 'graphics'] };
+  var LINKS = { tiktok: 'https://www.tiktok.com/tiktokstudio/upload', facebook: 'https://business.facebook.com/latest/composer' };
   var PLATFORM = { tiktok: 'TikTok', facebook: 'Facebook' };
   var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   var DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -162,8 +163,13 @@
     $('pWhen').textContent = fmtLong(p);
     $('pTitle').textContent = p.title;
     $('pTags').innerHTML = '<span class="tag type">' + TYPE_LABEL[p.type] + (p.type === 'carousel' ? ' \u00b7 ' + p.images.length + ' slides' : '') + '</span>' +
-      (p.platforms || []).map(function (x) { return '<span class="tag">' + (ICON[x] || '') + esc(PLATFORM[x] || x) + '</span>'; }).join('');
+      (p.platforms || []).map(function (x) { var u = LINKS[x]; return u ? '<a class="tag tlink" href="' + u + '" target="_blank" rel="noopener">' + (ICON[x] || '') + esc(PLATFORM[x] || x) + ' \u2197</a>' : '<span class="tag">' + (ICON[x] || '') + esc(PLATFORM[x] || x) + '</span>'; }).join('');
     $('pCaption').textContent = p.caption || '';
+    var dl = $('pDownload'), n = (p.images || []).length;
+    dl.hidden = !n;
+    dl.textContent = p.type === 'clip' ? 'Download cover image' : (n > 1 ? 'Download all ' + n + ' slides' : 'Download image');
+    $('pOpenTT').hidden = (p.platforms || []).indexOf('tiktok') < 0;
+    $('pOpenFB').hidden = (p.platforms || []).indexOf('facebook') < 0;
     $('pHashtags').textContent = p.hashtags || '';
     var flags = [];
     if (p.confirm) flags.push(p.confirm);
@@ -366,6 +372,25 @@
   $('pChange').addEventListener('click', function () { decide('change'); });
   $('pPrev').addEventListener('click', function () { if (state.current > 0) openPost(state.current - 1); });
   $('pNext').addEventListener('click', function () { if (state.current < state.month.posts.length - 1) openPost(state.current + 1); });
+  $('pDownload').addEventListener('click', function () {
+    var p = state.month.posts[state.current], imgs = p.images || [];
+    if (!imgs.length) return;
+    toast('Preparing download\u2026');
+    Promise.all(imgs.map(function (src) {
+      return fetch(src).then(function (r) { return r.blob(); }).then(function (b) { return new File([b], src.split('/').pop(), { type: b.type || 'image/jpeg' }); });
+    })).then(function (files) {
+      if (navigator.canShare && navigator.share && /iPhone|iPad|Android/i.test(navigator.userAgent) && navigator.canShare({ files: files })) {
+        return navigator.share({ files: files }).catch(function () { });
+      }
+      files.forEach(function (f, k) {
+        setTimeout(function () {
+          var a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name;
+          document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+        }, k * 400);
+      });
+      toast(files.length > 1 ? files.length + ' images downloading' : 'Image downloaded');
+    }).catch(function () { toast('Download failed, try again'); });
+  });
   $('pCopy').addEventListener('click', function () {
     var p = state.month.posts[state.current]; var txt = (p.caption || '') + '\n\n' + (p.hashtags || '');
     if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { toast('Caption copied'); }, function () { toast('Copy not available'); });

@@ -3,6 +3,11 @@
   "church": "First Alliance Church",
   "current": "2026-11",
   "months": [
-    {"month": "2026-11", "label": "November 2026", "posts": 24, "status": "ready"}
+    {
+      "month": "2026-11",
+      "label": "November 2026",
+      "posts": 91,
+      "status": "ready"
+    }
   ]
 }

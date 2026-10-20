@@ -1,0 +1,507 @@
+{
+ "month": "2026-11",
+ "label": "November 2026",
+ "church": "First Alliance Church",
+ "status": "ready",
+ "preparedBy": "Hark",
+ "updated": "2026-10-19",
+ "notes": [
+  "Facebook: waiting on page access. Facebook posts go out once the page grants access; TikTok posts as scheduled.",
+  "All times are Eastern Time. Verses are quoted from the KJV."
+ ],
+ "posts": [
+  {
+   "id": "n01",
+   "date": "2026-11-01",
+   "time": "08:00",
+   "type": "graphic",
+   "title": "See you Sunday · Communion Sunday",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Communion Sunday! This morning we gather around the Lord’s Table as UNSTOPPABLE continues in the book of Acts. Clocks fell back overnight, so enjoy the extra hour and come as you are. 10:15 AM at 403 S. Progress Ave.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #SeeYouSunday #Unstoppable #Communion",
+   "images": [
+    "data/2026-11/n01-see-you-sunday.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n01-see-you-sunday.jpg"
+  },
+  {
+   "id": "n02",
+   "date": "2026-11-02",
+   "time": "19:00",
+   "type": "clip",
+   "title": "Clip: “Jesus is the story”",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "The healing was never the point. Jesus was. When people ask why you love the way you do, the answer is simple: Jesus did it. — from “Bold Witness,” UNSTOPPABLE week 2.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #BookOfActs #JesusDidIt",
+   "images": [
+    "data/2026-11/n02-clip-jesus-is-the-story.jpg"
+   ],
+   "status": "pending",
+   "youtube": {
+    "id": "f9j0-RJvkM0",
+    "url": "https://www.youtube.com/watch?v=f9j0-RJvkM0&t=4704s",
+    "start": 4704,
+    "end": 4759,
+    "thumbnail": "https://i.ytimg.com/vi/f9j0-RJvkM0/maxresdefault.jpg"
+   },
+   "sermon": "UNSTOPPABLE, Week 2: Bold Witness (Acts 4)",
+   "sermonDate": "2026-10-18",
+   "timestampConfirmed": true,
+   "clipNote": "Starts “So what’s the story?” → ends “Jesus is the story.” (~55s)",
+   "thumb": "data/2026-11/thumbs/n02-clip-jesus-is-the-story.jpg"
+  },
+  {
+   "id": "n03",
+   "date": "2026-11-03",
+   "time": "19:00",
+   "type": "graphic",
+   "title": "Quote: “Jesus is the story”",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Every good thing God does points back to the One who did it. The miracle gathers a crowd, but Jesus is the story. Who needs to hear that this week?",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #SermonQuote #Acts4",
+   "images": [
+    "data/2026-11/n03-quote-jesus-is-the-story.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n03-quote-jesus-is-the-story.jpg"
+  },
+  {
+   "id": "n04",
+   "date": "2026-11-04",
+   "time": "19:00",
+   "type": "carousel",
+   "title": "Carousel: Bold Witness · 4 takeaways",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Peter and John were arrested for one reason: they kept naming Jesus. Swipe for four takeaways from Acts 4, and save this for the next time silence feels easier.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #Acts4 #BoldWitness",
+   "images": [
+    "data/2026-11/n04-1.jpg",
+    "data/2026-11/n04-2.jpg",
+    "data/2026-11/n04-3.jpg",
+    "data/2026-11/n04-4.jpg",
+    "data/2026-11/n04-5.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n04-1.jpg"
+  },
+  {
+   "id": "n05",
+   "date": "2026-11-05",
+   "time": "19:00",
+   "type": "graphic",
+   "title": "Verse: Isaiah 40:31",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Tired? Waiting on God is not wasted time. He renews strength for the ones who wait on Him. Praying this over you tonight.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Isaiah4031 #BibleVerse #Hope",
+   "images": [
+    "data/2026-11/n05-verse-isaiah-40-31.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n05-verse-isaiah-40-31.jpg"
+  },
+  {
+   "id": "n06",
+   "date": "2026-11-06",
+   "time": "19:00",
+   "type": "graphic",
+   "title": "Welcome home (first-time guests)",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Thinking about visiting? We’d love to meet you. Park in the first-time guest spaces along the side, come in under the canopy, and a greeter will say hello. Nobody will single you out. Sundays at 10:15 AM.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #WelcomeHome #NewHere #HarrisburgChurch",
+   "images": [
+    "data/2026-11/n06-welcome-home.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n06-welcome-home.jpg"
+  },
+  {
+   "id": "n07",
+   "date": "2026-11-08",
+   "time": "08:00",
+   "type": "graphic",
+   "title": "See you Sunday · UNSTOPPABLE finale",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Today we close UNSTOPPABLE, our five-week journey through Acts. Jesus is still building His church. 10:15 AM at First Alliance. Come, and bring someone.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #SeeYouSunday #Unstoppable #BookOfActs",
+   "images": [
+    "data/2026-11/n07-sunday-unstoppable.jpg"
+   ],
+   "status": "pending",
+   "confirm": "Confirm Nov 8 is the final week of UNSTOPPABLE (inferred: 5-week series launched Oct 11).",
+   "thumb": "data/2026-11/thumbs/n07-sunday-unstoppable.jpg"
+  },
+  {
+   "id": "n08",
+   "date": "2026-11-09",
+   "time": "19:00",
+   "type": "clip",
+   "title": "Clip: Presence before purpose",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Purpose without His presence becomes busyness. Ministry without His presence becomes performance. Don’t run on your own strength. — from “The Birth of the Church,” UNSTOPPABLE week 1.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #HolySpirit #Acts2",
+   "images": [
+    "data/2026-11/n08-clip-presence.jpg"
+   ],
+   "status": "pending",
+   "youtube": {
+    "id": "wj3GIQbHXeU",
+    "url": "https://www.youtube.com/watch?v=wj3GIQbHXeU&t=3825s",
+    "start": 3825,
+    "end": 3889,
+    "thumbnail": "https://i.ytimg.com/vi/wj3GIQbHXeU/maxresdefault.jpg"
+   },
+   "sermon": "UNSTOPPABLE, Week 1: The Birth of the Church (Acts 2)",
+   "sermonDate": "2026-10-11",
+   "timestampConfirmed": true,
+   "clipNote": "Starts “So don’t move forward on your own strength” → ends “that just becomes pressure.” (~64s)",
+   "thumb": "data/2026-11/thumbs/n08-clip-presence.jpg"
+  },
+  {
+   "id": "n09",
+   "date": "2026-11-10",
+   "time": "19:00",
+   "type": "graphic",
+   "title": "Verse: Acts 2:42",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "The first church had no building, no budget, and no name. They had the Word, each other, the table, and prayer. Still the best plan we know.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Acts242 #BibleVerse #Community",
+   "images": [
+    "data/2026-11/n09-verse-acts-2-42.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n09-verse-acts-2-42.jpg"
+  },
+  {
+   "id": "n10",
+   "date": "2026-11-11",
+   "time": "19:00",
+   "type": "carousel",
+   "title": "Carousel: Presence before purpose",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Jesus told His disciples to wait before they went. Power comes when the Spirit comes. Swipe through, and ask yourself which one you’ve been running on lately.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #HolySpirit #Acts1",
+   "images": [
+    "data/2026-11/n10-1.jpg",
+    "data/2026-11/n10-2.jpg",
+    "data/2026-11/n10-3.jpg",
+    "data/2026-11/n10-4.jpg",
+    "data/2026-11/n10-5.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n10-1.jpg"
+  },
+  {
+   "id": "n11",
+   "date": "2026-11-12",
+   "time": "19:00",
+   "type": "graphic",
+   "title": "Quote: “Jesus is worth naming”",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Peter and John didn’t have a seminary degree. They had the Holy Spirit, and they named Jesus anyway. Who is one person you could tell about Him this week?",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Unstoppable #SermonQuote #ShareJesus",
+   "images": [
+    "data/2026-11/n11-quote-worth-naming.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n11-quote-worth-naming.jpg"
+  },
+  {
+   "id": "n12",
+   "date": "2026-11-13",
+   "time": "19:00",
+   "type": "graphic",
+   "title": "Verse: Matthew 11:28",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "It’s Friday. Whatever this week put on your shoulders, Jesus invites you to bring it to Him. Rest well tonight.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Matthew1128 #Rest #BibleVerse",
+   "images": [
+    "data/2026-11/n12-verse-matthew-11-28.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n12-verse-matthew-11-28.jpg"
+  },
+  {
+   "id": "n13",
+   "date": "2026-11-15",
+   "time": "08:00",
+   "type": "graphic",
+   "title": "See you Sunday",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Good morning, Harrisburg! Worship, the Word, and a church family from every nation. 10:15 AM at 403 S. Progress Ave. Come as you are.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #SeeYouSunday #HarrisburgChurch #ChurchFamily",
+   "images": [
+    "data/2026-11/n13-see-you-sunday.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n13-see-you-sunday.jpg"
+  },
+  {
+   "id": "n14",
+   "date": "2026-11-16",
+   "time": "19:00",
+   "type": "clip",
+   "title": "Clip: “You can’t pass on what you don’t live”",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "If I want to pass on wisdom, I need to have it in my life. Our kids, our friends, the next generation: they hear what we say and watch what we live.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Parenting #Discipleship #Proverbs226",
+   "images": [
+    "data/2026-11/n14-clip-passing-on.jpg"
+   ],
+   "status": "pending",
+   "youtube": {
+    "id": "jK1J05IovzQ",
+    "url": "https://www.youtube.com/watch?v=jK1J05IovzQ&t=4221s",
+    "start": 4221,
+    "end": 4289,
+    "thumbnail": "https://i.ytimg.com/vi/jK1J05IovzQ/maxresdefault.jpg"
+   },
+   "sermon": "What Are You Passing On? (Proverbs 22:6; Ephesians 6:4)",
+   "sermonDate": "2026-10-04",
+   "timestampConfirmed": true,
+   "clipNote": "Starts “Because if I want to pass on wisdom” → ends “when I don’t exemplify it.” (~68s, trim if needed)",
+   "thumb": "data/2026-11/thumbs/n14-clip-passing-on.jpg"
+  },
+  {
+   "id": "n15",
+   "date": "2026-11-17",
+   "time": "19:00",
+   "type": "graphic",
+   "title": "Quote: “What we live, we pass on”",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "People hear what we say. They watch what we do. What are you passing on to the people coming behind you?",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #SermonQuote #Legacy #Discipleship",
+   "images": [
+    "data/2026-11/n15-quote-what-we-live.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n15-quote-what-we-live.jpg"
+  },
+  {
+   "id": "n16",
+   "date": "2026-11-18",
+   "time": "19:00",
+   "type": "carousel",
+   "title": "Carousel: What are you passing on?",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "We are always passing something on. Swipe through these questions from “What Are You Passing On?” and sit with the one that stings a little.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Proverbs226 #Parenting #Faith",
+   "images": [
+    "data/2026-11/n16-1.jpg",
+    "data/2026-11/n16-2.jpg",
+    "data/2026-11/n16-3.jpg",
+    "data/2026-11/n16-4.jpg",
+    "data/2026-11/n16-5.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n16-1.jpg"
+  },
+  {
+   "id": "n17",
+   "date": "2026-11-19",
+   "time": "19:00",
+   "type": "graphic",
+   "title": "Verse: Proverbs 3:5",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "You don’t have to see the whole path to take the next step. Trust Him with this one.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Proverbs35 #TrustGod #BibleVerse",
+   "images": [
+    "data/2026-11/n17-verse-proverbs-3-5.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n17-verse-proverbs-3-5.jpg"
+  },
+  {
+   "id": "n18",
+   "date": "2026-11-20",
+   "time": "19:00",
+   "type": "graphic",
+   "title": "Verse: Psalm 100:4 (Thanksgiving lead-in)",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Thanksgiving is almost here. Let’s start early. Drop one thing you’re thanking God for in the comments.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Thanksgiving #Psalm100 #Gratitude",
+   "images": [
+    "data/2026-11/n18-verse-psalm-100-4.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n18-verse-psalm-100-4.jpg"
+  },
+  {
+   "id": "n19",
+   "date": "2026-11-22",
+   "time": "08:00",
+   "type": "graphic",
+   "title": "See you Sunday · Thanksgiving week",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Start Thanksgiving week in worship. Family in town for the holiday? Bring them along. Sundays at 10:15 AM, 403 S. Progress Ave.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #SeeYouSunday #Thanksgiving #HarrisburgChurch",
+   "images": [
+    "data/2026-11/n19-sunday-give-thanks.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n19-sunday-give-thanks.jpg"
+  },
+  {
+   "id": "n20",
+   "date": "2026-11-23",
+   "time": "19:00",
+   "type": "clip",
+   "title": "Clip: “Can’t learn or won’t learn?”",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "A scoffer isn’t someone who cannot learn. It’s someone who will not learn. At the root of it is pride. Are you still teachable?",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #Proverbs9 #Teachable #Humility",
+   "images": [
+    "data/2026-11/n20-clip-teachable.jpg"
+   ],
+   "status": "pending",
+   "youtube": {
+    "id": "EKv-lelGcQA",
+    "url": "https://www.youtube.com/watch?v=EKv-lelGcQA&t=3986s",
+    "start": 3986,
+    "end": 4060,
+    "thumbnail": "https://i.ytimg.com/vi/EKv-lelGcQA/maxresdefault.jpg"
+   },
+   "sermon": "Are You Still Teachable? (Proverbs 9:7-12)",
+   "sermonDate": "2026-09-27",
+   "timestampConfirmed": false,
+   "clipNote": "Approximate: transcript only gives 30s blocks here. Starts near “We are all guilty… a scoffer is not someone who cannot learn”; ends near “pride makes that person unreachable.” Confirm in/out before posting.",
+   "thumb": "data/2026-11/thumbs/n20-clip-teachable.jpg"
+  },
+  {
+   "id": "n21",
+   "date": "2026-11-24",
+   "time": "19:00",
+   "type": "carousel",
+   "title": "Carousel: Your first Sunday, made easy",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Home for the holidays and looking for a church? Here’s exactly what to expect at First Alliance, from parking to kids check-in. Tag someone who’s been meaning to visit.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #PlanAVisit #NewHere #HarrisburgChurch",
+   "images": [
+    "data/2026-11/n21-1.jpg",
+    "data/2026-11/n21-2.jpg",
+    "data/2026-11/n21-3.jpg",
+    "data/2026-11/n21-4.jpg",
+    "data/2026-11/n21-5.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n21-1.jpg"
+  },
+  {
+   "id": "n22",
+   "date": "2026-11-26",
+   "time": "09:00",
+   "type": "graphic",
+   "title": "Happy Thanksgiving (Psalm 107:1)",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "Happy Thanksgiving from all of us at First Alliance! We’re grateful for you, our church family and our neighbors. His mercy endures forever.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #HappyThanksgiving #Psalm107 #Gratitude",
+   "images": [
+    "data/2026-11/n22-happy-thanksgiving.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n22-happy-thanksgiving.jpg"
+  },
+  {
+   "id": "n23",
+   "date": "2026-11-27",
+   "time": "19:00",
+   "type": "graphic",
+   "title": "Verse: 1 Thessalonians 5:18",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "The leftovers are still in the fridge, and gratitude can stick around too. In everything, give thanks.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #1Thessalonians518 #Gratitude #BibleVerse",
+   "images": [
+    "data/2026-11/n23-verse-1-thess-5-18.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n23-verse-1-thess-5-18.jpg"
+  },
+  {
+   "id": "n24",
+   "date": "2026-11-29",
+   "time": "08:00",
+   "type": "graphic",
+   "title": "See you Sunday",
+   "platforms": [
+    "tiktok",
+    "facebook"
+   ],
+   "caption": "The Christmas season is almost here, and there’s room for you at First Alliance. Worship with us at 10:15 AM, 403 S. Progress Ave.",
+   "hashtags": "#FirstAllianceHBG #HarrisburgPA #SeeYouSunday #HarrisburgChurch #ComeAsYouAre",
+   "images": [
+    "data/2026-11/n24-see-you-sunday.jpg"
+   ],
+   "status": "pending",
+   "thumb": "data/2026-11/thumbs/n24-see-you-sunday.jpg"
+  }
+ ]
+}

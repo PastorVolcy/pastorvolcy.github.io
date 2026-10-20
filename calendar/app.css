@@ -107,6 +107,9 @@ button:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid rg
 .clipinfo b{font-weight:700}
 .clipinfo .warn{color:#9a5b00;font-weight:700}
 .clipinfo a{color:var(--blue);font-weight:600;text-decoration:none}
+.music{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13.5px;color:var(--ink2);margin:-4px 0 12px;line-height:1.35}
+.music .mtext{flex:1}
+.music .mchange{flex:none;border:0;background:#f2f2f7;color:var(--blue);font-weight:600;font-size:12.5px;padding:6px 10px;border-radius:999px;cursor:pointer}
 .caption{background:#fafafa;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px}
 .caption p{margin:0 0 8px;font-size:15.5px;line-height:1.5;white-space:pre-wrap}
 .caption .hashtags{color:var(--blue-d);font-size:14.5px}

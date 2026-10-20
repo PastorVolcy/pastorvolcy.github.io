@@ -12,7 +12,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<link rel="stylesheet" href="app.css?v=3">
+<link rel="stylesheet" href="app.css?v=4">
 </head>
 <body>
 <div class="app" id="app">
@@ -103,13 +103,15 @@
     <div class="infobody">
       <p id="sSummary"></p>
       <pre class="preview" id="sPreview"></pre>
+      <p class="warnline" id="sLong" hidden>Your notes make this email long. If your mail app cuts it off, tap <b>Copy text</b> and paste it into an email to ecyapres@gmail.com.</p>
       <button class="primary" id="sSend">Open email to send</button>
+      <button class="secondary copybtn" id="sCopy">Copy text</button>
       <p class="hint">Opens your mail app with the approval filled in. Nothing posts until Hark reads it.</p>
     </div>
   </section>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="app.js?v=3"></script>
+<script src="app.js?v=4"></script>
 </body>
 </html>

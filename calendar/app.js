@@ -86,12 +86,15 @@
   function weekStart(d) { var x = parseDate(d); x.setDate(x.getDate() - x.getDay()); return x; }
   function weekLabel(ws) {
     var we = new Date(ws); we.setDate(we.getDate() + 6);
+    var mo = +state.key.split('-')[1] - 1, yr = +state.key.split('-')[0];
+    if (ws.getMonth() !== mo) ws = new Date(yr, mo, 1);           // clamp to this month
+    if (we.getMonth() !== mo) we = new Date(yr, mo + 1, 0);
     var a = MON3[ws.getMonth()] + ' ' + ws.getDate();
     var b = (we.getMonth() === ws.getMonth() ? '' : MON3[we.getMonth()] + ' ') + we.getDate();
     return 'Week of ' + a + '\u2013' + b;
   }
   function renderGrid() {
-    var g = $('grid'); var html = '', lastWeek = null, m = +state.key.split('-')[1] - 1;
+    var g = $('grid'); var html = '', lastWeek = null;
     var posts = state.month.posts;
     posts.forEach(function (p, i) {
       var ws = weekStart(p.date), wk = ws.getTime();

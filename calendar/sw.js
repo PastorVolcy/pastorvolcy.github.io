@@ -1,6 +1,6 @@
 /* FAC Social Calendar service worker */
-const VERSION = 'fac-cal-v5';
-const SHELL = ['./', 'index.html', 'app.css?v=5', 'app.js?v=5', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'];
+const VERSION = 'fac-cal-v6';
+const SHELL = ['./', 'index.html', 'app.css?v=6', 'app.js?v=6', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
 });

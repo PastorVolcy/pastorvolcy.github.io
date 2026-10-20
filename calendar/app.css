@@ -136,3 +136,12 @@ textarea{width:100%;font:inherit;font-size:16px;border:1px solid #d1d1d6;border-
 .toast{position:fixed;left:50%;bottom:calc(110px + var(--safe-b));transform:translateX(-50%) translateY(20px);background:rgba(28,28,30,.92);color:#fff;font-size:14px;font-weight:600;padding:10px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:40;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%)}
 .empty{grid-column:1/-1;padding:40px 16px;text-align:center;color:var(--ink2)}
+
+/* week grouping (v4) */
+.weekhead{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;margin:0;padding:14px 16px 6px;font-size:13px;font-weight:700;color:var(--ink2,#6b6b73);letter-spacing:.01em;background:var(--bg,#fff)}
+.weekhead:first-child{padding-top:4px}
+.weekhead .wkmeta{font-weight:500;font-size:12px}
+@media (min-width:700px){.weekhead{padding-left:2px;padding-right:2px}}
+
+.warnline{font-size:13px;color:#8a5a00;background:#fff6e0;border-radius:10px;padding:8px 10px;margin:0 0 10px}
+.copybtn{width:100%;margin-top:8px}
